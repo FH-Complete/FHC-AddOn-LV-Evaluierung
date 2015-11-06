@@ -6,4 +6,4 @@ FH-Complete Addon zur Evaluierung von Lehrveranstaltungen
 * Verzeichnis nach /fhcomplete/addons/lvevaluierung kopieren
 * composer.phar install
 * dbcheck.php starten
-* Addon im FH-Complete aktiverenn
+* Addon im FH-Complete aktivieren
