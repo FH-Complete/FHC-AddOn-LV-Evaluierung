@@ -1,0 +1,58 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "2dc75166587995b7d3299446fe4fe50b",
+    "packages": [
+        {
+            "name": "kairos/phpqrcode",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kairosagency/phpqrcode.git",
+                "reference": "6770ecbe0e8c7d806c5779ad38b20c9acf5427d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kairosagency/phpqrcode/zipball/6770ecbe0e8c7d806c5779ad38b20c9acf5427d9",
+                "reference": "6770ecbe0e8c7d806c5779ad38b20c9acf5427d9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=4.3.10"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "qrlib.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Kairos Agency"
+                }
+            ],
+            "description": "A PHP class to generate QR Code",
+            "homepage": "http://github.com/kairosagency/phpqrcode",
+            "keywords": [
+                "php",
+                "qrcode"
+            ],
+            "time": "2013-03-20 17:48:23"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
