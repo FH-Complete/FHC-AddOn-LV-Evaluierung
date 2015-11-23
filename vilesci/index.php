@@ -39,5 +39,5 @@ if(!$rechte->isBerechtigt('addon/lvevaluierung'))
 {
 	die('Sie haben keine Berechtigung fuer diese Seite'.$rechte->errormsg);
 }
-echo 'LV Evlauierung';
+echo '<a href="fragen.php">Fragen Administrieren</a>';
 ?>

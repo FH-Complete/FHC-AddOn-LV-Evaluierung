@@ -1,0 +1,36 @@
+
+#lp h1, #lp img {
+	margin: 50px auto;
+}
+
+p.infotext {
+	margin: 40px 0;
+}
+
+.padding-10 {
+    padding: 10px;
+}
+
+span.antwortinfo
+{
+	color:gray;
+	font-weight: normal;
+}
+
+div.textantwort
+{
+	width: 100%;
+	background-color: #F7F7F9;
+	border: 1px solid #E1E1E8;
+	margin: 10px;
+	padding: 15px;
+}
+
+div.barchart
+{
+	background-color:#7693ff;
+}
+div.barchart_border
+{
+	border: 1px solid #5369bc;
+}

@@ -188,9 +188,20 @@ if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_lvevaluierung"))
 			GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_lvevaluierung_frage TO vilesci;
 			GRANT SELECT ON addon.tbl_lvevaluierung_frage TO web;
 			GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_lvevaluierung_frage_antwort TO vilesci;
-			GRANT SELECT ON addon.tbl_lvevaluierung_frage_antwort TO vilesci;
+			GRANT SELECT ON addon.tbl_lvevaluierung_frage_antwort TO web;
 			GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_lvevaluierung_antwort TO vilesci;
 			GRANT SELECT, INSERT, UPDATE, DELETE ON addon.tbl_lvevaluierung_antwort TO web;
+
+			GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_antwort_lvevaluierung_antwort_id_seq TO web;
+			GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_antwort_lvevaluierung_antwort_id_seq TO vilesci;
+
+			GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_frage_antwort_lvevaluierung_frage_antwort_id_seq TO vilesci;
+			GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_frage_lvevaluierung_frage_id_seq TO vilesci;
+
+			GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_code_lvevaluierung_code_id_seq TO vilesci;
+			GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_code_lvevaluierung_code_id_seq TO web;
+			GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_lvevaluierung_id_seq TO vilesci;
+			GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_lvevaluierung_id_seq TO web;
 			";
 
 	if(!$db->db_query($qry))

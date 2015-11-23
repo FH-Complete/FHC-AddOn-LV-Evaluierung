@@ -21,9 +21,9 @@
 $addon_name = 'LV-Evaluierung';
 
 // Versionsnummer des Addons
-$addon_version = '0.01';
+$addon_version = '0.1';
 
 // FH-Complete Min-Version
-$fhcomplete_target_version = '3.0';
+$fhcomplete_target_version = '3.2';
 
 ?>

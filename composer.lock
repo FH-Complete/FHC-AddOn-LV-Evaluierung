@@ -1,10 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "hash": "2dc75166587995b7d3299446fe4fe50b",
+    "content-hash": "4634662133b0446d07c4c5419dc7ecda",
     "packages": [
         {
             "name": "kairos/phpqrcode",
