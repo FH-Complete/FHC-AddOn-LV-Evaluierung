@@ -371,7 +371,7 @@ else
 				</div>
 		</div>
 		<script src="../../../include/js/jquery.min.1.11.1.js"></script>
-		<script src="../vendor/components/bootstrap/js/bootstrap.min.js"></script>
+		<script src="../../../vendor/components/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 
 			function changeSprache(sprache)
