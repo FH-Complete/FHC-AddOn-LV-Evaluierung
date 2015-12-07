@@ -23,6 +23,7 @@ require_once('../../../include/lehrveranstaltung.class.php');
 require_once('../../../include/functions.inc.php');
 require_once('../../../include/benutzerberechtigung.class.php');
 require_once('../../../include/lehreinheitmitarbeiter.class.php');
+require_once('../../../include/benutzer.class.php');
 require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_code.class.php');
 require_once('../vendor/kairos/phpqrcode/qrlib.php');
@@ -62,11 +63,39 @@ if(!$codes_obj->loadCodes($lvevaluierung_id))
 
 $doc = new dokument_export('LVEvalCode');
 
-$url = APP_ROOT.'addons/lvevaluierung/cis/index.php';
+$url = APP_ROOT;
+$url_detail = APP_ROOT.'addons/lvevaluierung/cis/index.php';
+
+$leiter_uid = $lv->getLVLeitung($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
+$benutzer = new benutzer();
+$benutzer->load($leiter_uid);
+
+$lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
+
+$stg = new studiengang();
+$stg->load($lv->studiengang_kz);
+
+$studiengang_bezeichnung=$stg->bezeichnung;
+$studiensemester = $lvevaluierung->studiensemester_kurzbz;
+
+$teilnehmer = $lv->getStudentsOfLv($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
+$anzahl_studierende=count($teilnehmer);
+$lehrform = $lv->lehrform_kurzbz;
 
 $data = array(
 	'url'=>$url,
-	'bezeichnung'=>$lv->bezeichnung
+	'url_detail'=>$url_detail,
+	'bezeichnung'=>$lv->bezeichnung,
+	'lvleitung'=>$lvleitung,
+	'studiengang'=>$studiengang_bezeichnung,
+	'ects'=>$lv->ects,
+	'sprache'=>$lv->sprache,
+	'studiensemester'=>$lvevaluierung->studiensemester_kurzbz,
+	'semester'=>$lv->semester,
+	'anzahl'=>$anzahl_studierende,
+	'orgform'=>$lv->orgform_kurzbz,
+	'lehrform'=>$lehrform,
+	'lvevaluierung_id'=>$lvevaluierung->lvevaluierung_id
 );
 
 $files=array();
@@ -85,6 +114,7 @@ foreach($codes_obj->result as $code)
 
 
 }
+
 $doc->addDataArray($data,'lvevaluierung');
 if(!$doc->create('pdf'))
 	die($doc->errormsg);
