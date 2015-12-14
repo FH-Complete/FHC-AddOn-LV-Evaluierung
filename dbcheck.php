@@ -59,12 +59,12 @@ if($result = $db->db_query("SELECT * FROM system.tbl_berechtigung WHERE berechti
 {
 	if($db->db_num_rows($result)==0)
 	{
-		$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung) 
+		$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung)
 				VALUES('addon/lvevaluierung','AddOn LVEvaluierung');";
 
 		if(!$db->db_query($qry))
 			echo '<strong>Berechtigung: '.$db->db_last_error().'</strong><br>';
-		else 
+		else
 			echo 'Neue Berechtigung addon/lvevaluierung hinzugefuegt!<br>';
 	}
 }
@@ -206,9 +206,38 @@ if(!$result = @$db->db_query("SELECT 1 FROM addon.tbl_lvevaluierung"))
 
 	if(!$db->db_query($qry))
 		echo '<strong>LV-Evaluierung: '.$db->db_last_error().'</strong><br>';
-	else 
+	else
 		echo ' LV-Evaluierung: Basistabellen hinzugefuegt!<br>';
 
+}
+
+if($result = $db->db_query("SELECT * FROM public.tbl_vorlage WHERE vorlage_kurzbz='LVEvalCode'"))
+{
+	if($db->db_num_rows($result)==0)
+	{
+        $qry_oe = "SELECT oe_kurzbz FROM public.tbl_organisationseinheit WHERE oe_parent_kurzbz is null";
+        if($result = $db->db_query($qry_oe))
+        {
+            $qry = "INSERT INTO public.tbl_vorlage(vorlage_kurzbz, bezeichnung, anmerkung,mimetype)
+            VALUES('LVEvalCode','LVEvaluierung Codes', 'LVEVaaluierung Codes', 'application/vnd.oasis.opendocument.text');";
+
+            $text = file_get_contents('system/xsl/lvevalcode.xml');
+            $style = file_get_contents('system/xsl/lvevalcode_style.xml');
+
+            while($row = $db->db_fetch_object($result))
+            {
+                $qry.="INSERT INTO public.tbl_vorlagestudiengang(vorlage_kurzbz, studiengang_kz, version, text,
+                        oe_kurzbz, style, berechtigung, anmerkung_vorlagestudiengang, aktiv) VALUES(
+                        'LVEvalCode',0,0,".$db->db_add_param($text).",".$db->db_add_param($row->oe_kurzbz).",".
+                        $db->db_add_param($style).",null,'',true);";
+            }
+        }
+
+		if(!$db->db_query($qry))
+			echo '<strong>LVEvalCode Dokumentenvorlage: '.$db->db_last_error().'</strong><br>';
+		else
+			echo 'LVEvalCode Dokumentenvorlage hinzugefuegt<br>';
+	}
 }
 
 echo '<br>Aktualisierung abgeschlossen<br><br>';

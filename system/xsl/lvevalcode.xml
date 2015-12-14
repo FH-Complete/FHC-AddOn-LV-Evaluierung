@@ -104,10 +104,11 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
     </style:style>
     <style:style style:name="Sect1" style:family="section">
       <style:section-properties text:dont-balance-text-columns="false" style:editable="false">
-        <style:columns fo:column-count="3" fo:column-gap="0cm">
-          <style:column style:rel-width="3212*" fo:start-indent="0cm" fo:end-indent="0cm"/>
-          <style:column style:rel-width="3212*" fo:start-indent="0cm" fo:end-indent="0cm"/>
-          <style:column style:rel-width="3212*" fo:start-indent="0cm" fo:end-indent="0cm"/>
+        <style:columns fo:column-count="4" fo:column-gap="0cm">
+          <style:column style:rel-width="2400*" fo:start-indent="0cm" fo:end-indent="0cm"/>
+          <style:column style:rel-width="2400*" fo:start-indent="0cm" fo:end-indent="0cm"/>
+          <style:column style:rel-width="2400*" fo:start-indent="0cm" fo:end-indent="0cm"/>
+          <style:column style:rel-width="2400*" fo:start-indent="0cm" fo:end-indent="0cm"/>
         </style:columns>
       </style:section-properties>
     </style:style>
@@ -235,11 +236,11 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
         <text:p text:style-name="P4"><xsl:value-of select="../url"/></text:p>
         <text:p text:style-name="P2">
 		<xsl:variable select="lvevaluierung_code_id" name="capture_image"/>
-          <draw:frame draw:style-name="fr1" draw:name="Bild2" text:anchor-type="as-char" svg:width="3.253cm" svg:height="3.253cm" draw:z-index="0">
+          <draw:frame draw:style-name="fr1" draw:name="Bild2" text:anchor-type="as-char" svg:width="2.200cm" svg:height="2.200cm" draw:z-index="0">
             <draw:image xlink:href="Pictures/{$capture_image}.png" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
           </draw:frame>
         </text:p>
-        <text:p text:style-name="P2">Code: <text:span text:style-name="T1"><xsl:value-of select="code"/></text:span></text:p>
+        <text:p text:style-name="P4">Code: <text:span text:style-name="T1"><xsl:value-of select="code"/></text:span></text:p>
         <text:p text:style-name="P2" />
 
             </table:table-cell>
