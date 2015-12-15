@@ -107,7 +107,7 @@ foreach($codes_obj->result as $code)
 	$files[]=$filename;
 
 	// QRCode ertellen und speichern
-	QRcode::png($url_detail.'?c='.$code->code, $filename);
+	QRcode::png($url_detail.'?code='.$code->code, $filename);
 
 	// QRCode zu Dokument hinzufuegen
 	$doc->addImage($filename, $code->lvevaluierung_code_id.'.png', 'image/png');
