@@ -137,7 +137,7 @@ switch($action)
 		{
 			if($frage->typ=='singleresponse' && $lvevaluierung_frage_id=='')
 			{
-				for($i=1;$i<=6;$i++)
+				for($i=0;$i<=5;$i++)
 				{
 					$antwort = new lvevaluierung_frage();
 					$antwort->lvevaluierung_frage_id = $frage->lvevaluierung_frage_id;
@@ -146,6 +146,13 @@ switch($action)
 					$antwort->bezeichnung=array();
 					switch($i)
 					{
+						case 0:
+							// 0 = keine Angabe
+							foreach($sprache->result as $row_sprache)
+								$antwort->bezeichnung[$row_sprache->sprache] = 'keine Angabe';
+							// keine Angabe soll immer zum schluss stehen
+							$antwort->sort=9999;
+							break;
 						case 1:
 							foreach($sprache->result as $row_sprache)
 								$antwort->bezeichnung[$row_sprache->sprache] = 'stimme voll und ganz zu';

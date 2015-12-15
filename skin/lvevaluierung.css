@@ -17,6 +17,11 @@ span.antwortinfo
 	font-weight: normal;
 }
 
+.form-group > label
+{
+	font-size: 1.2em;
+}
+
 div.textantwort
 {
 	width: 100%;
@@ -29,8 +34,14 @@ div.textantwort
 div.barchart
 {
 	background-color:#7693ff;
+	text-align: right;
 }
 div.barchart_border
 {
-	border: 1px solid #5369bc;
+	/*border: 1px solid #5369bc;*/
+}
+div.barchart_nichtausgefuellt
+{
+	background-color:#cccccc;
+	text-align: right;
 }

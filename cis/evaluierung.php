@@ -147,6 +147,7 @@ else
 		if(isset($_POST['submit_btn']))
 		{
 			// Save
+            $fragenantworten=array();
 			// Alle Antworten speichern
 			foreach($_POST as $key_post=>$value_post)
 			{
@@ -169,8 +170,27 @@ else
 
 						$antwort->save();
 					}
+                    $fragenantworten[]=$frage_id;
 				}
 			}
+            // Fragen die gestellt wurden, aber nicht beantwortet werden auch geholt und ohne Antwort gespeichert
+            // damit erfasst ist, dass er die Frage bekommen hat
+
+            $fragen_obj = new lvevaluierung_frage();
+            $fragen_obj->getFragen();
+            foreach($fragen_obj->result as $row_fragen)
+            {
+                if(!in_array($row_fragen->lvevaluierung_frage_id, $fragenantworten))
+                {
+                    $antwort = new lvevaluierung_antwort();
+
+                    $antwort->lvevaluierung_frage_id=$row_fragen->lvevaluierung_frage_id;
+                    $antwort->lvevaluierung_code_id = $lvevaluierung_code->lvevaluierung_code_id;
+                    $antwort->antwort = '';
+                    $antwort->lvevaluierung_frage_antwort_id = '';
+                    $antwort->save();
+                }
+            }
 
 			// Code Endezeit setzen
 			$lvevaluierung_code->endezeit=date('Y-m-d H:i:s');
@@ -321,32 +341,46 @@ else
 						'.$row_frage->bezeichnung[$sprache].'<br>';
 
 					$antwortinfo='';
-					echo '<span class="antwortinfo">';
+
 					foreach($antwort->result as $row_antwort)
 					{
-						if($row_antwort->bezeichnung[$sprache]!='')
-							$antwortinfo.= ' '.$db->convert_html_chars($row_antwort->wert).'='.$db->convert_html_chars($row_antwort->bezeichnung[$sprache]).';';
+                        if($row_antwort->wert!=0)
+                        	if($row_antwort->bezeichnung[$sprache]!='')
+							    $antwortinfo.= ' '.$db->convert_html_chars($row_antwort->wert).'='.$db->convert_html_chars($row_antwort->bezeichnung[$sprache]).';';
 					}
-					echo mb_substr($antwortinfo,0,-1);
-					echo '</span>';
-					echo '
+                    echo '
 						</label>
 						<div class="btn-group" data-toggle="buttons">';
 
 					foreach($antwort->result as $row_antwort)
 					{
-						//$row_antwort->bezeichnung[$sprache].'
-						echo '
-							<label class="btn btn-primary">
-								<input type="radio" name="antwort_'.$row_antwort->lvevaluierung_frage_id.'" value="'.$row_antwort->lvevaluierung_frage_antwort_id.'" />'.$db->convert_html_chars($row_antwort->wert).'
-							</label>';
+                        if($row_antwort->wert!=0)
+                        {
+    						echo '
+    							<label class="btn btn-primary">
+    								<input type="radio" name="antwort_'.$row_antwort->lvevaluierung_frage_id.'" value="'.$row_antwort->lvevaluierung_frage_antwort_id.'" />'.$db->convert_html_chars($row_antwort->wert).'
+    							</label>';
+                        }
+                        else
+                        {
+                            // keine Angabe
+                            echo '
+        							<label class="btn btn-primary">
+        								<input type="radio" name="antwort_'.$row_antwort->lvevaluierung_frage_id.'" value="'.$row_antwort->lvevaluierung_frage_antwort_id.'" />'.$db->convert_html_chars($row_antwort->bezeichnung[$sprache]).'
+        							</label>';
+                        }
 					}
-					echo '
-							<label class="btn btn-primary">
-								<input type="radio" name="antwort_'.$row_antwort->lvevaluierung_frage_id.'" value="" />'.$p->t('lvevaluierung/keineAngabe').'
-							</label>';
-					echo '</div>
+
+					echo '</div>';
+                    echo '<span class="antwortinfo">';
+                    echo mb_substr($antwortinfo,0,-1);
+                    echo '</span>';
+
+                    echo '
+
 					</div>';
+
+                    echo '<hr>';
 					break;
 
 				default:
@@ -355,7 +389,7 @@ else
 		}
 
 		echo '
-			<div class="col-lg-12 col-sm-12 col-xs-12">
+			<div class="col-lg-12 col-sm-12 col-xs-12" style="margin-top: 15px">
 			<input type="hidden" name="submit_btn" value="1" />
 			<button class="btn btn-primary" type="submit">
 				'.$p->t('global/abschicken').'

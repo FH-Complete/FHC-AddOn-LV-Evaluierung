@@ -14,7 +14,7 @@ $this->phrasen['lvevaluierung/lvtyp']='LV Typ';
 $this->phrasen['lvevaluierung/ects']='ECTS';
 $this->phrasen['lvevaluierung/ausbildungssemester']='Ausbildungssemester';
 $this->phrasen['lvevaluierung/anzahlstudierende']='Anzahl der Studierenden';
-$this->phrasen['lvevaluierung/danke']='Die Umfrage wurde erfolgreich abgeschlossen. Vielen Dank für Ihre Teilnahme';
+$this->phrasen['lvevaluierung/danke']='Die Umfrage wurde erfolgreich abgeschlossen. Vielen Dank für Ihre Teilnahme!';
 $this->phrasen['lvevaluierung/startzeit']='Start der Evaluierung';
 $this->phrasen['lvevaluierung/endezeit']='Ende der Evaluierung';
 $this->phrasen['lvevaluierung/dauer']='Dauer';
@@ -26,5 +26,7 @@ $this->phrasen['lvevaluierung/auswertung']='Auswertung';
 $this->phrasen['lvevaluierung/keineEvaluierungAngelegt']='Derzeit ist noch keine Evaluierung für diese Lehrveranstaltung angelegt. Füllen Sie das folgende Formular aus um eine Evaluierung anzulegen';
 $this->phrasen['lvevaluierung/CodeListeErstellen']='Code Liste erstellen';
 $this->phrasen['lvevaluierung/Auswertung']='Auswertung anzeigen';
+$this->phrasen['lvevaluierung/abgeschlossen']='Abgeschlossen';
+$this->phrasen['lvevaluierung/durchschnittszeit']='Durchschnittliche Dauer';
 
 ?>

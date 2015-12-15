@@ -126,6 +126,14 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
   <table:table-column table:style-name="TabelleLVInfo.A" table:number-columns-repeated="2"/>
   <table:table-row>
     <table:table-cell table:style-name="TabelleLVInfo.A1" office:value-type="string">
+      <text:p text:style-name="P6">LV Bezeichnung (ID)</text:p>
+    </table:table-cell>
+    <table:table-cell table:style-name="TabelleLVInfo.B1" office:value-type="string">
+      <text:p text:style-name="P6"><xsl:value-of select="bezeichnung" /> (<xsl:value-of select="lehrveranstaltung_id" />)</text:p>
+    </table:table-cell>
+  </table:table-row>
+  <table:table-row>
+    <table:table-cell table:style-name="TabelleLVInfo.A1" office:value-type="string">
       <text:p text:style-name="P6">LV LeiterIn</text:p>
     </table:table-cell>
     <table:table-cell table:style-name="TabelleLVInfo.B1" office:value-type="string">
@@ -202,13 +210,19 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
   <table:table-column table:style-name="TabelleUebernahme.A"/>
   <table:table-row>
     <table:table-cell table:style-name="TabelleUebernahme.A1" office:value-type="string">
-      <text:p text:style-name="P5">Bitte kontrollieren Sie, ob alle Seiten vollständig vorhanden sind. Die Nummer der Evaluierung in der Kopfzeile muss auf allen Seiten gleich sein. Dieses Deckblatt ist von der Lektorin / vom Lektor im Sekretariat abzugeben.</text:p>
-      <text:p text:style-name="P5">Ich bestätige die ordnungsgemäße Übernahme von <xsl:value-of select="anzahl" /> Zugangscodes für die LV-Evaluierung</text:p>
-      <text:p text:style-name="P5"/>
-      <text:p text:style-name="P5"/>
-      <text:p text:style-name="P5"/>
-      <text:p text:style-name="P5">------------------------------------</text:p>
-      <text:p text:style-name="P5">Unterschrift des Jahrgangssprechers</text:p>
+
+    <text:p text:style-name="P6">Dieses Formular sowie allfällige, aufgrund der Abwesenheit von Studierenden nicht benötigte Zugangscodes werden von dem bzw. der Lehrenden im Studiengangssekretariat abgegeben.</text:p>
+    <text:p text:style-name="P6"/>
+    <text:p text:style-name="P6">Mit der Unterschrift wird bestätigt, dass alle Seiten vollständig vorhanden sind und die Nummer der LV-Evaluierung in der Kopfzeile auf allen Seiten gleich ist.</text:p>
+    <text:p text:style-name="P6">Weiters wird bestätigt, dass die unten angegebene Zahl von Zugangscodes zur LV-Evaluierung ordnungsgemäß an die Studierenden übergeben bzw. von diesen übernommen wurde.</text:p>
+    <text:p text:style-name="P6"/>
+    <text:p text:style-name="P6">Anzahl der ausgehändigten Zugangscodes (bitte hier angeben):_____</text:p>
+    <text:p text:style-name="P6"/>
+    <text:p text:style-name="P6"/>
+    <text:p text:style-name="P6"/>
+    <text:p text:style-name="P6"><text:s/>__________________________ <text:s text:c="25"/>__________________________</text:p>
+    <text:p text:style-name="P6">Datum und Unterschrift Lehrende/r <text:s text:c="13"/>Datum und Unterschrift Jahrgangssprecher/in </text:p>
+
     </table:table-cell>
   </table:table-row>
 </table:table>
@@ -233,7 +247,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
           <table:table-row>
             <table:table-cell table:style-name="CodeTabelle.A1" office:value-type="string">
         <text:p text:style-name="P2"/>
-        <text:p text:style-name="P4"><xsl:value-of select="../url"/></text:p>
+        <text:p text:style-name="P4"><xsl:value-of select="../url_detail"/></text:p>
         <text:p text:style-name="P2">
 		<xsl:variable select="lvevaluierung_code_id" name="capture_image"/>
           <draw:frame draw:style-name="fr1" draw:name="Bild2" text:anchor-type="as-char" svg:width="2.200cm" svg:height="2.200cm" draw:z-index="0">

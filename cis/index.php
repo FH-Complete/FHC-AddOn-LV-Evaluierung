@@ -55,7 +55,7 @@ $db = new basis_db();
 $code = trim(filter_input(INPUT_GET, 'code'));
 
 // Login gestartet
-if ($code)
+if ($code && isset($_GET['submit_btn']))
 {
 	$lvevaluierung_code = new lvevaluierung_code();
 
@@ -155,10 +155,10 @@ if ($code)
 
 							<div class="form-group">
 								<div class="input-group">
-									<input class="form-control" type="text" placeholder="<?php echo $p->t('lvevaluierung/code') ?>" name="code" autofocus="autofocus">
+									<input class="form-control" type="text" placeholder="<?php echo $p->t('lvevaluierung/code') ?>" name="code" autofocus="autofocus" value="<?php echo $db->convert_html_chars($code);?>">
 									<span class="input-group-btn">
 										<button class="btn btn-primary" type="submit" name="submit_btn">
-											Login
+											Start
 										</button>
 									</span>
 								</div>

@@ -97,6 +97,36 @@ $teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzb
 $anzahl_studierende=count($teilnehmer);
 $lehrform = $lv->lehrform_kurzbz;
 
+$codes = new lvevaluierung_code();
+$codes->loadCodes($lvevaluierung_id);
+
+$anzahl_codes_gesamt=0;
+$anzahl_codes_gestartet=0;
+$anzahl_codes_beendet=0;
+
+$gesamtsekunden=0;
+foreach($codes->result as $code)
+{
+	if($code->startzeit!='')
+		$anzahl_codes_gestartet++;
+	if($code->endezeit!='')
+		$anzahl_codes_beendet++;
+	$anzahl_codes_gesamt++;
+	if($code->endezeit!='')
+	{
+		$dtende = new DateTime($code->endezeit);
+		$dtstart = new DateTime($code->startzeit);
+		$dauer = $dtende->diff($dtstart)->format('%H:%I:%S');
+		$dauerinsekunden=(substr($dauer,0,2)*60*60)+(substr($dauer,3,2)*60)+(substr($dauer,6,2));
+		$gesamtsekunden += $dauerinsekunden;
+	}
+}
+
+if($anzahl_codes_gesamt>0)
+	$prozent_abgeschlossen = (100/$anzahl_codes_gesamt*$anzahl_codes_beendet);
+else
+	$prozent_abgeschlossen = 0;
+
 echo '
 	<table class="tablesorter">
 	<thead>
@@ -142,6 +172,14 @@ echo '
 		<td>'.$p->t('lvevaluierung/anzahlstudierende').'</td>
 		<td>'.$db->convert_html_chars($anzahl_studierende).'</td>
 	</tr>
+	<tr>
+		<td>'.$p->t('lvevaluierung/abgeschlossen').'</td>
+		<td>'.$anzahl_codes_beendet.' / '.$anzahl_codes_gesamt.' ( '.number_format($prozent_abgeschlossen,2).'% ) </td>
+	</tr>
+	<tr>
+		<td>'.$p->t('lvevaluierung/durchschnittszeit').'</td>
+		<td>'.(int)(($gesamtsekunden/$anzahl_codes_beendet)/60).':'.(($gesamtsekunden/$anzahl_codes_beendet)%60).'</td>
+	</tr>
 	</tbody>
 	</table>
 ';
@@ -176,9 +214,10 @@ foreach($lvevaluierung_antwort->result as $lvevaluierung_frage_id=>$antworten)
 			// Alle moeglichen Antworten zu dieser Frage holen
 			$lv_frage = new lvevaluierung_frage();
 			$lv_frage->loadAntworten($lvevaluierung_frage_id);
-			$awm='';
+			$antworten_array = array();
 			$frage_minwert=null;
-			$frage_maxwert=null;
+       		$frage_maxwert=null;
+			$awm='';
 			foreach($lv_frage->result as $awmoeglichkeit)
 			{
 				if(is_null($frage_minwert) || $frage_minwert>$awmoeglichkeit->wert)
@@ -191,67 +230,82 @@ foreach($lvevaluierung_antwort->result as $lvevaluierung_frage_id=>$antworten)
 					$antwort_max = $db->convert_html_chars($awmoeglichkeit->bezeichnung[$sprache]);
 					$frage_maxwert = $awmoeglichkeit->wert;
 				}
+
 				if($awmoeglichkeit->bezeichnung[$sprache]!='')
 					$awm.= $awmoeglichkeit->wert.'='.$db->convert_html_chars($awmoeglichkeit->bezeichnung[$sprache]).'; ';
+
+				$antworten_array[$awmoeglichkeit->lvevaluierung_frage_antwort_id]['bezeichnung']=$awmoeglichkeit->bezeichnung[$sprache];
+				$antworten_array[$awmoeglichkeit->lvevaluierung_frage_antwort_id]['anzahl']=0;
+				$antworten_array[$awmoeglichkeit->lvevaluierung_frage_antwort_id]['wert']=$awmoeglichkeit->wert;
 			}
-			echo substr($awm,0,-1);
+			$antworten_array['keineauswahl']['anzahl']=0;
+			$antworten_array['keineauswahl']['bezeichnung']='keine Auswahl';
+			$antworten_array['keineauswahl']['wert']='';
+			//echo substr($awm,0,-1);
 
 			// Antworten durchlaufen die auf diese Frage gegeben wurden
 			$wertsumme = 0;
 			$minwert=null;
 			$maxwert=null;
 			$anzahl_antworten=0;
-			$anzahl_keineangabe=0;
+			$anzahl_keineangabe=0; // keine Angabe angeklickt
+			$anzahl_keineauswahl=0; // nichts angeklickt
 			$durchschnitt=0;
 			foreach($antworten as $antwort)
 			{
-				if($antwort->wert!='')
+				if(is_null($antwort->lvevaluierung_frage_antwort_id))
 				{
-					$anzahl_antworten++;
-					if(is_null($minwert) || $minwert>$antwort->wert)
-						$minwert = $antwort->wert;
-					if(is_null($maxwert) || $maxwert<$antwort->wert)
-						$maxwert = $antwort->wert;
-
-					$wertsumme+=$antwort->wert;
+					$antworten_array['keineauswahl']['anzahl']++;
+					$anzahl_keineauswahl++;
 				}
 				else
-					$anzahl_keineangabe++;
+				{
+					$antworten_array[$antwort->lvevaluierung_frage_antwort_id]['anzahl']++;
+					if($antwort->wert!=0)
+					{
+						$anzahl_antworten++;
+						$wertsumme+=$antwort->wert;
+					}
+					else
+						$anzahl_keineangabe++;
+				}
 			}
 
 			if($anzahl_antworten!=0)
 				$durchschnitt = $wertsumme / $anzahl_antworten;
 
-			$ruecklaufqoute = $anzahl_antworten / $anzahl_studierende * 100;
-
+			/*
 			echo '<div class="textantwort">';
 			echo '<table><tr><td>'.$antwort_min.'</td><td align="right">'.$antwort_max.'</td></tr><tr><td colspan="2">';
 			echo '<div class="barchart_border" style="width:'.($frage_maxwert*100).'px;"><div class="barchart" style="width:'.($durchschnitt*100).'px;">&nbsp;</div></div>';
 			echo '</td></tr></table>';
 
+			echo "<br>keineAngabe:".$anzahl_keineangabe;
+			echo "<br>keineAuswahl:".$anzahl_keineauswahl;
+			*/
+			$anzahl_antworten_all = $anzahl_antworten + $anzahl_keineangabe + $anzahl_keineauswahl;
+			echo '<table>';
+			foreach($antworten_array as $id=>$antworten_row)
+			{
+				echo '<tr>
+					<td>'.$antworten_row['bezeichnung'].'</td>
+					<td>'.($antworten_row['wert']!=0?$antworten_row['wert']:'').'</td>
+					<td>';
+				$anz = $antworten_row['anzahl'];
+
+				$maximalwert = 400;
+				$balken = 400/$anzahl_antworten_all*$anz;
+				$class = 'barchart';
+				if($antworten_row['wert']=='' || $antworten_row['wert']==0)
+					$class='barchart_nichtausgefuellt';
+				echo '<div class="barchart_border" style="width:'.$maximalwert.'px;"><div class="'.$class.'" style="width:'.($balken).'px;">'.($antworten_row['anzahl']!=0?$antworten_row['anzahl']:'').'&nbsp;</div></div>';
+				echo '</tr>';
+			}
+			echo '</table>';
 			echo '<table class="tablesorter" style="width:auto">
-					<tr>
-						<td>Minimalbewertung</td>
-						<td>'.$minwert.'</td>
-					</tr>
-					<tr>
-						<td>Maximalbewertung</td>
-						<td>'.$maxwert.'</td>
-					<tr>
-						<td>Anzahl Antworten</td>
-						<td>'.$anzahl_antworten.'</td>
-					</tr>
-					<tr>
-						<td>Anzahl keine Angabe</td>
-						<td>'.$anzahl_keineangabe.'</td>
-					</tr>
 					<tr>
 						<td>Durchschnittsbewertung</td>
 						<td>'.number_format($durchschnitt,2).'</td>
-					</tr>
-					<tr>
-						<td>Antwortqoute</td>
-						<td>'.number_format($ruecklaufqoute,2).'%'.'</td>
 					</tr>
 					</table>';
 			echo '</div>';
