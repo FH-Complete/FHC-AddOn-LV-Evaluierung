@@ -64,13 +64,30 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 <style:style style:name="TabelleUebernahme" style:family="table">
   <style:table-properties style:width="17cm" table:align="margins"/>
 </style:style>
-<style:style style:name="TabelleUebernahme.A" style:family="table-column">
-  <style:table-column-properties style:column-width="17cm" style:rel-column-width="65535*"/>
+<style:style style:name="TabelleUebernahmeUnterschrift.A" style:family="table-column">
+  <style:table-column-properties style:column-width="7.5cm" style:rel-column-width="4252*"/>
+</style:style>
+<style:style style:name="TabelleUebernahmeUnterschrift.B" style:family="table-column">
+  <style:table-column-properties style:column-width="1.706cm" style:rel-column-width="967*"/>
+</style:style>
+<style:style style:name="TabelleUebernahmeUnterschrift.C" style:family="table-column">
+  <style:table-column-properties style:column-width="7.601cm" style:rel-column-width="4309*"/>
 </style:style>
 <style:style style:name="TabelleUebernahme.A1" style:family="table-cell">
   <style:table-cell-properties fo:padding="0.097cm" fo:border="0.05pt solid #000000"/>
 </style:style>
-
+<style:style style:name="TabelleUebernahmeUnterschrift" style:family="table">
+  <style:table-properties style:width="17cm" table:align="margins"/>
+</style:style>
+<style:style style:name="TabelleUebernahmeUnterschrift.A" style:family="table-column">
+  <style:table-column-properties style:column-width="17cm" style:rel-column-width="65535*"/>
+</style:style>
+<style:style style:name="TabelleUebernahmeUnterschrift.A1" style:family="table-cell">
+  <style:table-cell-properties fo:padding="0.097cm" fo:border-top="0.05pt solid #000000"/>
+</style:style>
+<style:style style:name="TabelleUebernahmeUnterschrift.B1" style:family="table-cell">
+  <style:table-cell-properties fo:padding="0.097cm" />
+</style:style>
 <style:style style:name="P5" style:family="paragraph" style:parent-style-name="Table_20_Contents">
   <style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
   <style:text-properties officeooo:rsid="00058c69" officeooo:paragraph-rsid="00058c69"/>
@@ -220,19 +237,27 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
     <text:p text:style-name="P6"/>
     <text:p text:style-name="P6"/>
     <text:p text:style-name="P6"/>
-    <text:p text:style-name="P6"><text:s/>__________________________ <text:s text:c="25"/>__________________________</text:p>
-    <text:p text:style-name="P6">Datum und Unterschrift Lehrende/r <text:s text:c="13"/>Datum und Unterschrift Jahrgangssprecher/in </text:p>
+	<table:table table:name="TabelleUebernahmeUnterschrift" table:style-name="TabelleUebernahmeUnterschrift">
+	  <table:table-column table:style-name="TabelleUebernahmeUnterschrift.A"/>
+	  <table:table-column table:style-name="TabelleUebernahmeUnterschrift.B"/>
+	  <table:table-column table:style-name="TabelleUebernahmeUnterschrift.C"/>
+	  <table:table-row>
+		<table:table-cell table:style-name="TabelleUebernahmeUnterschrift.A1" office:value-type="string">
+		<text:p text:style-name="P6">Datum und Unterschrift Lehrende/r</text:p>
+		</table:table-cell>
+		<table:table-cell table:style-name="TabelleUebernahmeUnterschrift.B1" office:value-type="string">
+		<text:p text:style-name="P6"></text:p>
+		</table:table-cell>
+		<table:table-cell table:style-name="TabelleUebernahmeUnterschrift.A1" office:value-type="string">
+		<text:p text:style-name="P6">Datum und Unterschrift Jahrgangssprecher/in </text:p>
+		</table:table-cell>
+	  </table:table-row>
+	</table:table>
 
     </table:table-cell>
   </table:table-row>
 </table:table>
 <text:p text:style-name="PBREAK"/>
-
-      <text:p text:style-name="P3">
-        <text:span text:style-name="T1">LV Evaluierung – <xsl:value-of select="bezeichnung" /></text:span>
-        <text:line-break/>
-      </text:p>
-      <text:p text:style-name="Standard"/>
       <text:section text:style-name="Sect1" text:name="Codes">
 		<xsl:apply-templates select="code"/>
       </text:section>
@@ -247,7 +272,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
           <table:table-row>
             <table:table-cell table:style-name="CodeTabelle.A1" office:value-type="string">
         <text:p text:style-name="P2"/>
-        <text:p text:style-name="P4"><xsl:value-of select="../url_detail"/></text:p>
+        <text:p text:style-name="P4"><xsl:value-of select="../url"/></text:p>
         <text:p text:style-name="P2">
 		<xsl:variable select="lvevaluierung_code_id" name="capture_image"/>
           <draw:frame draw:style-name="fr1" draw:name="Bild2" text:anchor-type="as-char" svg:width="2.200cm" svg:height="2.200cm" draw:z-index="0">

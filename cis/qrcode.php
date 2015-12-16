@@ -35,6 +35,11 @@ if(!isset($_GET['lvevaluierung_id']))
 if(!is_numeric($_GET['lvevaluierung_id']))
 	die('Id ist ungueltig');
 
+$output='pdf';
+
+if(isset($_GET['output']) && ($output='odt' || $output='doc'))
+	$output=$_GET['output'];
+
 $lvevaluierung_id = $_GET['lvevaluierung_id'];
 
 $lvevaluierung = new lvevaluierung();
@@ -63,7 +68,7 @@ if(!$codes_obj->loadCodes($lvevaluierung_id))
 
 $doc = new dokument_export('LVEvalCode');
 
-$url = APP_ROOT;
+$url = APP_ROOT.'lve/';
 $url_detail = APP_ROOT.'addons/lvevaluierung/cis/index.php';
 
 $leiter_uid = $lv->getLVLeitung($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
@@ -117,7 +122,7 @@ foreach($codes_obj->result as $code)
 }
 
 $doc->addDataArray($data,'lvevaluierung');
-if(!$doc->create('pdf'))
+if(!$doc->create($output))
 	die($doc->errormsg);
 $doc->output();
 $doc->close();
