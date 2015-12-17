@@ -309,7 +309,8 @@ else
 		echo $p->t('lvevaluierung/restzeit').'<span id="counter">Counter</span>';
 
 		echo '	<div class="row">
-					<div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-lg-6 col-lg-offset-3">
+					<div class="col-xs-10 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+
                         <form action ="'.basename(__FILE__).'" method="POST" id="umfrage" name="umfrage" class="form-vertical">';
 
 		$frage = new lvevaluierung_frage();
@@ -348,9 +349,14 @@ else
                         	if($row_antwort->bezeichnung[$sprache]!='')
 							    $antwortinfo.= ' '.$db->convert_html_chars($row_antwort->wert).'='.$db->convert_html_chars($row_antwort->bezeichnung[$sprache]).';';
 					}
+                    echo '<span class="antwortinfo">';
+                    echo mb_substr($antwortinfo,0,-1);
+                    echo '</span>';
+                    echo '</label>';
+
+
                     echo '
-						</label>
-						<div class="btn-group" data-toggle="buttons">';
+            			<div class="btn-group" data-toggle="buttons">';
 
 					foreach($antwort->result as $row_antwort)
 					{
@@ -372,12 +378,8 @@ else
 					}
 
 					echo '</div>';
-                    echo '<span class="antwortinfo">';
-                    echo mb_substr($antwortinfo,0,-1);
-                    echo '</span>';
 
                     echo '
-
 					</div>';
 
                     echo '<hr>';

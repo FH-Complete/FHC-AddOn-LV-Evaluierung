@@ -16,6 +16,9 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
     <style:font-face style:name="Tahoma" svg:font-family="Tahoma" style:font-family-generic="system" style:font-pitch="variable"/>
   </office:font-face-decls>
   <office:automatic-styles>
+      <style:style style:name="CodeTabelleBREAK" style:family="table" style:master-page-name="">
+        <style:table-properties style:width="5.666cm" fo:break-before="page" style:page-number="auto" table:align="margins"  style:may-break-between-rows="false"/>
+      </style:style>
     <style:style style:name="CodeTabelle" style:family="table" style:master-page-name="">
       <style:table-properties style:width="5.666cm" style:page-number="auto" table:align="margins"  style:may-break-between-rows="false"/>
     </style:style>
@@ -131,7 +134,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
     </style:style>
   </office:automatic-styles>
   <office:body>
-    <office:text>
+    <office:text text:use-soft-page-breaks="true">
       <text:sequence-decls>
         <text:sequence-decl text:display-outline-level="0" text:name="Illustration"/>
         <text:sequence-decl text:display-outline-level="0" text:name="Table"/>
@@ -257,7 +260,6 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
     </table:table-cell>
   </table:table-row>
 </table:table>
-<text:p text:style-name="PBREAK"/>
       <text:section text:style-name="Sect1" text:name="Codes">
 		<xsl:apply-templates select="code"/>
       </text:section>
@@ -267,23 +269,51 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 
 </xsl:template>
 <xsl:template match="code">
-		<table:table table:name="CodeTabelle" table:style-name="CodeTabelle">
-          <table:table-column table:style-name="CodeTabelle.A"/>
-          <table:table-row>
-            <table:table-cell table:style-name="CodeTabelle.A1" office:value-type="string">
-        <text:p text:style-name="P2"/>
-        <text:p text:style-name="P4"><xsl:value-of select="../url"/></text:p>
-        <text:p text:style-name="P2">
-		<xsl:variable select="lvevaluierung_code_id" name="capture_image"/>
-          <draw:frame draw:style-name="fr1" draw:name="Bild2" text:anchor-type="as-char" svg:width="2.200cm" svg:height="2.200cm" draw:z-index="0">
-            <draw:image xlink:href="Pictures/{$capture_image}.png" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
-          </draw:frame>
-        </text:p>
-        <text:p text:style-name="P4">Code: <text:span text:style-name="T1"><xsl:value-of select="code"/></text:span></text:p>
-        <text:p text:style-name="P2" />
+    <!--
+    Der erste Eintrag bekommt einen Break damit es auf einer neuen Seite beginnt.
+    Ein <text:p mit Break Style ist hier nicht moeglich weil sonst eine zusätzliche Zeile eingefügt wird
+    -->
+    <xsl:choose>
+        <xsl:when test="position()=1">
+    		<table:table table:name="CodeTabelleBREAK" table:style-name="CodeTabelleBREAK">
+              <table:table-column table:style-name="CodeTabelle.A"/>
+              <table:table-row>
+                <table:table-cell table:style-name="CodeTabelle.A1" office:value-type="string">
+            <text:p text:style-name="P2"/>
+            <text:p text:style-name="P4"><xsl:value-of select="../url"/></text:p>
+            <text:p text:style-name="P2">
+    		<xsl:variable select="lvevaluierung_code_id" name="capture_image"/>
+              <draw:frame draw:style-name="fr1" draw:name="Bild2" text:anchor-type="as-char" svg:width="2.200cm" svg:height="2.200cm" draw:z-index="0">
+                <draw:image xlink:href="Pictures/{$capture_image}.png" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+              </draw:frame>
+            </text:p>
+            <text:p text:style-name="P4">Code: <text:span text:style-name="T1"><xsl:value-of select="code"/></text:span></text:p>
+            <text:p text:style-name="P2" />
 
-            </table:table-cell>
-          </table:table-row>
-        </table:table>
+                </table:table-cell>
+              </table:table-row>
+            </table:table>
+        </xsl:when>
+        <xsl:otherwise>
+            <table:table table:name="CodeTabelle" table:style-name="CodeTabelle">
+              <table:table-column table:style-name="CodeTabelle.A"/>
+              <table:table-row>
+                <table:table-cell table:style-name="CodeTabelle.A1" office:value-type="string">
+            <text:p text:style-name="P2"/>
+            <text:p text:style-name="P4"><xsl:value-of select="../url"/></text:p>
+            <text:p text:style-name="P2">
+            <xsl:variable select="lvevaluierung_code_id" name="capture_image"/>
+              <draw:frame draw:style-name="fr1" draw:name="Bild2" text:anchor-type="as-char" svg:width="2.200cm" svg:height="2.200cm" draw:z-index="0">
+                <draw:image xlink:href="Pictures/{$capture_image}.png" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
+              </draw:frame>
+            </text:p>
+            <text:p text:style-name="P4">Code: <text:span text:style-name="T1"><xsl:value-of select="code"/></text:span></text:p>
+            <text:p text:style-name="P2" />
+
+                </table:table-cell>
+              </table:table-row>
+            </table:table>
+        </xsl:otherwise>
+    </xsl:choose>
 </xsl:template>
 </xsl:stylesheet>
