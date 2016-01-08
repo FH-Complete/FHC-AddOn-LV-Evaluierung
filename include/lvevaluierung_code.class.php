@@ -248,7 +248,7 @@ class lvevaluierung_code extends basis_db
 		while(!$found)
 		{
 
-			$possibleChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			$possibleChars = "123456789abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
 		    $code = '';
 
 		    for($i = 0; $i < 11; $i++)

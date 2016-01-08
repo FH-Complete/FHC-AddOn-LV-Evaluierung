@@ -178,7 +178,7 @@ echo '
 	</tr>
 	<tr>
 		<td>'.$p->t('lvevaluierung/durchschnittszeit').'</td>
-		<td>'.(int)(($gesamtsekunden/$anzahl_codes_beendet)/60).':'.(($gesamtsekunden/$anzahl_codes_beendet)%60).'</td>
+		<td>'.(($anzahl_codes_beendet>0)?((int)(($gesamtsekunden/$anzahl_codes_beendet)/60).':'.(($gesamtsekunden/$anzahl_codes_beendet)%60)):'').'</td>
 	</tr>
 	</tbody>
 	</table>
