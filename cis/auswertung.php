@@ -68,7 +68,7 @@ if(!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studien
 	$rechte = new benutzerberechtigung();
 	$rechte->getBerechtigungen($uid);
 
-	if(!$rechte->isBerechtigt('admin'))
+	if(!$rechte->isBerechtigt('admin') && !$rechte->isBerechtigt('addon/lvevaluierung',null,'s'))
 	{
 		die($p->t('global/keineBerechtigung'));
 	}
