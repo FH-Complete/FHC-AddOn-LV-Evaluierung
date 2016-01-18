@@ -116,6 +116,11 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 <style:style style:name="P9" style:family="paragraph" style:parent-style-name="Footer">
   <style:text-properties officeooo:rsid="00058c69" officeooo:paragraph-rsid="00058c69"/>
 </style:style>
+    <style:style style:name="P10" style:family="paragraph" style:parent-style-name="Standard">
+      <style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
+      <style:text-properties fo:font-size="10pt" fo:language="de" fo:country="AT" style:font-size-asian="10pt" style:font-name-complex="DejaVu" style:font-size-complex="10pt"/>
+    </style:style>
+
     <style:style style:name="T1" style:family="text">
       <style:text-properties officeooo:rsid="0004182d"/>
     </style:style>
@@ -287,7 +292,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
                 <draw:image xlink:href="Pictures/{$capture_image}.png" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
               </draw:frame>
             </text:p>
-            <text:p text:style-name="P4">Code: <text:span text:style-name="T1"><xsl:value-of select="code"/></text:span></text:p>
+            <text:p text:style-name="P10">Code: <text:span text:style-name="T1"><xsl:value-of select="code"/></text:span></text:p>
             <text:p text:style-name="P2" />
 
                 </table:table-cell>
@@ -307,7 +312,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
                 <draw:image xlink:href="Pictures/{$capture_image}.png" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
               </draw:frame>
             </text:p>
-            <text:p text:style-name="P4">Code: <text:span text:style-name="T1"><xsl:value-of select="code"/></text:span></text:p>
+            <text:p text:style-name="P10">Code: <text:span text:style-name="T1"><xsl:value-of select="code"/></text:span></text:p>
             <text:p text:style-name="P2" />
 
                 </table:table-cell>
