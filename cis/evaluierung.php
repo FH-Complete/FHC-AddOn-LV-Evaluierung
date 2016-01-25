@@ -306,7 +306,7 @@ else
 			</table>
 		</div>';
 
-		echo $p->t('lvevaluierung/restzeit').'<span id="counter">Counter</span>';
+		echo $p->t('lvevaluierung/restzeit').' <span id="counter">00:00</span>';
 
 		echo '	<div class="row">
 					<div class="col-xs-10 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">

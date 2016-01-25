@@ -53,9 +53,13 @@ if(!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studien
 	$rechte = new benutzerberechtigung();
 	$rechte->getBerechtigungen($uid);
 
-	if(!$rechte->isBerechtigt('admin'))
+	$lva = new lehrveranstaltung();
+	$lva->load($lvevaluierung->lehrveranstaltung_id);
+	$oes = $lva->getAllOe();
+	$oes[]=$lva->oe_kurzbz; // Institut
+	if(!$rechte->isBerechtigt('admin') && !$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
 	{
-		die($p->t('global/keineBerechtigung'));
+		die($p->t('global/keineBerechtigungFuerDieseSeite'));
 	}
 }
 
@@ -87,6 +91,8 @@ $teilnehmer = $lv->getStudentsOfLv($lvevaluierung->lehrveranstaltung_id, $lveval
 $anzahl_studierende=count($teilnehmer);
 $lehrform = $lv->lehrform_kurzbz;
 
+$stg->getAllTypes();
+
 $data = array(
 	'url'=>$url,
 	'url_detail'=>$url_detail,
@@ -94,6 +100,7 @@ $data = array(
 	'lehrveranstaltung_id'=>$lv->lehrveranstaltung_id,
 	'lvleitung'=>$lvleitung,
 	'studiengang'=>$studiengang_bezeichnung,
+	'typ'=>$stg->studiengang_typ_arr[$stg->typ],
 	'ects'=>$lv->ects,
 	'sprache'=>$lv->sprache,
 	'studiensemester'=>$lvevaluierung->studiensemester_kurzbz,

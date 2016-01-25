@@ -68,7 +68,11 @@ if(!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studien
 	$rechte = new benutzerberechtigung();
 	$rechte->getBerechtigungen($uid);
 
-	if(!$rechte->isBerechtigt('admin') && !$rechte->isBerechtigt('addon/lvevaluierung',null,'s'))
+	$lva = new lehrveranstaltung();
+	$lva->load($lvevaluierung->lehrveranstaltung_id);
+	$oes = $lva->getAllOe();
+	$oes[]=$lva->oe_kurzbz; // Institut
+	if(!$rechte->isBerechtigt('admin') && !$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
 	{
 		die($p->t('global/keineBerechtigung'));
 	}
@@ -121,6 +125,8 @@ foreach($codes->result as $code)
 		$gesamtsekunden += $dauerinsekunden;
 	}
 }
+if($lvevaluierung->codes_ausgegeben!='')
+	$anzahl_codes_gesamt = $lvevaluierung->codes_ausgegeben;
 
 if($anzahl_codes_gesamt>0)
 	$prozent_abgeschlossen = (100/$anzahl_codes_gesamt*$anzahl_codes_beendet);
@@ -170,7 +176,7 @@ echo '
 	</tr>
 	<tr>
 		<td>'.$p->t('lvevaluierung/anzahlstudierende').'</td>
-		<td>'.$db->convert_html_chars($anzahl_studierende).'</td>
+		<td>'.$db->convert_html_chars($anzahl_studierende).' ( '.$p->t('lvevaluierung/anzahlausgegeben').' '.$lvevaluierung->codes_ausgegeben.' )</td>
 	</tr>
 	<tr>
 		<td>'.$p->t('lvevaluierung/abgeschlossen').'</td>
@@ -308,7 +314,6 @@ foreach($lvevaluierung_antwort->result as $lvevaluierung_frage_id=>$antworten)
 						<td>'.number_format($durchschnitt,2).'</td>
 					</tr>
 					</table>';
-			echo '</div>';
 			break;
 
 		default:

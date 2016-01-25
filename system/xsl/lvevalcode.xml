@@ -170,7 +170,7 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <text:p text:style-name="P6">Studiengang</text:p>
     </table:table-cell>
     <table:table-cell table:style-name="TabelleLVInfo.B2" office:value-type="string">
-      <text:p text:style-name="P6"><xsl:value-of select="studiengang" /></text:p>
+      <text:p text:style-name="P6"><xsl:value-of select="typ" /><xsl:text> </xsl:text><xsl:value-of select="studiengang" /></text:p>
     </table:table-cell>
   </table:table-row>
   <table:table-row>

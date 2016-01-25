@@ -30,6 +30,7 @@ class lvevaluierung extends basis_db
 	public $dauer='00:10:00';
 	public $studiensemester_kurzbz;
 	public $lehrveranstaltung_id;
+	public $codes_ausgegeben;
 
     /**
 	 * Konstruktor
@@ -69,6 +70,7 @@ class lvevaluierung extends basis_db
 				$this->dauer = $row->dauer;
 				$this->lehrveranstaltung_id = $row->lehrveranstaltung_id;
 				$this->studiensemester_kurzbz = $row->studiensemester_kurzbz;
+				$this->codes_ausgegeben = $row->codes_ausgegeben;
 				$this->new=false;
 
 				return true;
@@ -86,20 +88,55 @@ class lvevaluierung extends basis_db
 		}
 	}
 
+	public function validate()
+	{
+		$dauer = explode(':',$this->dauer);
+
+		if(isset($dauer[0]) && $dauer[0]>23)
+		{
+			$this->errormsg = 'Stunde darf nicht groesser als 23 sein';
+			return false;
+		}
+		if(isset($dauer[1]) && $dauer[1]>59)
+		{
+			$this->errormsg = 'Minute darf nicht groesser als 59 sein';
+			return false;
+		}
+		if(isset($dauer[2]) && $dauer[2]>59)
+		{
+			$this->errormsg = 'Sekunde darf nicht groesser als 59 sein';
+			return false;
+		}
+
+		if($this->codes_ausgegeben!='')
+		{
+			if(!is_numeric($this->codes_ausgegeben))
+			{
+				$this->errormsg = 'Die Anzahl ausgegebener Codes muss eine gültige Zahl sein';
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * Speichert die Evaluierung
 	 * @return boolean true wenn ok, false im Fehlerfall
 	 */
 	public function save()
 	{
+		if(!$this->validate())
+			return false;
+
 		if($this->new)
 		{
-			$qry = 'BEGIN;INSERT INTO addon.tbl_lvevaluierung(lehrveranstaltung_id,studiensemester_kurzbz, startzeit, endezeit, dauer) VALUES('.
+			$qry = 'BEGIN;INSERT INTO addon.tbl_lvevaluierung(lehrveranstaltung_id,studiensemester_kurzbz, startzeit, endezeit, dauer, codes_ausgegeben) VALUES('.
 					$this->db_add_param($this->lehrveranstaltung_id, FHC_INTEGER).','.
 					$this->db_add_param($this->studiensemester_kurzbz).','.
 					$this->db_add_param($this->startzeit).','.
 					$this->db_add_param($this->endezeit).','.
-					$this->db_add_param($this->dauer).');';
+					$this->db_add_param($this->dauer).','.
+					$this->db_add_param($this->codes_ausgegeben, FHC_INTEGER).');';
 		}
 		else
 		{
@@ -108,7 +145,8 @@ class lvevaluierung extends basis_db
 					' studiensemester_kurzbz='.$this->db_add_param($this->studiensemester_kurzbz).','.
 					' startzeit='.$this->db_add_param($this->startzeit).','.
 					' endezeit='.$this->db_add_param($this->endezeit).','.
-					' dauer='.$this->db_add_param($this->dauer).' '.
+					' dauer='.$this->db_add_param($this->dauer).', '.
+					' codes_ausgegeben='.$this->db_add_param($this->codes_ausgegeben, FHC_INTEGER).' '.
 					' WHERE lvevaluierung_id='.$this->db_add_param($this->lvevaluierung_id, FHC_INTEGER);
 		}
 
@@ -200,6 +238,7 @@ class lvevaluierung extends basis_db
 				$this->dauer = $row->dauer;
 				$this->lehrveranstaltung_id = $row->lehrveranstaltung_id;
 				$this->studiensemester_kurzbz = $row->studiensemester_kurzbz;
+				$this->codes_ausgegeben = $row->codes_ausgegeben;
 				$this->new=false;
 
 				return true;

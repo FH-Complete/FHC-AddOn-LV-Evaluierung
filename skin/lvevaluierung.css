@@ -25,7 +25,7 @@ span.antwortinfo
 
 div.textantwort
 {
-	width: 100%;
+	width: 90%;
 	background-color: #F7F7F9;
 	border: 1px solid #E1E1E8;
 	margin: 10px;
@@ -45,4 +45,26 @@ div.barchart_nichtausgefuellt
 {
 	background-color:#cccccc;
 	text-align: right;
+}
+
+div.lvepanel
+{
+	border: 1px solid #CCC;
+	margin: 10px;
+	margin-top: 20px;
+	border-radius: 4px;
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+div.lvepanel-head
+{
+	background-color: #DCE4EF;
+	font-weight: bold;
+	padding: 5px;
+}
+
+div.lvepanel-body
+{
+	padding: 5px;
+
 }

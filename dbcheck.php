@@ -240,17 +240,71 @@ if($result = $db->db_query("SELECT * FROM public.tbl_vorlage WHERE vorlage_kurzb
 	}
 }
 
+if(!@$db->db_query("SELECT codes_ausgegeben FROM addon.tbl_lvevaluierung LIMIT 1"))
+{
+	$qry = "ALTER TABLE addon.tbl_lvevaluierung ADD COLUMN codes_ausgegeben smallint;";
+
+	if(!$db->db_query($qry))
+		echo '<strong>tbl_lvevaluierung.codes_ausgegeben: '.$db->db_last_error().'</strong><br>';
+	else
+		echo 'Neue Spalte codes_ausgegeben in tbl_lvevaluierung hinzugefuegt<br>';
+}
+
+if(!@$db->db_query("SELECT 1 FROM addon.tbl_lvevaluierung_selbstevaluierung LIMIT 1"))
+{
+	$qry = "CREATE TABLE addon.tbl_lvevaluierung_selbstevaluierung
+        (
+            lvevaluierung_selbstevaluierung_id integer,
+            lvevaluierung_id integer,
+            uid varchar(32),
+            freigegeben boolean NOT NULL DEFAULT false,
+            gruppe text,
+            persoenlich text,
+            entwicklung text,
+            weiterbildung text,
+            insertamum timestamp,
+            insertvon varchar(32),
+            updateamum timestamp,
+            updatevon varchar(32)
+        );
+
+        ALTER TABLE addon.tbl_lvevaluierung_selbstevaluierung ADD CONSTRAINT pk_addon_lvevaluierung_selbstevaluierung_lvevaluierung_selbstevaluierung_id PRIMARY KEY (lvevaluierung_selbstevaluierung_id);
+
+    	CREATE SEQUENCE addon.tbl_lvevaluierung_selbstevaluierung_lvevaluierung_selbstevaluierung_id_seq
+    	INCREMENT BY 1
+    	NO MAXVALUE
+    	NO MINVALUE
+    	CACHE 1;
+
+        ALTER TABLE addon.tbl_lvevaluierung_selbstevaluierung ALTER COLUMN lvevaluierung_selbstevaluierung_id SET DEFAULT nextval('addon.tbl_lvevaluierung_selbstevaluierung_lvevaluierung_selbstevaluierung_id_seq');
+        ALTER TABLE addon.tbl_lvevaluierung_selbstevaluierung ADD CONSTRAINT fk_addon_lvevaluierung_selbstevaluierung_lvevaluierung_id FOREIGN KEY (lvevaluierung_id) REFERENCES addon.tbl_lvevaluierung(lvevaluierung_id) ON DELETE RESTRICT ON UPDATE CASCADE;
+        ALTER TABLE addon.tbl_lvevaluierung_selbstevaluierung ADD CONSTRAINT fk_addon_lvevaluierung_selbstevaluierung_uid FOREIGN KEY (uid) REFERENCES public.tbl_benutzer(uid) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+        GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_lvevaluierung_selbstevaluierung TO web;
+        GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_lvevaluierung_selbstevaluierung TO vilesci;
+        GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_selbstevaluierung_lvevaluierung_selbstevaluierung_id_seq TO web;
+        GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_selbstevaluierung_lvevaluierung_selbstevaluierung_id_seq TO vilesci;
+
+        ";
+
+	if(!$db->db_query($qry))
+		echo '<strong>tbl_lvevaluierung_selbstevaluierung: '.$db->db_last_error().'</strong><br>';
+	else
+		echo 'Neue Tabelle tbl_lvevaluierung_selbstevaluierung hinzugefuegt<br>';
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
 
 // Liste der verwendeten Tabellen / Spalten des Addons
 $tabellen=array(
-	"addon.tbl_lvevaluierung"  => array("lvevaluierung_id","lehrveranstaltung_id","studiensemester_kurzbz","startzeit","endezeit","dauer"),
+	"addon.tbl_lvevaluierung"  => array("lvevaluierung_id","lehrveranstaltung_id","studiensemester_kurzbz","startzeit","endezeit","dauer","codes_ausgegeben"),
 	"addon.tbl_lvevaluierung_code"  => array("lvevaluierung_code_id","code","startzeit","endezeit","lvevaluierung_id"),
 	"addon.tbl_lvevaluierung_frage"  => array("lvevaluierung_frage_id","typ","bezeichnung","aktiv","sort"),
 	"addon.tbl_lvevaluierung_frage_antwort"  => array("lvevaluierung_frage_antwort_id","lvevaluierung_frage_id","bezeichnung","sort","wert"),
 	"addon.tbl_lvevaluierung_antwort"  => array("lvevaluierung_antwort_id","lvevaluierung_code_id","lvevaluierung_frage_id","lvevaluierung_frage_antwort_id","antwort"),
+    "addon.tbl_lvevaluierung_selbstevaluierung" => array("lvevaluierung_selbstevaluierung_id","lvevaluierung_id","uid","freigegeben","persoenlich","gruppe","entwicklung","weiterbildung"),
 );
 
 

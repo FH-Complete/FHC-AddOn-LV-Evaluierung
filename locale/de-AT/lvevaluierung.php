@@ -28,5 +28,32 @@ $this->phrasen['lvevaluierung/CodeListeErstellen']='Code Liste erstellen';
 $this->phrasen['lvevaluierung/Auswertung']='Auswertung anzeigen';
 $this->phrasen['lvevaluierung/abgeschlossen']='Abgeschlossen';
 $this->phrasen['lvevaluierung/durchschnittszeit']='Durchschnittliche Dauer';
+$this->phrasen['lvevaluierung/anzahlausgegeben']='ausgegebene Codes: ';
+$this->phrasen['lvevaluierung/endeGroesserStart']='Das Ende der Evaluierung darf nicht vor dem Start liegen';
 
+$this->phrasen['lvevaluierung/evaluierunganlegen']='1. Evaluierungszeitraum festlegen';
+$this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Bitte legen Sie hier den Zeitraum fest in dem die LV-Evaluierung durchgeführt wird. Der Zugriff auf die Evaluierung ist nur in diesem Zeitfenster möglich. Die Dauer legt fest, wie lange Studierende Zeit haben die Evaluierung auszufüllen.';
+
+$this->phrasen['lvevaluierung/codesErstellen']='2. Liste der Zugangscodes erstellen';
+$this->phrasen['lvevaluierung/codesErstellenInfotext']='Hier können Sie die Liste mit den Zugangscodes erstellen.';
+
+$this->phrasen['lvevaluierung/evaluierungDruchfuehren']='3. Evaluierung durchführen';
+$this->phrasen['lvevaluierung/evaluierungDruchfuehrenInfotext']='Führen Sie die LV-Evaluierung durch.';
+
+$this->phrasen['lvevaluierung/codesAusgegeben']='4. Ausgegebene Zugangscodes';
+$this->phrasen['lvevaluierung/codesAusgegebenInfotext']='Bitte tragen Sie die Anzahl der Codes ein die tatsächlich bei der Evaluierung ausgegeben wurden.';
+$this->phrasen['lvevaluierung/codesAusgegebenAnzahl']='Anzahl der ausgegebenen Codes';
+
+$this->phrasen['lvevaluierung/auswertungAnzeigen']='5. Auswertung';
+$this->phrasen['lvevaluierung/auswertungAnzeigenInfotext']='Klicken Sie hier um die Ergebnisse der LV-Evaluierung anzuzeigen';
+
+$this->phrasen['lvevaluierung/selbstevaluierung']='6. Selbstevaluierung';
+$this->phrasen['lvevaluierung/selbstevaluierungInfotext']='Füllen Sie die folgenden Felder zur Selbstevaluierung der Lehrveranstaltung aus. Beim Absenden der Daten werden diese an den Studiengangsleiter und Institutsleiter übermittelt.';
+
+$this->phrasen['lvevaluierung/speichernundabschicken']='Speichern und Abschicken';
+
+$this->phrasen['lvevaluierung/selbstevaluierungGruppe']='1. Wie schätzen die Gruppe der Studierenden ein (z.B. hinsichtlich Vorwissen, Lernbereitschaft, Engagement, Beteiligung…)?';
+$this->phrasen['lvevaluierung/selbstevaluierungPersoenlich']='2. Persönliche Einschätzung der LV vor dem Hintergrund der Evaluierungsergebnisse:';
+$this->phrasen['lvevaluierung/selbstevaluierungGeplanteEntwicklung']='3. Geplante Maßnahmen zur Weiterentwicklung der LV:';
+$this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. Ergibt sich für Sie aus den geplanten Maßnahmen zur Weiterentwicklung der LV ein Bedarf an hochschuldidaktischer Weiterbildung?';
 ?>
