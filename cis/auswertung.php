@@ -72,9 +72,9 @@ if(!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studien
 	$lva->load($lvevaluierung->lehrveranstaltung_id);
 	$oes = $lva->getAllOe();
 	$oes[]=$lva->oe_kurzbz; // Institut
-	if(!$rechte->isBerechtigt('admin') && !$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
+	if(!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
 	{
-		die($p->t('global/keineBerechtigung'));
+		die($p->t('global/keineBerechtigungFuerDieseSeite'));
 	}
 }
 
@@ -148,7 +148,11 @@ echo '
 	</tr>
 	<tr>
 		<td>'.$p->t('global/studiengang').'</td>
-		<td>'.$db->convert_html_chars($studiengang_bezeichnung).'</td>
+		<td>'.$db->convert_html_chars($stg->studiengang_typ_arr[$stg->typ]).' '.$db->convert_html_chars($studiengang_bezeichnung).'</td>
+	</tr>
+	<tr>
+		<td>'.$p->t('lvevaluierung/ausbildungssemester').'</td>
+		<td>'.$db->convert_html_chars($lv->semester).'</td>
 	</tr>
 	<tr>
 		<td>'.$p->t('lvevaluierung/organisationsform').'</td>
@@ -169,10 +173,6 @@ echo '
 	<tr>
 		<td>'.$p->t('global/studiensemester').'</td>
 		<td>'.$db->convert_html_chars($studiensemester).'</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('lvevaluierung/ausbildungssemester').'</td>
-		<td>'.$db->convert_html_chars($lv->semester).'</td>
 	</tr>
 	<tr>
 		<td>'.$p->t('lvevaluierung/anzahlstudierende').'</td>

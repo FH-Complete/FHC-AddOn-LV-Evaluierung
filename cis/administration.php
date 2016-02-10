@@ -103,7 +103,7 @@ if(!$lem->existsLV($lehrveranstaltung_id, $studiensemester_kurzbz,  $uid))
 	$lva->load($lehrveranstaltung_id);
 	$oes = $lva->getAllOe();
 	$oes[]=$lva->oe_kurzbz; // Institut
-	if(!$rechte->isBerechtigt('admin') && !$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
+	if(!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
 	{
 		die($p->t('global/keineBerechtigungFuerDieseSeite'));
 	}
@@ -333,21 +333,29 @@ echo '
 
 // Weitere Informationen werden erst angezeigt wenn eine Evaluierung angelegt wurde
 if($evaluierung->lvevaluierung_id!='')
-{
+	$disabled=false;
+else
+	$disabled=true;
+
 	// Erstellen der Codes
 	echo '
-	<div class="lvepanel">
+	<div class="lvepanel '.($disabled?'disabled':'').'">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/codesErstellen').'</div>
 		<div class="lvepanel-body">'.$p->t('lvevaluierung/codesErstellenInfotext').'
 			<br>
-			<br><a href="qrcode.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'">'.$p->t('lvevaluierung/CodeListeErstellen').'</a>
+			<br>';
+			if(!$disabled)
+				echo '<a href="qrcode.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'">'.$p->t('lvevaluierung/CodeListeErstellen').'</a>';
+			else
+				echo $p->t('lvevaluierung/CodeListeErstellen');
+	echo '
 			<br><br>
 		</div>
 	</div>';
 
 	// Durchfuehrung der Evaluierung
 	echo '
-	<div class="lvepanel">
+	<div class="lvepanel '.($disabled?'disabled':'').'">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/evaluierungDruchfuehren').'</div>
 		<div class="lvepanel-body">'.$p->t('lvevaluierung/evaluierungDruchfuehrenInfotext').'
 		</div>
@@ -358,15 +366,15 @@ if($evaluierung->lvevaluierung_id!='')
 
 	// Ausgegebene Codes erfassen
 	echo '
-	<div class="lvepanel" id="divcodes">
+	<div class="lvepanel '.($disabled?'disabled':'').'" id="divcodes">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/codesAusgegeben').'</div>
 		<div class="lvepanel-body">
 			'.$p->t('lvevaluierung/codesAusgegebenInfotext').'
 			<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
 			<input type="hidden" name="lvevaluierung_id" value="'.$db->convert_html_chars($evaluierung->lvevaluierung_id).'" />
 			'.$p->t('lvevaluierung/codesAusgegebenAnzahl').'
-			<input type="text" name="codes_ausgegeben" value="'.$db->convert_html_chars(($evaluierung->codes_ausgegeben!=''?$evaluierung->codes_ausgegeben:$anzahl_studierende)).'" size="9">
-			<input type="submit" name="saveAusgegeben" value="'.$p->t('global/speichern').'" />
+			<input type="text" '.($disabled?'disabled':'').' name="codes_ausgegeben" value="'.$db->convert_html_chars(($evaluierung->codes_ausgegeben!=''?$evaluierung->codes_ausgegeben:$anzahl_studierende)).'" size="9">
+			<input type="submit" name="saveAusgegeben" '.($disabled?'disabled':'').' value="'.$p->t('global/speichern').'" />
 			'.$evaluierung_ausgegeben_msg.'
 			</form>
 		</div>
@@ -375,11 +383,16 @@ if($evaluierung->lvevaluierung_id!='')
 
 	// Auswertung
 	echo '
-	<div class="lvepanel">
+	<div class="lvepanel '.($disabled?'disabled':'').'">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/auswertungAnzeigen').'</div>
 		<div class="lvepanel-body">'.$p->t('lvevaluierung/auswertungAnzeigenInfotext').'
 			<br>
-			<br><a href="auswertung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'">'.$p->t('lvevaluierung/Auswertung').'</a>
+			<br>';
+			if(!$disabled)
+				echo '<a href="auswertung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'">'.$p->t('lvevaluierung/Auswertung').'</a>';
+			else
+				$p->t('lvevaluierung/Auswertung');
+	echo '
 			<br><br>
 		</div>
 	</div>';
@@ -393,8 +406,11 @@ if($evaluierung->lvevaluierung_id!='')
 	else
 		$locked='';
 
+	if($disabled)
+		$locked = 'disabled="disabled"';
+
 	echo '
-	<div class="lvepanel" id="divselbsteval">
+	<div class="lvepanel '.($disabled?'disabled':'').'" id="divselbsteval">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/selbstevaluierung').'</div>
 		<div class="lvepanel-body">'.$p->t('lvevaluierung/selbstevaluierungInfotext').'
 		<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
@@ -445,7 +461,7 @@ if($evaluierung->lvevaluierung_id!='')
 		</form>
 		</div>
 	</div>';
-}
+//}
 echo $jsjumpinfo;
 echo '</body></html>';
 
@@ -480,12 +496,20 @@ function LVEvaluierungGetInfoBlock($lv, $stg, $studiensemester_kurzbz)
 			<table class="tablesorter">
 			<tbody>
 			<tr>
+				<td>'.$p->t('lvevaluierung/lvbezeichnung').'</td>
+				<td>'.$db->convert_html_chars($lv->bezeichnung.' ('.$lv->lehrveranstaltung_id.')').'</td>
+			</tr>
+			<tr>
 				<td>'.$p->t('lvevaluierung/lvleitung').'</td>
 				<td>'.$db->convert_html_chars($lvleitung).'</td>
 			</tr>
 			<tr>
 				<td>'.$p->t('global/studiengang').'</td>
 				<td>'.$db->convert_html_chars($stg->studiengang_typ_arr[$stg->typ].' '.$studiengang_bezeichnung).'</td>
+			</tr>
+			<tr>
+				<td>'.$p->t('lvevaluierung/ausbildungssemester').'</td>
+				<td>'.$db->convert_html_chars($lv->semester).'</td>
 			</tr>
 			<tr>
 				<td>'.$p->t('lvevaluierung/organisationsform').'</td>
@@ -506,10 +530,6 @@ function LVEvaluierungGetInfoBlock($lv, $stg, $studiensemester_kurzbz)
 			<tr>
 				<td>'.$p->t('global/studiensemester').'</td>
 				<td>'.$db->convert_html_chars($studiensemester).'</td>
-			</tr>
-			<tr>
-				<td>'.$p->t('lvevaluierung/ausbildungssemester').'</td>
-				<td>'.$db->convert_html_chars($lv->semester).'</td>
 			</tr>
 			<tr>
 				<td>'.$p->t('lvevaluierung/anzahlstudierende').'</td>

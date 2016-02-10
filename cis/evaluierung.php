@@ -24,6 +24,7 @@ require_once('../../../include/functions.inc.php');
 require_once('../../../include/datum.class.php');
 require_once('../../../include/lehrveranstaltung.class.php');
 require_once('../../../include/benutzer.class.php');
+require_once('../../../include/lehreinheitmitarbeiter.class.php');
 require_once('../include/lvevaluierung_code.class.php');
 require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_frage.class.php');
@@ -247,7 +248,15 @@ else
 		$benutzer = new benutzer();
 		$benutzer->load($leiter_uid);
 
-		$lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
+        $lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
+
+        $lem = new lehreinheitmitarbeiter();
+        $lem->getMitarbeiterLV($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
+
+        $lektoren='';
+        foreach($lem->result as $row_lektoren)
+            $lektoren .= $row_lektoren->titelpre.' '.$row_lektoren->vorname.' '.$row_lektoren->nachname.' '.$row_lektoren->titelpost.', ';
+		$lektoren = mb_substr($lektoren, 0, -2);
 
 		$stg = new studiengang();
 		$stg->load($lv->studiengang_kz);
@@ -268,11 +277,11 @@ else
 			</tr>
 			<tr>
 				<td>'.$p->t('lvevaluierung/lvleitung').'</td>
-				<td>'.$db->convert_html_chars($lvleitung).'</td>
+				<td>'.$db->convert_html_chars($lektoren).'</td>
 			</tr>
 			<tr>
 				<td>'.$p->t('global/studiengang').'</td>
-				<td>'.$db->convert_html_chars($studiengang_bezeichnung).'</td>
+				<td>'.$db->convert_html_chars($stg->studiengang_typ_arr[$stg->typ]).' '.$db->convert_html_chars($studiengang_bezeichnung).'</td>
 			</tr>
 			<tr>
 				<td>'.$p->t('lvevaluierung/organisationsform').'</td>
