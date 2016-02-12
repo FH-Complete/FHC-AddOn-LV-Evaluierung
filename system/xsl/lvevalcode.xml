@@ -236,12 +236,12 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
   <table:table-row>
     <table:table-cell table:style-name="TabelleUebernahme.A1" office:value-type="string">
 
-    <text:p text:style-name="P6">Dieses Formular sowie allfällige, aufgrund der Abwesenheit von Studierenden nicht benötigte Zugangscodes werden von dem bzw. der Lehrenden im Studiengangssekretariat abgegeben.</text:p>
+    <text:p text:style-name="P6">Dieses Formular sowie allfällige, aufgrund der Abwesenheit von Studierenden nicht benötigte, Zugangscodes werden von dem bzw. der Lehrenden im Studiengangssekretariat abgegeben.</text:p>
     <text:p text:style-name="P6"/>
     <text:p text:style-name="P6">Mit der Unterschrift wird bestätigt, dass alle Seiten vollständig vorhanden sind und die Nummer der LV-Evaluierung in der Kopfzeile auf allen Seiten gleich ist.</text:p>
     <text:p text:style-name="P6">Weiters wird bestätigt, dass die unten angegebene Zahl von Zugangscodes zur LV-Evaluierung ordnungsgemäß an die Studierenden übergeben bzw. von diesen übernommen wurde.</text:p>
     <text:p text:style-name="P6"/>
-    <text:p text:style-name="P6">Anzahl der ausgehändigten Zugangscodes (bitte hier angeben):_____</text:p>
+    <text:p text:style-name="P6">Anzahl der ausgehändigten Zugangscodes (bitte hier angeben):_______</text:p>
     <text:p text:style-name="P6"/>
     <text:p text:style-name="P6"/>
     <text:p text:style-name="P6"/>

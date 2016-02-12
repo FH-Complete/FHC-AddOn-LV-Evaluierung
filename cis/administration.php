@@ -76,7 +76,20 @@ echo '<!DOCTYPE html>
 					});
 
 		});
-
+		function setBisdatum(datum)
+		{
+			if(document.getElementById("bis_datum").value=="")
+				document.getElementById("bis_datum").value=datum;
+		}
+		function showSpinner()
+		{
+			document.getElementById("spinner").style.display="inline";
+			window.setTimeout("ausblenden()", 5000); 
+		}
+		function ausblenden()
+		{
+			$("#spinner").hide();	
+		}
 		</script>
 	</head>
 <body>
@@ -115,48 +128,57 @@ if(isset($_POST['saveEvaluierung']))
 	$lvevaluierung_id = $_POST['lvevaluierung_id'];
 	$von_datum = $_POST['von_datum'];
 	$bis_datum = $_POST['bis_datum'];
-	$von_uhrzeit = $_POST['von_uhrzeit'];
-	$bis_uhrzeit = $_POST['bis_uhrzeit'];
-	$startzeit = $datum_obj->formatDatum($von_datum,'Y-m-d').' '.$von_uhrzeit;
-	$endezeit = $datum_obj->formatDatum($bis_datum,'Y-m-d').' '.$bis_uhrzeit;
-	$dauer = $_POST['dauer'];
-
-	$dtstart=new DateTime($startzeit);
-	$dtende = new DateTime($endezeit);
-
-	if($dtende<$dtstart)
+	
+	//Datum auf Gueltigkeit pruefen
+	if (($von_datum=='' || $bis_datum=='') || !$datum_obj->formatDatum($von_datum,'Y-m-d') || !$datum_obj->formatDatum($bis_datum,'Y-m-d'))
 	{
-		$evaluierung_zeitraum_msg= '<span class="error">'.$p->t('lvevaluierung/endeGroesserStart').'</span>';
+			$evaluierung_zeitraum_msg= '<span class="error">'.$p->t('lvevaluierung/bitteGueltigesDatumEingeben').'</span>';
 	}
-	else
+	else 
 	{
-
-		$evaluierung = new lvevaluierung();
-
-		if($lvevaluierung_id!='')
+		$von_uhrzeit = $_POST['von_uhrzeit'];
+		$bis_uhrzeit = $_POST['bis_uhrzeit'];
+		$startzeit = ($von_datum!=''?$datum_obj->formatDatum($von_datum,'Y-m-d').' '.$von_uhrzeit:'');
+		$endezeit = ($bis_datum!=''?$datum_obj->formatDatum($bis_datum,'Y-m-d').' '.$bis_uhrzeit:'');
+		$dauer = $_POST['dauer'];
+	
+		$dtstart=new DateTime($startzeit);
+		$dtende = new DateTime($endezeit);
+	
+		if($dtende<$dtstart)
 		{
-			if(!$evaluierung->load($lvevaluierung_id))
-				die($p->t('global/fehlerBeimLadenDesDatensatzes'));
-		}
-
-		$evaluierung->startzeit = $startzeit;
-		$evaluierung->endezeit = $endezeit;
-		$evaluierung->dauer = $dauer;
-		$evaluierung->lehrveranstaltung_id = $lehrveranstaltung_id;
-		$evaluierung->studiensemester_kurzbz = $studiensemester_kurzbz;
-
-		if($evaluierung->save())
-		{
-			// Zugangscodes generieren
-			$codes = new lvevaluierung_code();
-
-			if(!$codes->generateCodes($evaluierung->lvevaluierung_id))
-				$evaluierung_zeitraum_msg= '<span class="error">Failed: '.$codes->errormsg.'</span>';
-			else
-				$evaluierung_zeitraum_msg= '<span class="ok">'.$p->t('global/datenWurdenGespeichert').'</span>';
+			$evaluierung_zeitraum_msg= '<span class="error">'.$p->t('lvevaluierung/endeGroesserStart').'</span>';
 		}
 		else
-			$evaluierung_zeitraum_msg= '<span class="error">'.$p->t('global/fehlerBeimSpeichernDerDaten').':'.$evaluierung->errormsg.'</span>';
+		{
+	
+			$evaluierung = new lvevaluierung();
+	
+			if($lvevaluierung_id!='')
+			{
+				if(!$evaluierung->load($lvevaluierung_id))
+					die($p->t('global/fehlerBeimLadenDesDatensatzes'));
+			}
+	
+			$evaluierung->startzeit = $startzeit;
+			$evaluierung->endezeit = $endezeit;
+			$evaluierung->dauer = $dauer;
+			$evaluierung->lehrveranstaltung_id = $lehrveranstaltung_id;
+			$evaluierung->studiensemester_kurzbz = $studiensemester_kurzbz;
+	
+			if($evaluierung->save())
+			{
+				// Zugangscodes generieren
+				$codes = new lvevaluierung_code();
+	
+				if(!$codes->generateCodes($evaluierung->lvevaluierung_id))
+					$evaluierung_zeitraum_msg= '<span class="error">Failed: '.$codes->errormsg.'</span>';
+				else
+					$evaluierung_zeitraum_msg= '<span class="ok">'.$p->t('global/datenWurdenGespeichert').'</span>';
+			}
+			else
+				$evaluierung_zeitraum_msg= '<span class="error">'.$p->t('global/fehlerBeimSpeichernDerDaten').':'.$evaluierung->errormsg.'</span>';
+		}
 	}
 }
 
@@ -165,15 +187,25 @@ if(isset($_POST['saveAusgegeben']))
 {
 	$lvevaluierung_id = $_POST['lvevaluierung_id'];
 	$codes_ausgegeben = $_POST['codes_ausgegeben'];
+	$lv = new lehrveranstaltung();
+	$lv->load($lehrveranstaltung_id);
 
 	$evaluierung = new lvevaluierung();
 	$evaluierung->load($lvevaluierung_id);
 	$evaluierung->codes_ausgegeben = $codes_ausgegeben;
-	if(!$evaluierung->save())
-		$evaluierung_ausgegeben_msg= '<span class="error">'.$evaluierung->errormsg.'</span>';
-	else
-		$evaluierung_ausgegeben_msg='<span class="ok">'.$p->t('global/datenWurdenGespeichert').'</span>';
-
+	
+	$teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
+	$anzahl_studierende=count($teilnehmer);
+	
+	if($codes_ausgegeben>$anzahl_studierende)
+		$evaluierung_ausgegeben_msg= '<span class="error">'.$p->t('lvevaluierung/mehrCodesAusgegebenAlsStudierende').'</span>';
+	else 
+	{
+		if(!$evaluierung->save())
+			$evaluierung_ausgegeben_msg= '<span class="error">'.$evaluierung->errormsg.'</span>';
+		else
+			$evaluierung_ausgegeben_msg='<span class="ok">'.$p->t('global/datenWurdenGespeichert').'</span>';
+	}
 	$jsjumpinfo='<script>window.location="#divcodes";</script>';
 }
 
@@ -232,6 +264,7 @@ if(isset($_POST['saveSelbstevaluierung']) || isset($_POST['saveandsendSelbsteval
 				$institutsleitung[]=$rowbnf->uid;
 
 			$leitung = array_merge($stgleitung, $institutsleitung);
+			$leitung = array_unique($leitung);
 
 			foreach($leitung as $rowltg)
 				$to.=$rowltg.'@'.DOMAIN.',';
@@ -241,14 +274,14 @@ if(isset($_POST['saveSelbstevaluierung']) || isset($_POST['saveandsendSelbsteval
 			$benutzer->load($uid);
 
 			$text = '';
-			$html = $benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost.' hat eine Evaluierung der Lehrveranstaltung durchgeführt: <br>';
+			$html = $p->t('lvevaluierung/XhatEineEvaluierungDurchgefuehrt',array($benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost)).'<br /><br />';
 			$html.= LVEvaluierungGetInfoBlock($lv, $stg, $studiensemester_kurzbz);
-			$html.= '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungGruppe').'</b><br />'.nl2br($db->convert_html_chars($sev->gruppe));
+			$html.= '<br><b>'.$p->t('lvevaluierung/selbstevaluierungGruppe').'</b><br />'.nl2br($db->convert_html_chars($sev->gruppe));
 			$html.= '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungPersoenlich').'</b><br />'.nl2br($db->convert_html_chars($sev->persoenlich));
 			$html.= '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungGeplanteEntwicklung').'</b><br />'.nl2br($db->convert_html_chars($sev->entwicklung));
 			$html.= '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungWeiterbildung').'</b><br />'.nl2br($db->convert_html_chars($sev->weiterbildung));
 
-			$html.= '<br><br><a href="'.APP_ROOT.'addons/lvevaluierung/cis/auswertung.php?lvevaluierung_id='.urlencode($sev->lvevaluierung_id).'">Detailauswertung anzeigen</a>';
+			$html.= '<br><br><a href="'.APP_ROOT.'addons/lvevaluierung/cis/auswertung.php?lvevaluierung_id='.urlencode($sev->lvevaluierung_id).'">Detailauswertung anzeigen</a><br /><br /><br />';
 			$from = 'noreply@'.DOMAIN;
 			$subject = 'LV-Evaluierung - '.$studiensemester_kurzbz.' '.$stg->kuerzel.' '.$lv->semester.' '.$lv->orgform_kurzbz.' '.$lv->bezeichnung;
 			$mail = new mail($to, $from, $subject, $text);
@@ -305,7 +338,7 @@ echo '
 			<tr>
 				<td>'.$p->t('lvevaluierung/startzeit').'</td>
 				<td>
-				<input type="text" class="datepicker_datum" id="von_datum" name="von_datum" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->startzeit,'d.m.Y')).'" size="9">
+				<input type="text" class="datepicker_datum" id="von_datum" name="von_datum" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->startzeit,'d.m.Y')).'" size="9" onchange="setBisdatum(this.value)">
 				<input onchange="checkZeiten()" type="text" class="timepicker" id="von_uhrzeit" name="von_uhrzeit" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->startzeit,'H:i')).'" size="4">
 				</td>
 			</tr>
@@ -317,8 +350,8 @@ echo '
 				</td>
 			</tr>
 			<tr>
-				<td>'.$p->t('lvevaluierung/dauer').'</td>
-				<td><input type="text" name="dauer" value="'.$db->convert_html_chars(mb_substr($evaluierung->dauer,0,5)).'" size="5" /> HH:MM</td>
+				<td data-toggle="tooltip">'.$p->t('lvevaluierung/dauer').' <img src="'.APP_ROOT.'skin/images/information.png" title="'.$p->t('lvevaluierung/dauerInfotext').'" onclick="document.getElementById(\'dauer_infotext\').style.display=\'inline\'"></td>
+				<td><input type="text" name="dauer" value="'.$db->convert_html_chars(mb_substr($evaluierung->dauer,0,5)).'" size="5" data-toggle="tooltip" title="'.$p->t('lvevaluierung/dauerInfotext').'" /> HH:MM   <span id="dauer_infotext" style="display: none">('.$p->t('lvevaluierung/dauerInfotext').')</span></td>
 			</tr>
 			<tr>
 				<td></td>
@@ -345,7 +378,7 @@ else
 			<br>
 			<br>';
 			if(!$disabled)
-				echo '<a href="qrcode.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'">'.$p->t('lvevaluierung/CodeListeErstellen').'</a>';
+				echo '<a href="qrcode.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" onclick="showSpinner()">'.$p->t('lvevaluierung/CodeListeErstellen').'</a> <img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif">';
 			else
 				echo $p->t('lvevaluierung/CodeListeErstellen');
 	echo '
@@ -369,7 +402,7 @@ else
 	<div class="lvepanel '.($disabled?'disabled':'').'" id="divcodes">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/codesAusgegeben').'</div>
 		<div class="lvepanel-body">
-			'.$p->t('lvevaluierung/codesAusgegebenInfotext').'
+			'.$p->t('lvevaluierung/codesAusgegebenInfotext').'<br><br>
 			<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
 			<input type="hidden" name="lvevaluierung_id" value="'.$db->convert_html_chars($evaluierung->lvevaluierung_id).'" />
 			'.$p->t('lvevaluierung/codesAusgegebenAnzahl').'
@@ -453,7 +486,7 @@ else
 		<tr>
 			<td>
 				<input type="submit" name="saveSelbstevaluierung" value="'.$p->t('global/speichern').'"  '.$locked.'/>
-				<input type="submit" name="saveandsendSelbstevaluierung" value="'.$p->t('lvevaluierung/speichernundabschicken').'"  '.$locked.'/>
+				<input type="submit" name="saveandsendSelbstevaluierung" value="'.$p->t('lvevaluierung/speichernundabschicken').'"  '.$locked.' onclick="return confirm(\''.$p->t('lvevaluierung/confirmEvaluierungAbschicken').'\')"/>
 				'.$evaluierung_selbsteval_msg.'
 			</td>
 		</tr>
