@@ -81,10 +81,10 @@ echo '<!DOCTYPE html>
 			if(document.getElementById("bis_datum").value=="")
 				document.getElementById("bis_datum").value=datum;
 		}
-		function showSpinner()
+		function showSpinner(anz)
 		{
 			document.getElementById("spinner").style.display="inline";
-			window.setTimeout("ausblenden()", 5000); 
+			window.setTimeout("ausblenden()", 180*anz); 
 		}
 		function ausblenden()
 		{
@@ -339,14 +339,14 @@ echo '
 				<td>'.$p->t('lvevaluierung/startzeit').'</td>
 				<td>
 				<input type="text" class="datepicker_datum" id="von_datum" name="von_datum" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->startzeit,'d.m.Y')).'" size="9" onchange="setBisdatum(this.value)">
-				<input onchange="checkZeiten()" type="text" class="timepicker" id="von_uhrzeit" name="von_uhrzeit" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->startzeit,'H:i')).'" size="4">
+				<input type="text" class="timepicker" id="von_uhrzeit" name="von_uhrzeit" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->startzeit,'H:i')).'" size="4">
 				</td>
 			</tr>
 			<tr>
 				<td>'.$p->t('lvevaluierung/endezeit').'</td>
 				<td>
 				<input type="text" class="datepicker_datum" id="bis_datum" name="bis_datum" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->endezeit,'d.m.Y')).'" size="9">
-				<input onchange="checkZeiten()" type="text" class="timepicker" id="bis_uhrzeit" name="bis_uhrzeit" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->endezeit,'H:i')).'" size="4">
+				<input type="text" class="timepicker" id="bis_uhrzeit" name="bis_uhrzeit" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->endezeit,'H:i')).'" size="4">
 				</td>
 			</tr>
 			<tr>
@@ -370,6 +370,9 @@ if($evaluierung->lvevaluierung_id!='')
 else
 	$disabled=true;
 
+	$teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
+	$anzahl_studierende=count($teilnehmer);
+
 	// Erstellen der Codes
 	echo '
 	<div class="lvepanel '.($disabled?'disabled':'').'">
@@ -378,7 +381,7 @@ else
 			<br>
 			<br>';
 			if(!$disabled)
-				echo '<a href="qrcode.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" onclick="showSpinner()">'.$p->t('lvevaluierung/CodeListeErstellen').'</a> <img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif">';
+				echo '<a href="qrcode.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" onclick="showSpinner(\''.$anzahl_studierende.'\')">'.$p->t('lvevaluierung/CodeListeErstellen').'</a> <img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif">';
 			else
 				echo $p->t('lvevaluierung/CodeListeErstellen');
 	echo '
@@ -394,8 +397,6 @@ else
 		</div>
 	</div>';
 
-	$teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
-	$anzahl_studierende=count($teilnehmer);
 
 	// Ausgegebene Codes erfassen
 	echo '

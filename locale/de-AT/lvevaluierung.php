@@ -51,7 +51,7 @@ $this->phrasen['lvevaluierung/auswertungAnzeigen']='Auswertung';
 $this->phrasen['lvevaluierung/auswertungAnzeigenInfotext']='Klicken Sie hier, um die Ergebnisse der LV-Evaluierung anzuzeigen.';
 
 $this->phrasen['lvevaluierung/selbstevaluierung']='Selbstevaluierung';
-$this->phrasen['lvevaluierung/selbstevaluierungInfotext']='Füllen Sie die folgenden Felder zur Selbstevaluierung der Lehrveranstaltung aus. Beim Absenden der Daten werden diese an den Studiengangsleiter und Institutsleiter übermittelt.';
+$this->phrasen['lvevaluierung/selbstevaluierungInfotext']='Füllen Sie die folgenden Felder zur Selbstevaluierung der Lehrveranstaltung aus. Beim Absenden der Daten werden diese an die Studiengangs- und Institutsleitung übermittelt.';
 
 $this->phrasen['lvevaluierung/speichernundabschicken']='Speichern und Abschicken';
 $this->phrasen['lvevaluierung/confirmEvaluierungAbschicken']='Die Eingabefelder werden gesperrt und die Selbstevaluierung abgeschickt.\nWollen Sie fortfahren?';
