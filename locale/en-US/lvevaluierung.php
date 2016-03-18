@@ -6,9 +6,9 @@ $this->phrasen['lvevaluierung/einleitungstext']='Please enter your code to start
 $this->phrasen['lvevaluierung/codeAbgelaufen']='This code has already been used.';
 $this->phrasen['lvevaluierung/codeFalsch']='The code entered is invalid';
 $this->phrasen['lvevaluierung/nichtoffen']='This survey is currently not open';
-$this->phrasen['lvevaluierung/keineAngabe']='not applicable';
+$this->phrasen['lvevaluierung/keineAngabe']='Not applicable';
 $this->phrasen['lvevaluierung/lvbezeichnung']='Course designation';
-$this->phrasen['lvevaluierung/lvleitung']='Course teacher';
+$this->phrasen['lvevaluierung/lvleitung']='Course Head';
 $this->phrasen['lvevaluierung/organisationsform']='Organizational form';
 $this->phrasen['lvevaluierung/lvtyp']='Course type';
 $this->phrasen['lvevaluierung/ects']='ECTS';
@@ -17,7 +17,7 @@ $this->phrasen['lvevaluierung/anzahlstudierende']='Number of students';
 $this->phrasen['lvevaluierung/danke']='The survey has been successfully completed. Thank you for your participation!';
 $this->phrasen['lvevaluierung/startzeit']='Start of the evaluation';
 $this->phrasen['lvevaluierung/endezeit']='End of the evaluation';
-$this->phrasen['lvevaluierung/dauer']='Processing time';
+$this->phrasen['lvevaluierung/dauer']='Time available';
 $this->phrasen['lvevaluierung/evaluierungBearbeiten']='Process evaluation';
 $this->phrasen['lvevaluierung/evaluierungAnlegen']='Create evaluation';
 $this->phrasen['lvevaluierung/zeitinfo']='The course evaluation will take place from %s to %s.';
@@ -62,4 +62,5 @@ $this->phrasen['lvevaluierung/selbstevaluierungPersoenlich']='2. Personal assess
 $this->phrasen['lvevaluierung/selbstevaluierungGeplanteEntwicklung']='3. Measures planned to develop the course:';
 $this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. From the measures planned to develop the course does a need arise for further training in university didactics?';
 $this->phrasen['lvevaluierung/uebersicht']='Overview';
+$this->phrasen['lvevaluierung/infotextAllgemein']='A detailed process description can be found on <a href="https://signavio.technikum-wien.at/p/portal#/model/5c5c159b5eb74c9dbb358e252b034457" target="_blank">Signavio</a>';
 ?>

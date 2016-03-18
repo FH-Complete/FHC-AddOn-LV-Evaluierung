@@ -62,4 +62,5 @@ $this->phrasen['lvevaluierung/selbstevaluierungPersoenlich']='2. Persönliche Ei
 $this->phrasen['lvevaluierung/selbstevaluierungGeplanteEntwicklung']='3. Geplante Maßnahmen zur Weiterentwicklung der LV:';
 $this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. Ergibt sich für Sie aus den geplanten Maßnahmen zur Weiterentwicklung der LV ein Bedarf an hochschuldidaktischer Weiterbildung?';
 $this->phrasen['lvevaluierung/uebersicht']='Übersicht';
+$this->phrasen['lvevaluierung/infotextAllgemein']='Eine detaillierte Prozessbeschreibung finden Sie im <a href="https://signavio.technikum-wien.at/p/portal#/model/5c5c159b5eb74c9dbb358e252b034457" target="_blank">Prozessportal Signavio</a>';
 ?>

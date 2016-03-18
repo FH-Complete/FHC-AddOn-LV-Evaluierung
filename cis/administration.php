@@ -304,6 +304,8 @@ $lv = new lehrveranstaltung();
 $lv->load($lehrveranstaltung_id);
 
 echo '<h1>'.$p->t('lvevaluierung/lvevaluierung').' - '.$db->convert_html_chars($lv->bezeichnung.' ('.$lv->lehrveranstaltung_id.')').'</h1>';
+if ($p->t('lvevaluierung/infotextAllgemein')!='')
+	echo '<p>'.$p->t('lvevaluierung/infotextAllgemein').'.</p>';
 
 $stg = new studiengang();
 $stg->load($lv->studiengang_kz);
