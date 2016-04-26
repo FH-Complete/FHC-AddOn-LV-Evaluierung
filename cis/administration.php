@@ -84,11 +84,11 @@ echo '<!DOCTYPE html>
 		function showSpinner(anz)
 		{
 			document.getElementById("spinner").style.display="inline";
-			window.setTimeout("ausblenden()", 180*anz); 
+			window.setTimeout("ausblenden()", 180*anz);
 		}
 		function ausblenden()
 		{
-			$("#spinner").hide();	
+			$("#spinner").hide();
 		}
 		</script>
 	</head>
@@ -128,49 +128,49 @@ if(isset($_POST['saveEvaluierung']))
 	$lvevaluierung_id = $_POST['lvevaluierung_id'];
 	$von_datum = $_POST['von_datum'];
 	$bis_datum = $_POST['bis_datum'];
-	
+
 	//Datum auf Gueltigkeit pruefen
 	if (($von_datum=='' || $bis_datum=='') || !$datum_obj->formatDatum($von_datum,'Y-m-d') || !$datum_obj->formatDatum($bis_datum,'Y-m-d'))
 	{
 			$evaluierung_zeitraum_msg= '<span class="error">'.$p->t('lvevaluierung/bitteGueltigesDatumEingeben').'</span>';
 	}
-	else 
+	else
 	{
 		$von_uhrzeit = $_POST['von_uhrzeit'];
 		$bis_uhrzeit = $_POST['bis_uhrzeit'];
 		$startzeit = ($von_datum!=''?$datum_obj->formatDatum($von_datum,'Y-m-d').' '.$von_uhrzeit:'');
 		$endezeit = ($bis_datum!=''?$datum_obj->formatDatum($bis_datum,'Y-m-d').' '.$bis_uhrzeit:'');
 		$dauer = $_POST['dauer'];
-	
+
 		$dtstart=new DateTime($startzeit);
 		$dtende = new DateTime($endezeit);
-	
+
 		if($dtende<$dtstart)
 		{
 			$evaluierung_zeitraum_msg= '<span class="error">'.$p->t('lvevaluierung/endeGroesserStart').'</span>';
 		}
 		else
 		{
-	
+
 			$evaluierung = new lvevaluierung();
-	
+
 			if($lvevaluierung_id!='')
 			{
 				if(!$evaluierung->load($lvevaluierung_id))
 					die($p->t('global/fehlerBeimLadenDesDatensatzes'));
 			}
-	
+
 			$evaluierung->startzeit = $startzeit;
 			$evaluierung->endezeit = $endezeit;
 			$evaluierung->dauer = $dauer;
 			$evaluierung->lehrveranstaltung_id = $lehrveranstaltung_id;
 			$evaluierung->studiensemester_kurzbz = $studiensemester_kurzbz;
-	
+
 			if($evaluierung->save())
 			{
 				// Zugangscodes generieren
 				$codes = new lvevaluierung_code();
-	
+
 				if(!$codes->generateCodes($evaluierung->lvevaluierung_id))
 					$evaluierung_zeitraum_msg= '<span class="error">Failed: '.$codes->errormsg.'</span>';
 				else
@@ -193,13 +193,13 @@ if(isset($_POST['saveAusgegeben']))
 	$evaluierung = new lvevaluierung();
 	$evaluierung->load($lvevaluierung_id);
 	$evaluierung->codes_ausgegeben = $codes_ausgegeben;
-	
+
 	$teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
 	$anzahl_studierende=count($teilnehmer);
-	
+
 	if($codes_ausgegeben>$anzahl_studierende)
 		$evaluierung_ausgegeben_msg= '<span class="error">'.$p->t('lvevaluierung/mehrCodesAusgegebenAlsStudierende').'</span>';
-	else 
+	else
 	{
 		if(!$evaluierung->save())
 			$evaluierung_ausgegeben_msg= '<span class="error">'.$evaluierung->errormsg.'</span>';
@@ -255,6 +255,12 @@ if(isset($_POST['saveSelbstevaluierung']) || isset($_POST['saveandsendSelbsteval
 
 			// Studiengangsleitung
 			$stgleitung = $stg->getLeitung($lv->studiengang_kz);
+
+			// geschaeftsfuehrende Studiengangsleitung
+			$bnf = new benutzerfunktion();
+			$bnf->getBenutzerFunktionen('gLtg', $stg->oe_kurzbz);
+			foreach($bnf->result as $rowbnf)
+				$stgleitung[]=$rowbnf->uid;
 
 			// Institutsleitung
 			$bnf = new benutzerfunktion();
