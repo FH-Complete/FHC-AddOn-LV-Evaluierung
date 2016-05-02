@@ -154,30 +154,42 @@ if(isset($_POST['saveEvaluierung']))
 
 			$evaluierung = new lvevaluierung();
 
+			$error = false;
 			if($lvevaluierung_id!='')
 			{
 				if(!$evaluierung->load($lvevaluierung_id))
 					die($p->t('global/fehlerBeimLadenDesDatensatzes'));
 			}
-
-			$evaluierung->startzeit = $startzeit;
-			$evaluierung->endezeit = $endezeit;
-			$evaluierung->dauer = $dauer;
-			$evaluierung->lehrveranstaltung_id = $lehrveranstaltung_id;
-			$evaluierung->studiensemester_kurzbz = $studiensemester_kurzbz;
-
-			if($evaluierung->save())
-			{
-				// Zugangscodes generieren
-				$codes = new lvevaluierung_code();
-
-				if(!$codes->generateCodes($evaluierung->lvevaluierung_id))
-					$evaluierung_zeitraum_msg= '<span class="error">Failed: '.$codes->errormsg.'</span>';
-				else
-					$evaluierung_zeitraum_msg= '<span class="ok">'.$p->t('global/datenWurdenGespeichert').'</span>';
-			}
 			else
-				$evaluierung_zeitraum_msg= '<span class="error">'.$p->t('global/fehlerBeimSpeichernDerDaten').':'.$evaluierung->errormsg.'</span>';
+			{
+				if($evaluierung->exists($lehrveranstaltung_id, $studiensemester_kurzbz))
+				{
+					$evaluierung_zeitraum_msg='<span class="error">Es ist bereits eine Evaluierung vorhanden</span>';
+					$error = true;
+				}
+			}
+
+			if(!$error)
+			{
+				$evaluierung->startzeit = $startzeit;
+				$evaluierung->endezeit = $endezeit;
+				$evaluierung->dauer = $dauer;
+				$evaluierung->lehrveranstaltung_id = $lehrveranstaltung_id;
+				$evaluierung->studiensemester_kurzbz = $studiensemester_kurzbz;
+
+				if($evaluierung->save())
+				{
+					// Zugangscodes generieren
+					$codes = new lvevaluierung_code();
+
+					if(!$codes->generateCodes($evaluierung->lvevaluierung_id))
+						$evaluierung_zeitraum_msg= '<span class="error">Failed: '.$codes->errormsg.'</span>';
+					else
+						$evaluierung_zeitraum_msg= '<span class="ok">'.$p->t('global/datenWurdenGespeichert').'</span>';
+				}
+				else
+					$evaluierung_zeitraum_msg= '<span class="error">'.$p->t('global/fehlerBeimSpeichernDerDaten').':'.$evaluierung->errormsg.'</span>';
+			}
 		}
 	}
 }
