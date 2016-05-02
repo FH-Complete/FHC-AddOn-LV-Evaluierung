@@ -282,12 +282,12 @@ if(isset($_POST['saveSelbstevaluierung']) || isset($_POST['saveandsendSelbsteval
 			$text = '';
 			$html = $p->t('lvevaluierung/XhatEineEvaluierungDurchgefuehrt',array($benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost)).'<br /><br />';
 			$html.= LVEvaluierungGetInfoBlock($lv, $stg, $studiensemester_kurzbz);
-			$html.= '<br><b>'.$p->t('lvevaluierung/selbstevaluierungGruppe').'</b><br />'.nl2br($db->convert_html_chars($sev->gruppe));
-			$html.= '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungPersoenlich').'</b><br />'.nl2br($db->convert_html_chars($sev->persoenlich));
-			$html.= '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungGeplanteEntwicklung').'</b><br />'.nl2br($db->convert_html_chars($sev->entwicklung));
-			$html.= '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungWeiterbildung').'</b><br />'.nl2br($db->convert_html_chars($sev->weiterbildung));
+			$html.= "\n".'<br><b>'.$p->t('lvevaluierung/selbstevaluierungGruppe').'</b><br />'.nl2br($db->convert_html_chars($sev->gruppe));
+			$html.= "\n".'<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungPersoenlich').'</b><br />'.nl2br($db->convert_html_chars($sev->persoenlich));
+			$html.= "\n".'<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungGeplanteEntwicklung').'</b><br />'.nl2br($db->convert_html_chars($sev->entwicklung));
+			$html.= "\n".'<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungWeiterbildung').'</b><br />'.nl2br($db->convert_html_chars($sev->weiterbildung));
 
-			$html.= '<br><br><a href="'.APP_ROOT.'addons/lvevaluierung/cis/auswertung.php?lvevaluierung_id='.urlencode($sev->lvevaluierung_id).'">Detailauswertung anzeigen</a><br /><br /><br />';
+			$html.= "\n".'<br><br><a href="'.APP_ROOT.'addons/lvevaluierung/cis/auswertung.php?lvevaluierung_id='.urlencode($sev->lvevaluierung_id).'">Detailauswertung anzeigen</a><br /><br /><br />';
 			$from = 'noreply@'.DOMAIN;
 			$subject = 'LV-Evaluierung - '.$studiensemester_kurzbz.' '.$stg->kuerzel.' '.$lv->semester.' '.$lv->orgform_kurzbz.' '.$lv->bezeichnung;
 			$mail = new mail($to, $from, $subject, $text);
