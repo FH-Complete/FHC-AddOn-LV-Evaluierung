@@ -54,14 +54,14 @@ echo '<!DOCTYPE html>
 		<link href="../skin/lvevaluierung.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="../../../skin/tablesort.css" type="text/css">
 		<link href="../../../skin/jquery.ui.timepicker.css" rel="stylesheet" type="text/css"/>
-        <link href="../../../skin/jquery-ui-1.9.2.custom.min.css" rel="stylesheet"  type="text/css">
+		<link href="../../../skin/jquery-ui-1.9.2.custom.min.css" rel="stylesheet"  type="text/css">
 		<script type="text/javascript" src="../../../include/js/jquery1.9.min.js"></script>
-        <script src="../../../include/js/jquery.ui.timepicker.js" type="text/javascript" ></script>
+		<script src="../../../include/js/jquery.ui.timepicker.js" type="text/javascript" ></script>
 
 		<script type="text/javascript">
 		$(document).ready(function()
 		{
-		    $( ".datepicker_datum" ).datepicker({
+			$( ".datepicker_datum" ).datepicker({
 					 changeMonth: true,
 					 changeYear: true,
 					 dateFormat: "dd.mm.yy",
