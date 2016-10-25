@@ -63,4 +63,11 @@ $this->phrasen['lvevaluierung/selbstevaluierungGeplanteEntwicklung']='3. Measure
 $this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. From the measures planned to develop the course does a need arise for further training in university didactics?';
 $this->phrasen['lvevaluierung/uebersicht']='Overview';
 $this->phrasen['lvevaluierung/infotextAllgemein']='A detailed process description can be found on <a href="https://signavio.technikum-wien.at/p/portal#/model/5c5c159b5eb74c9dbb358e252b034457" target="_blank">Signavio</a>';
+$this->phrasen['lvevaluierung/pdfExport']='PDF Export';
+$this->phrasen['lvevaluierung/einzelAuswertung']='Single analysis';
+$this->phrasen['lvevaluierung/alleAnzeigen']='Show all';
+$this->phrasen['lvevaluierung/anklickenFuerEinzelauswertung']='Sie können einzelne Textantworten anklicken, um die dazugehörende Punktevergabe zu sehen';
+$this->phrasen['lvevaluierung/anklickenFuerGesamtauswertung']='Klicken Sie eine Antwort an, um wieder die Gesamtauswertung zu sehen';
+$this->phrasen['lvevaluierung/keineAuswahl']='no selection';
+$this->phrasen['lvevaluierung/durchschnittsbewertung']='Average value';
 ?>

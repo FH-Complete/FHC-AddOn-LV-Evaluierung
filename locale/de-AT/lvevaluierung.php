@@ -63,4 +63,11 @@ $this->phrasen['lvevaluierung/selbstevaluierungGeplanteEntwicklung']='3. Geplant
 $this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. Ergibt sich für Sie aus den geplanten Maßnahmen zur Weiterentwicklung der LV ein Bedarf an hochschuldidaktischer Weiterbildung?';
 $this->phrasen['lvevaluierung/uebersicht']='Übersicht';
 $this->phrasen['lvevaluierung/infotextAllgemein']='Eine detaillierte Prozessbeschreibung finden Sie im <a href="https://signavio.technikum-wien.at/p/portal#/model/5c5c159b5eb74c9dbb358e252b034457" target="_blank">Prozessportal Signavio</a>';
+$this->phrasen['lvevaluierung/pdfExport']='PDF Export';
+$this->phrasen['lvevaluierung/einzelAuswertung']='Einzelauswertung';
+$this->phrasen['lvevaluierung/alleAnzeigen']='Alle Anzeigen';
+$this->phrasen['lvevaluierung/anklickenFuerEinzelauswertung']='Sie können einzelne Textantworten anklicken, um die dazugehörende Punktevergabe zu sehen';
+$this->phrasen['lvevaluierung/anklickenFuerGesamtauswertung']='Klicken Sie eine Antwort an, um wieder die Gesamtauswertung zu sehen';
+$this->phrasen['lvevaluierung/keineAuswahl']='keine Auswahl';
+$this->phrasen['lvevaluierung/durchschnittsbewertung']='Durchschnittsbewertung';
 ?>

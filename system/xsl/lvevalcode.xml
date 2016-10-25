@@ -120,6 +120,10 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
       <style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
       <style:text-properties fo:font-size="10pt" fo:language="de" fo:country="AT" style:font-size-asian="10pt" style:font-name-complex="DejaVu" style:font-size-complex="10pt"/>
     </style:style>
+<style:style style:name="P16" style:family="paragraph" style:parent-style-name="Table_20_Contents">
+  <style:paragraph-properties fo:text-align="start" style:justify-single-word="false"/>
+  <style:text-properties fo:font-style="italic" style:font-style-asian="italic" style:font-style-complex="italic" officeooo:rsid="00058c69" officeooo:paragraph-rsid="00058c69"/>
+</style:style>
 
     <style:style style:name="T1" style:family="text">
       <style:text-properties officeooo:rsid="0004182d"/>
@@ -241,7 +245,13 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
     <text:p text:style-name="P6">Mit der Unterschrift wird bestätigt, dass alle Seiten vollständig vorhanden sind und die Nummer der LV-Evaluierung in der Kopfzeile auf allen Seiten gleich ist.</text:p>
     <text:p text:style-name="P6">Weiters wird bestätigt, dass die unten angegebene Zahl von Zugangscodes zur LV-Evaluierung ordnungsgemäß an die Studierenden übergeben bzw. von diesen übernommen wurde.</text:p>
     <text:p text:style-name="P6"/>
-    <text:p text:style-name="P6">Anzahl der ausgehändigten Zugangscodes (bitte hier angeben):_______</text:p>
+    <text:p text:style-name="P16">This form together with any access codes unused due to student absences are handed in to the office of the degree program by the teacher.</text:p>
+    <text:p text:style-name="P16"/>
+    <text:p text:style-name="P16">The signature confirms that all pages are present and the number of the course evaluation is the same on the topline of all pages.</text:p>
+    <text:p text:style-name="P16">In addition it confirms that the number of access codes for the course evaluation given below was both properly handed over to the students and accepted by them.</text:p>
+    <text:p text:style-name="P16"/>
+    <text:p text:style-name="P6">Anzahl der ausgehändigten Zugangscodes (bitte hier angeben)</text:p>
+    <text:p text:style-name="P16">Number of access codes handed out (please state number here):_______</text:p>
     <text:p text:style-name="P6"/>
     <text:p text:style-name="P6"/>
     <text:p text:style-name="P6"/>
@@ -252,12 +262,14 @@ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:style="urn
 	  <table:table-row>
 		<table:table-cell table:style-name="TabelleUebernahmeUnterschrift.A1" office:value-type="string">
 		<text:p text:style-name="P6">Datum und Unterschrift Lehrende/r</text:p>
+		<text:p text:style-name="P16">Date and signature of teacher</text:p>
 		</table:table-cell>
 		<table:table-cell table:style-name="TabelleUebernahmeUnterschrift.B1" office:value-type="string">
 		<text:p text:style-name="P6"></text:p>
 		</table:table-cell>
 		<table:table-cell table:style-name="TabelleUebernahmeUnterschrift.A1" office:value-type="string">
-		<text:p text:style-name="P6">Datum und Unterschrift Jahrgangssprecher/in </text:p>
+		<text:p text:style-name="P6">Datum und Unterschrift Jahrgangssprecher/in</text:p>
+		<text:p text:style-name="P16">Date and signature of year representative</text:p>
 		</table:table-cell>
 	  </table:table-row>
 	</table:table>

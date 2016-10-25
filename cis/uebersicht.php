@@ -146,13 +146,18 @@ foreach($stsem_rev as $row_stsem)
 echo '</tr>
 </thead>
 <tbody>';
+$stg = new studiengang();
+$stg->load($studiengang_kz);
 foreach($lv->lehrveranstaltungen as $row_lv)
 {
 	$lva = new lehrveranstaltung();
 	$lva->load($row_lv->lehrveranstaltung_id);
 	$oes = $lva->getAllOe();
 	$oes[]=$lva->oe_kurzbz; // Institut
+	$oes[]=$stg->oe_kurzbz; // OE des Studiengangs der Lehrveranstaltung
+	$oes = array_unique($oes);
 	$allowed_to_show_lv=true;
+
 	if(!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
 		$allowed_to_show_lv=false;
 

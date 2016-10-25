@@ -110,11 +110,13 @@ class lvevaluierung_antwort extends basis_db
 
 	/**
 	 * Laedt die Antworten einer LVEvaluierung
-	 * @param $lvevaluierung_id
+	 * @param integer $lvevaluierung_id ID der Evaluierung, die geladen werden soll
+	 * @param integer $code Optional. Code, dessen Ergebnisse geladen werden sollen
 	 * @return boolean true wenn ok, false im Fehlerfall
 	 */
-	public function loadAntworten($lvevaluierung_id)
+	public function loadAntworten($lvevaluierung_id, $code_id='')
 	{
+
 		$qry = "SELECT
 					tbl_lvevaluierung_antwort.*,
 					tbl_lvevaluierung_frage_antwort.wert as wert
@@ -124,8 +126,12 @@ class lvevaluierung_antwort extends basis_db
 					JOIN addon.tbl_lvevaluierung_frage USING(lvevaluierung_frage_id)
 					LEFT JOIN addon.tbl_lvevaluierung_frage_antwort USING(lvevaluierung_frage_antwort_id)
 				WHERE
-					tbl_lvevaluierung_code.lvevaluierung_id=".$this->db_add_param($lvevaluierung_id, FHC_INTEGER)."
-				ORDER BY tbl_lvevaluierung_frage.sort";
+					tbl_lvevaluierung_code.lvevaluierung_id=".$this->db_add_param($lvevaluierung_id, FHC_INTEGER);
+							
+				if ($code_id != '')
+					$qry .= " AND lvevaluierung_code_id=".$this->db_add_param($code_id, FHC_INTEGER);
+					
+				$qry .= " ORDER BY tbl_lvevaluierung_frage.sort";
 
 		if($result = $this->db_query($qry))
 		{

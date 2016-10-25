@@ -83,6 +83,12 @@ $studiensemester_kurzbz = $lvevaluierung->studiensemester_kurzbz;
 $lv = new lehrveranstaltung();
 $lv->load($lehrveranstaltung_id);
 
+$stg = new studiengang();
+$stg->load($lv->studiengang_kz);
+
+$studiengang_bezeichnung=$stg->bezeichnung;
+$studiensemester = $studiensemester_kurzbz;
+
 $rechte = new benutzerberechtigung();
 $rechte->getBerechtigungen($uid);
 
@@ -90,6 +96,7 @@ $lva = new lehrveranstaltung();
 $lva->load($lvevaluierung->lehrveranstaltung_id);
 $oes = $lva->getAllOe();
 $oes[]=$lva->oe_kurzbz; // Institut
+$oes[]=$stg->oe_kurzbz; // OE des Studiengangs der Lehrveranstaltung
 if(!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
 {
 	die($p->t('global/keineBerechtigungFuerDieseSeite'));
@@ -100,12 +107,6 @@ $benutzer = new benutzer();
 $benutzer->load($leiter_uid);
 
 $lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
-
-$stg = new studiengang();
-$stg->load($lv->studiengang_kz);
-
-$studiengang_bezeichnung=$stg->bezeichnung;
-$studiensemester = $studiensemester_kurzbz;
 
 $teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
 $anzahl_studierende=count($teilnehmer);
