@@ -255,5 +255,38 @@ class lvevaluierung extends basis_db
 			return false;
 		}
 	}
+
+	/**
+	 * Prueft ob bereits eine Evaluierung fuer dieses Studiensemester/LV existiert
+	 * @param $lehrveranstaltung_id
+	 * @param $studiensemester_kurzbz
+	 * @return boolean true wenn vorhanden, false wenn nicht vorhanden oder Fehler
+	 */
+	public function exists($lehrveranstaltung_id, $studiensemester_kurzbz)
+	{
+		$qry = "SELECT
+					*
+				FROM
+					addon.tbl_lvevaluierung
+				WHERE
+					lehrveranstaltung_id=".$this->db_add_param($lehrveranstaltung_id, FHC_INTEGER)."
+					AND studiensemester_kurzbz=".$this->db_add_param($studiensemester_kurzbz);
+		if($result = $this->db_query($qry))
+		{
+			if($this->db_num_rows($result)>0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			$this->errormsg = 'Fehler beim Laden der Daten';
+			return false;
+		}
+	}
 }
 ?>
