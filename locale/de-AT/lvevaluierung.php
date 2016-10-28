@@ -70,4 +70,5 @@ $this->phrasen['lvevaluierung/anklickenFuerEinzelauswertung']='Sie können einze
 $this->phrasen['lvevaluierung/anklickenFuerGesamtauswertung']='Klicken Sie eine Antwort an, um wieder die Gesamtauswertung zu sehen';
 $this->phrasen['lvevaluierung/keineAuswahl']='keine Auswahl';
 $this->phrasen['lvevaluierung/durchschnittsbewertung']='Durchschnittsbewertung';
+$this->phrasen['lvevaluierung/empfaengerDerSelbstevaluierung']='Empfänger der Selbstevaluierung';
 ?>

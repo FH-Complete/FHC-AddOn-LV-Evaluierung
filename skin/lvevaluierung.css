@@ -86,13 +86,22 @@ div.lvepanel-body
 	padding: 5px;
 
 }
+
 a.textantwort
 {
 	text-decoration: none;
 	color: black;
 }
+
 a.textantwort:hover
 {
 	text-decoration: none;
 	color: black;
+}
+
+textarea
+{
+	font-size: 13px;
+	width: 80%;
+	height:6em;
 }

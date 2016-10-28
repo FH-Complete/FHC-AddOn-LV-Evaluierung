@@ -176,6 +176,10 @@ if(isset($_POST['saveEvaluierung']))
 				$evaluierung->dauer = $dauer;
 				$evaluierung->lehrveranstaltung_id = $lehrveranstaltung_id;
 				$evaluierung->studiensemester_kurzbz = $studiensemester_kurzbz;
+				$evaluierung->insertamum = date('Y-m-d H:i:s');
+				$evaluierung->insertvon = $uid;
+				$evaluierung->updateamum = date('Y-m-d H:i:s');
+				$evaluierung->updatevon = $uid;
 
 				if($evaluierung->save())
 				{
@@ -273,13 +277,16 @@ if(isset($_POST['saveSelbstevaluierung']) || isset($_POST['saveandsendSelbsteval
 			$bnf->getBenutzerFunktionen('gLtg', $stg->oe_kurzbz);
 			foreach($bnf->result as $rowbnf)
 				$stgleitung[]=$rowbnf->uid;
-
-			// Institutsleitung
-			$bnf = new benutzerfunktion();
-			$bnf->getBenutzerFunktionen('Leitung', $lv->oe_kurzbz);
+			
+			// Institutsleitung (Nur wenn oe_kurzbz gesetzt)
 			$institutsleitung = array();
-			foreach($bnf->result as $rowbnf)
-				$institutsleitung[]=$rowbnf->uid;
+			if ($lv->oe_kurzbz != '')
+			{
+				$bnf = new benutzerfunktion();
+				$bnf->getBenutzerFunktionen('Leitung', $lv->oe_kurzbz);
+				foreach($bnf->result as $rowbnf)
+					$institutsleitung[] = $rowbnf->uid;
+			}
 
 			$leitung = array_merge($stgleitung, $institutsleitung);
 			$leitung = array_unique($leitung);
@@ -463,10 +470,53 @@ else
 	if($disabled)
 		$locked = 'disabled="disabled"';
 
+	//Anzeigen der Empfaenger
+	$lv = new lehrveranstaltung();
+	$lv->load($lehrveranstaltung_id);
+	
+	$stg = new studiengang();
+	$stg->load($lv->studiengang_kz);
+	
+	$empfaenger='';
+	
+	// Studiengangsleitung
+	$stgleitung = $stg->getLeitung($lv->studiengang_kz);
+	
+	// geschaeftsfuehrende Studiengangsleitung
+	$bnf = new benutzerfunktion();
+	$bnf->getBenutzerFunktionen('gLtg', $stg->oe_kurzbz);
+	foreach($bnf->result as $rowbnf)
+		$stgleitung[]=$rowbnf->uid;
+	
+	// Institutsleitung (Nur wenn oe_kurzbz gesetzt)
+	$institutsleitung = array();
+	if ($lv->oe_kurzbz != '')
+	{
+		$bnf = new benutzerfunktion();
+		$bnf->getBenutzerFunktionen('Leitung', $lv->oe_kurzbz);
+		foreach($bnf->result as $rowbnf)
+			$institutsleitung[] = $rowbnf->uid;
+	}
+
+	$leitung = array_merge($stgleitung, $institutsleitung);
+	$leitung = array_unique($leitung);
+
+	foreach($leitung as $leiter_uid)
+	{
+		$benutzer = new benutzer();
+		$benutzer->load($leiter_uid);
+		
+		if ($empfaenger != '')
+			$empfaenger .= ', ';
+		$empfaenger .= trim($benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost);
+	}
+
 	echo '
 	<div class="lvepanel '.($disabled?'disabled':'').'" id="divselbsteval">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/selbstevaluierung').'</div>
-		<div class="lvepanel-body">'.$p->t('lvevaluierung/selbstevaluierungInfotext').'
+		<div class="lvepanel-body">'.$p->t('lvevaluierung/selbstevaluierungInfotext').'<br>
+		'.$p->t('lvevaluierung/empfaengerDerSelbstevaluierung').': '.$empfaenger.'
+
 		<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
 		<input type="hidden" name="lvevaluierung_id" value="'.$db->convert_html_chars($evaluierung->lvevaluierung_id).'" />
 		<input type="hidden" name="lvevaluierung_selbstevaluierung_id" value="'.$db->convert_html_chars($sev->lvevaluierung_selbstevaluierung_id).'" />
@@ -477,7 +527,7 @@ else
 		</tr>
 		<tr>
 			<td>
-				<textarea name="gruppe" cols="60" rows="5" '.$locked.'>'.$db->convert_html_chars($sev->gruppe).'</textarea>
+				<textarea name="gruppe" '.$locked.'>'.$db->convert_html_chars($sev->gruppe).'</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -485,7 +535,7 @@ else
 		</tr>
 		<tr>
 			<td>
-				<textarea name="persoenlich" cols="60" rows="5" '.$locked.'>'.$db->convert_html_chars($sev->persoenlich).'</textarea>
+				<textarea name="persoenlich" '.$locked.'>'.$db->convert_html_chars($sev->persoenlich).'</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -493,7 +543,7 @@ else
 		</tr>
 		<tr>
 			<td>
-				<textarea name="entwicklung" cols="60" rows="5" '.$locked.'>'.$db->convert_html_chars($sev->entwicklung).'</textarea>
+				<textarea name="entwicklung" '.$locked.'>'.$db->convert_html_chars($sev->entwicklung).'</textarea>
 			</td>
 		</tr>
 		<tr>
@@ -501,7 +551,7 @@ else
 		</tr>
 		<tr>
 			<td>
-				<textarea name="weiterbildung" cols="60" rows="5" '.$locked.'>'.$db->convert_html_chars($sev->weiterbildung).'</textarea>
+				<textarea name="weiterbildung" '.$locked.'>'.$db->convert_html_chars($sev->weiterbildung).'</textarea>
 			</td>
 		</tr>
 		<tr>

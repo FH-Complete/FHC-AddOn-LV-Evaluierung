@@ -293,13 +293,27 @@ if(!@$db->db_query("SELECT 1 FROM addon.tbl_lvevaluierung_selbstevaluierung LIMI
 		echo 'Neue Tabelle tbl_lvevaluierung_selbstevaluierung hinzugefuegt<br>';
 }
 
+// Spalten insertamum, insertvon, updateamum, updatevon in addon.tbl_lvevaluierung
+if(!@$db->db_query("SELECT insertamum FROM addon.tbl_lvevaluierung LIMIT 1"))
+{
+	$qry = "ALTER TABLE addon.tbl_lvevaluierung ADD COLUMN insertamum timestamp;
+			ALTER TABLE addon.tbl_lvevaluierung ADD COLUMN insertvon varchar(32);
+			ALTER TABLE addon.tbl_lvevaluierung ADD COLUMN updateamum timestamp;
+			ALTER TABLE addon.tbl_lvevaluierung ADD COLUMN updatevon varchar(32);";
+
+	if(!$db->db_query($qry))
+		echo '<strong>tbl_lvevaluierung.insertamum: '.$db->db_last_error().'</strong><br>';
+		else
+			echo 'Neue Spalten insertamum, insertvon, updateamum, updatevon in addon.tbl_lvevaluierung hinzugefuegt<br>';
+}
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
 
 // Liste der verwendeten Tabellen / Spalten des Addons
 $tabellen=array(
-	"addon.tbl_lvevaluierung"  => array("lvevaluierung_id","lehrveranstaltung_id","studiensemester_kurzbz","startzeit","endezeit","dauer","codes_ausgegeben"),
+	"addon.tbl_lvevaluierung"  => array("lvevaluierung_id","lehrveranstaltung_id","studiensemester_kurzbz","startzeit","endezeit","dauer","codes_ausgegeben","insertamum","insertvon","updateamum","updatevon"),
 	"addon.tbl_lvevaluierung_code"  => array("lvevaluierung_code_id","code","startzeit","endezeit","lvevaluierung_id"),
 	"addon.tbl_lvevaluierung_frage"  => array("lvevaluierung_frage_id","typ","bezeichnung","aktiv","sort"),
 	"addon.tbl_lvevaluierung_frage_antwort"  => array("lvevaluierung_frage_antwort_id","lvevaluierung_frage_id","bezeichnung","sort","wert"),

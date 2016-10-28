@@ -31,6 +31,10 @@ class lvevaluierung extends basis_db
 	public $studiensemester_kurzbz;
 	public $lehrveranstaltung_id;
 	public $codes_ausgegeben;
+	public $insertamum;
+	public $insertvon;
+	public $updateamum;
+	public $updatevon;
 
     /**
 	 * Konstruktor
@@ -71,6 +75,10 @@ class lvevaluierung extends basis_db
 				$this->lehrveranstaltung_id = $row->lehrveranstaltung_id;
 				$this->studiensemester_kurzbz = $row->studiensemester_kurzbz;
 				$this->codes_ausgegeben = $row->codes_ausgegeben;
+				$this->insertamum = $row->insertamum;
+				$this->insertvon = $row->insertvon;
+				$this->updateamum = $row->updateamum;
+				$this->updatevon = $row->updatevon;
 				$this->new=false;
 
 				return true;
@@ -130,13 +138,17 @@ class lvevaluierung extends basis_db
 
 		if($this->new)
 		{
-			$qry = 'BEGIN;INSERT INTO addon.tbl_lvevaluierung(lehrveranstaltung_id,studiensemester_kurzbz, startzeit, endezeit, dauer, codes_ausgegeben) VALUES('.
+			$qry = 'BEGIN;INSERT INTO addon.tbl_lvevaluierung(lehrveranstaltung_id,studiensemester_kurzbz, startzeit, endezeit, dauer, codes_ausgegeben, insertamum, insertvon, updateamum, updatevon) VALUES('.
 					$this->db_add_param($this->lehrveranstaltung_id, FHC_INTEGER).','.
 					$this->db_add_param($this->studiensemester_kurzbz).','.
 					$this->db_add_param($this->startzeit).','.
 					$this->db_add_param($this->endezeit).','.
 					$this->db_add_param($this->dauer).','.
-					$this->db_add_param($this->codes_ausgegeben, FHC_INTEGER).');';
+					$this->db_add_param($this->codes_ausgegeben).','.
+					$this->db_add_param($this->insertamum).','.
+					$this->db_add_param($this->insertvon).','.
+					$this->db_add_param($this->updateamum).','.
+					$this->db_add_param($this->updatevon).');';
 		}
 		else
 		{
@@ -146,7 +158,9 @@ class lvevaluierung extends basis_db
 					' startzeit='.$this->db_add_param($this->startzeit).','.
 					' endezeit='.$this->db_add_param($this->endezeit).','.
 					' dauer='.$this->db_add_param($this->dauer).', '.
-					' codes_ausgegeben='.$this->db_add_param($this->codes_ausgegeben, FHC_INTEGER).' '.
+					' codes_ausgegeben='.$this->db_add_param($this->codes_ausgegeben, FHC_INTEGER).', '.
+					' updateamum='.$this->db_add_param($this->updateamum).', '.
+					' updatevon='.$this->db_add_param($this->updatevon).' '.
 					' WHERE lvevaluierung_id='.$this->db_add_param($this->lvevaluierung_id, FHC_INTEGER);
 		}
 
@@ -239,6 +253,8 @@ class lvevaluierung extends basis_db
 				$this->lehrveranstaltung_id = $row->lehrveranstaltung_id;
 				$this->studiensemester_kurzbz = $row->studiensemester_kurzbz;
 				$this->codes_ausgegeben = $row->codes_ausgegeben;
+				$this->insertamum = $row->insertamum;
+				$this->insertvon = $row->insertvon;
 				$this->new=false;
 
 				return true;

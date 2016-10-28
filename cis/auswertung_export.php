@@ -221,7 +221,7 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 				$antworten_array[$awmoeglichkeit->lvevaluierung_frage_antwort_id]['wert'] = $awmoeglichkeit->wert;
 			}
 			$antworten_array['keineauswahl']['anzahl'] = 0;
-			$antworten_array['keineauswahl']['bezeichnung'] = 'keine Auswahl';
+			$antworten_array['keineauswahl']['bezeichnung'] = $p->t('lvevaluierung/keineAuswahl');
 			$antworten_array['keineauswahl']['wert'] = '';
 
 			// Antworten durchlaufen die auf diese Frage gegeben wurden
