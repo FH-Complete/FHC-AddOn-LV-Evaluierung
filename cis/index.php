@@ -102,7 +102,7 @@ if ($code && isset($_GET['submit_btn']))
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<meta name="robots" content="noindex">
 		<link href="../../../vendor/components/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-		<link href="../../../skin/styles.css.php" rel="stylesheet" type="text/css">
+<!--		<link href="../../../skin/style.css.php" rel="stylesheet" type="text/css">-->
 		<link href="../skin/lvevaluierung.css" rel="stylesheet" type="text/css">
 	</head>
 	<body class="main">
