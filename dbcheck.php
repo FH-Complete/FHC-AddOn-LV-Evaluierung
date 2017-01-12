@@ -307,6 +307,16 @@ if(!@$db->db_query("SELECT insertamum FROM addon.tbl_lvevaluierung LIMIT 1"))
 			echo 'Neue Spalten insertamum, insertvon, updateamum, updatevon in addon.tbl_lvevaluierung hinzugefuegt<br>';
 }
 
+// Spalte verpflichtend in addon.tbl_lvevaluierung
+if(!@$db->db_query("SELECT verpflichtend FROM addon.tbl_lvevaluierung LIMIT 1"))
+{
+	$qry = "ALTER TABLE addon.tbl_lvevaluierung ADD COLUMN verpflichtend boolean NOT NULL DEFAULT false;";
+
+	if(!$db->db_query($qry))
+		echo '<strong>tbl_lvevaluierung.verpflichtend: '.$db->db_last_error().'</strong><br>';
+		else
+			echo 'Neue Spalte verpflichtend in addon.tbl_lvevaluierung hinzugefuegt<br>';
+}
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 

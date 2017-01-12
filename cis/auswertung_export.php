@@ -74,7 +74,7 @@ if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studie
 $lv = new lehrveranstaltung();
 $lv->load($lvevaluierung->lehrveranstaltung_id);
 
-$teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
+$teilnehmer = $lv->getStudentsOfLv($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 $anzahl_studierende = count($teilnehmer);
 $lehrform = $lv->lehrform_kurzbz;
 
@@ -176,7 +176,7 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 		die($lvevaluierung_frage->errormsg);
 
 	$antworten_arr = array();
-	
+
 	switch($lvevaluierung_frage->typ)
 	{
 		case 'text':

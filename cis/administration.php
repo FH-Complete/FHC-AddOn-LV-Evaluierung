@@ -277,7 +277,7 @@ if(isset($_POST['saveSelbstevaluierung']) || isset($_POST['saveandsendSelbsteval
 			$bnf->getBenutzerFunktionen('gLtg', $stg->oe_kurzbz);
 			foreach($bnf->result as $rowbnf)
 				$stgleitung[]=$rowbnf->uid;
-			
+
 			// Institutsleitung (Nur wenn oe_kurzbz gesetzt)
 			$institutsleitung = array();
 			if ($lv->oe_kurzbz != '')
@@ -354,6 +354,11 @@ if(!$evaluierung->getEvaluierung($lehrveranstaltung_id, $studiensemester_kurzbz)
 else
 {
 	$neu = false;
+}
+
+if($evaluierung->verpflichtend)
+{
+	echo $p->t('lvevaluierung/verpflichtendInfotext').'<br><br>';
 }
 
 echo '
@@ -473,21 +478,21 @@ else
 	//Anzeigen der Empfaenger
 	$lv = new lehrveranstaltung();
 	$lv->load($lehrveranstaltung_id);
-	
+
 	$stg = new studiengang();
 	$stg->load($lv->studiengang_kz);
-	
+
 	$empfaenger='';
-	
+
 	// Studiengangsleitung
 	$stgleitung = $stg->getLeitung($lv->studiengang_kz);
-	
+
 	// geschaeftsfuehrende Studiengangsleitung
 	$bnf = new benutzerfunktion();
 	$bnf->getBenutzerFunktionen('gLtg', $stg->oe_kurzbz);
 	foreach($bnf->result as $rowbnf)
 		$stgleitung[]=$rowbnf->uid;
-	
+
 	// Institutsleitung (Nur wenn oe_kurzbz gesetzt)
 	$institutsleitung = array();
 	if ($lv->oe_kurzbz != '')
@@ -505,7 +510,7 @@ else
 	{
 		$benutzer = new benutzer();
 		$benutzer->load($leiter_uid);
-		
+
 		if ($empfaenger != '')
 			$empfaenger .= ', ';
 		$empfaenger .= trim($benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost);

@@ -43,6 +43,95 @@ $p = new phrasen($sprache);
 $db = new basis_db();
 $datum_obj = new datum();
 
+if(isset($_POST['action']) && $_POST['action']=='changestatus')
+{
+	if(!$rechte->isBerechtigt('addon/lvevaluierung'))
+	{
+		die($p->t('global/keineBerechtigungFuerDieseSeite').'. '.$rechte->errormsg);
+	}
+
+	$lehrveranstaltung_id = $_POST['lehrveranstaltung_id'];
+	$studiensemester_kurzbz = $_POST['studiensemester_kurzbz'];
+	$verpflichtend = ($_POST['verpflichtend']=='true'?false:true);
+
+	if(!is_numeric($lehrveranstaltung_id))
+		die('Lehrveranstaltung ID ist ungueltig');
+	if(!check_stsem($studiensemester_kurzbz))
+		die('Studiensemester ist ungueltig');
+
+	// Rechte pruefen
+	$lva = new lehrveranstaltung();
+	$lva->load($lehrveranstaltung_id);
+	$stg = new studiengang();
+	$stg->load($lva->studiengang_kz);
+
+	$oes = $lva->getAllOe();
+	$oes[]=$lva->oe_kurzbz; // Institut
+	$oes[]=$stg->oe_kurzbz; // OE des Studiengangs der Lehrveranstaltung
+	$oes = array_unique($oes);
+
+	if(!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
+		die($rechte->errormsg);
+
+	$evaluierung = new lvevaluierung();
+	if($evaluierung->getEvaluierung($lehrveranstaltung_id, $studiensemester_kurzbz))
+	{
+		// Wenn die Evaluierung bereits existiert,
+		// und diese bereits eine Startzeit hat, dann aendern
+		if($evaluierung->startzeit!='' || $verpflichtend==true)
+		{
+			$evaluierung->verpflichtend = $verpflichtend;
+			if($evaluierung->save())
+			{
+				echo 'true';
+				exit;
+			}
+			else
+			{
+				echo $evaluierung->errormsg;
+				exit;
+			}
+		}
+		else
+		{
+			// Wenn noch keine Startzeit eingetragen ist, dann wird die Evaluierung geloescht
+			// da sie in diesem Fall nur exitiert um als verpflichtend markiert zu sein.
+			if($evaluierung->delete($evaluierung->lvevaluierung_id))
+			{
+				echo 'true';
+				exit;
+			}
+			else
+			{
+				echo $evaluierung->errormsg;
+				exit;
+			}
+		}
+	}
+	else
+	{
+		// Wenn keine Evaluierung vorhanden ist, dann eine Anlegen und verpflichtend setzen
+
+		$evaluierung->lehrveranstaltung_id = $lehrveranstaltung_id;
+		$evaluierung->studiensemester_kurzbz = $studiensemester_kurzbz;
+		$evaluierung->insertamum = date('Y-m-d H:i:s');
+		$evaluierung->insertvon = $uid;
+		$evaluierung->verpflichtend = true;
+		if($evaluierung->save())
+		{
+			echo 'true';
+			exit;
+		}
+		else
+		{
+			echo $evaluierung->errormsg;
+			exit;
+		}
+	}
+	echo 'false';
+	exit;
+}
+
 echo '<!DOCTYPE html>
 <html>
 	<head>
@@ -53,9 +142,9 @@ echo '<!DOCTYPE html>
 		<link href="../skin/lvevaluierung.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="../../../skin/tablesort.css" type="text/css">
 		<link href="../../../skin/jquery.ui.timepicker.css" rel="stylesheet" type="text/css"/>
-        <link href="../../../skin/jquery-ui-1.9.2.custom.min.css" rel="stylesheet"  type="text/css">
+		<link href="../../../skin/jquery-ui-1.9.2.custom.min.css" rel="stylesheet"  type="text/css">
 		<script type="text/javascript" src="../../../include/js/jquery1.9.min.js"></script>
-        <script src="../../../include/js/jquery.ui.timepicker.js" type="text/javascript" ></script>
+		<script src="../../../include/js/jquery.ui.timepicker.js" type="text/javascript" ></script>
 		<script>
 		$(document).ready(function()
 		{
@@ -65,7 +154,57 @@ echo '<!DOCTYPE html>
 				widgets: ["zebra"]
 			});
 		});
+
+		function changeState(lehrveranstaltung_id, studiensemester_kurzbz)
+		{
+			var img = document.getElementById("img_eval_verpflichtend_"+lehrveranstaltung_id+"_"+studiensemester_kurzbz);
+			var sum = parseInt($("#sum_"+studiensemester_kurzbz).html());
+
+			$.ajax({
+				type: "POST",
+				url: "uebersicht.php",
+				data: {
+					"action":"changestatus",
+					"verpflichtend":img.dataset.verpflichtend,
+					"studiensemester_kurzbz":studiensemester_kurzbz,
+					"lehrveranstaltung_id":lehrveranstaltung_id
+				},
+				success: function(data) {
+					if(data=="true")
+					{
+						if(img.dataset.verpflichtend=="true")
+						{
+							img.setAttribute("src","../skin/images/emblem-person-green.png");
+							img.setAttribute("title","'.$p->t('lvevaluierung/freiwillig').'");
+							sum = sum - 1;
+							img.dataset.verpflichtend="false";
+						}
+						else
+						{
+							img.setAttribute("src","../skin/images/emblem-person-red.png");
+							img.setAttribute("title","'.$p->t('lvevaluierung/verpflichtend').'");
+							sum = sum + 1;
+							img.dataset.verpflichtend="true";
+						}
+						$("#sum_"+studiensemester_kurzbz).html(sum);
+					}
+					else
+					{
+						alert("Es ist ein Fehler aufgetreten:"+data);
+					}
+				}
+			});
+		}
 		</script>
+		<style>
+		td.offered
+		{
+			border: 1px solid green !important;
+		}
+		td.notoffered
+		{
+		}
+		</style>
 	</head>
 <body>
 ';
@@ -167,12 +306,28 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 
 	foreach($stsem_rev as $row_stsem)
 	{
-		echo '<td align="center">';
-		$evaluierung = new lvevaluierung();
+		$lv_offered = new lehrveranstaltung();
+		$lvoffered = $lv_offered->isOffered($row_lv->lehrveranstaltung_id,  $row_stsem->studiensemester_kurzbz);
 
+		if(!isset($arr_lvoffered[$row_stsem->studiensemester_kurzbz]['gesamt']))
+		{
+			$arr_lvoffered[$row_stsem->studiensemester_kurzbz]['gesamt']=0;
+			$arr_lvoffered[$row_stsem->studiensemester_kurzbz]['verpflichtend']=0;
+		}
+
+		if($lvoffered)
+		{
+			$arr_lvoffered[$row_stsem->studiensemester_kurzbz]['gesamt']++;
+		}
+
+		echo '<td class="'.($lvoffered?'offered':'notoffered').'">';
+		$evaluierung = new lvevaluierung();
 
 		if($evaluierung->getEvaluierung($row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz))
 		{
+			printVerpflichtend($evaluierung->verpflichtend, $row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz);
+			if($evaluierung->verpflichtend)
+				$arr_lvoffered[$row_stsem->studiensemester_kurzbz]['verpflichtend']++;
 			if(!$allowed_to_show_lv)
 			{
 				echo 'X';
@@ -180,6 +335,10 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 			}
 
 			$codes = new lvevaluierung_code();
+
+			// Wenn die Startzeit nicht gesetzt ist, dann ueberspringen da die Evaluierung noch nicht stattgefunden hat
+			if($evaluierung->startzeit=='')
+				continue;
 
 			// Ruecklaufqoute ermitteln
 			$codes->loadCodes($evaluierung->lvevaluierung_id);
@@ -206,13 +365,73 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 			if($sev->getSelbstevaluierung($evaluierung->lvevaluierung_id))
 				echo '&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.open(\'selbstevaluierung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'\',\'Selbstevaluierung\',\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;"><img src="../../../skin/images/edit-paste.png" height="15px" title="Selbstevaluierung anzeigen"/></a>';
 		}
-
+		else
+		{
+			if($lvoffered)
+				printVerpflichtend(false, $row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz);
+		}
 		echo '</td>';
 
 	}
 	echo '</tr>';
 }
-echo '</tbody></table>
+echo '</tbody>
+<tfoot>
+<tr>
+	<th>'.$p->t('lvevaluierung/verpflichtendeEvaluierungen').'</th>';
+
+foreach($stsem_rev as $row_stsem)
+{
+	echo '<th>';
+	if(isset($arr_lvoffered[$row_stsem->studiensemester_kurzbz]))
+	{
+		echo '<span id="sum_'.$row_stsem->studiensemester_kurzbz.'">'.
+				$arr_lvoffered[$row_stsem->studiensemester_kurzbz]['verpflichtend'].'
+			</span> / '.$arr_lvoffered[$row_stsem->studiensemester_kurzbz]['gesamt'];
+	}
+	echo '</th>';
+}
+echo '</tr></tfoot></table>';
+
+echo $p->t('lvevaluierung/legende').'
+<table>
+<tr>
+	<td class="offered">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	<td>'.$p->t('lvevaluierung/legendeAngebot').'</td>
+</tr>
+<tr>
+	<td><img src="../../../skin/images/edit-paste.png" height="15px"></td>
+	<td>'.$p->t('lvevaluierung/selbstevaluierung').'</td>
+</tr>
+<tr>
+	<td><img src="../skin/images/emblem-person-green.png" height="15px"></td>
+	<td>'.$p->t('lvevaluierung/legendenichtverpflichtend').'</td>
+</tr>
+<tr>
+	<td><img src="../skin/images/emblem-person-red.png" height="15px"></td>
+	<td>'.$p->t('lvevaluierung/legendeverpflichtend').'</td>
+</tr>
+</table>
+';
+echo '
 </body>
 </html>';
+
+function printVerpflichtend($verpflichtend, $lehrveranstaltung_id, $studiensemester_kurzbz)
+{
+	global $p;
+	if($verpflichtend)
+		$title = $p->t('lvevaluierung/verpflichtend');
+	else
+		$title = $p->t('lvevaluierung/freiwillig');
+
+	echo '
+	<a href="#change" onclick="changeState(\''.$lehrveranstaltung_id.'\',\''.$studiensemester_kurzbz.'\')">
+		<img src="../skin/images/'.($verpflichtend?'emblem-person-red.png':'emblem-person-green.png').'"'.
+		' height="20px" '.
+		' id="img_eval_verpflichtend_'.$lehrveranstaltung_id.'_'.$studiensemester_kurzbz.'" '.
+		' title="'.$title.'"'.
+		' data-verpflichtend="'.($verpflichtend?'true':'false').'"/>
+	</a>';
+}
 ?>

@@ -71,4 +71,12 @@ $this->phrasen['lvevaluierung/anklickenFuerGesamtauswertung']='Klicken Sie eine 
 $this->phrasen['lvevaluierung/keineAuswahl']='no selection';
 $this->phrasen['lvevaluierung/durchschnittsbewertung']='Average value';
 $this->phrasen['lvevaluierung/empfaengerDerSelbstevaluierung']='Recipient of Self-evaluation';
+$this->phrasen['lvevaluierung/verpflichtendeEvaluierungen']='verpflichtende Evaluierungen';
+$this->phrasen['lvevaluierung/legende']='Legende';
+$this->phrasen['lvevaluierung/legendeAngebot']='LV wird in diesem Semester angeboten';
+$this->phrasen['lvevaluierung/legendeverpflichtend']='Evaluierung ist verpflichtend durchzuführen';
+$this->phrasen['lvevaluierung/legendenichtverpflichtend']='Evaluierung ist freiwillig durchzuführen';
+$this->phrasen['lvevaluierung/verpflichtend']='verpflichtend';
+$this->phrasen['lvevaluierung/freiwillig']='freiwillig';
+$this->phrasen['lvevaluierung/verpflichtendInfotext']='Diese Lehrveranstaltung wurde zur verpflichtenden Evaluierung ausgewählt.';
 ?>

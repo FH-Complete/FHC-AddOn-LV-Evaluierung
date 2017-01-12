@@ -35,8 +35,9 @@ class lvevaluierung extends basis_db
 	public $insertvon;
 	public $updateamum;
 	public $updatevon;
+	public $verpflichtend=false;
 
-    /**
+	/**
 	 * Konstruktor
 	 */
 	public function __construct()
@@ -79,7 +80,9 @@ class lvevaluierung extends basis_db
 				$this->insertvon = $row->insertvon;
 				$this->updateamum = $row->updateamum;
 				$this->updatevon = $row->updatevon;
-				$this->new=false;
+				$this->verpflichtend = $this->db_parse_bool($row->verpflichtend);
+
+				$this->new = false;
 
 				return true;
 			}
@@ -138,7 +141,9 @@ class lvevaluierung extends basis_db
 
 		if($this->new)
 		{
-			$qry = 'BEGIN;INSERT INTO addon.tbl_lvevaluierung(lehrveranstaltung_id,studiensemester_kurzbz, startzeit, endezeit, dauer, codes_ausgegeben, insertamum, insertvon, updateamum, updatevon) VALUES('.
+			$qry = 'BEGIN;INSERT INTO addon.tbl_lvevaluierung(lehrveranstaltung_id, studiensemester_kurzbz,
+					startzeit, endezeit, dauer, codes_ausgegeben, insertamum, insertvon,
+					updateamum, updatevon, verpflichtend) VALUES('.
 					$this->db_add_param($this->lehrveranstaltung_id, FHC_INTEGER).','.
 					$this->db_add_param($this->studiensemester_kurzbz).','.
 					$this->db_add_param($this->startzeit).','.
@@ -148,7 +153,8 @@ class lvevaluierung extends basis_db
 					$this->db_add_param($this->insertamum).','.
 					$this->db_add_param($this->insertvon).','.
 					$this->db_add_param($this->updateamum).','.
-					$this->db_add_param($this->updatevon).');';
+					$this->db_add_param($this->updatevon).','.
+					$this->db_add_param($this->verpflichtend, FHC_BOOLEAN).');';
 		}
 		else
 		{
@@ -160,7 +166,8 @@ class lvevaluierung extends basis_db
 					' dauer='.$this->db_add_param($this->dauer).', '.
 					' codes_ausgegeben='.$this->db_add_param($this->codes_ausgegeben, FHC_INTEGER).', '.
 					' updateamum='.$this->db_add_param($this->updateamum).', '.
-					' updatevon='.$this->db_add_param($this->updatevon).' '.
+					' updatevon='.$this->db_add_param($this->updatevon).', '.
+					' verpflichtend='.$this->db_add_param($this->verpflichtend, FHC_BOOLEAN).
 					' WHERE lvevaluierung_id='.$this->db_add_param($this->lvevaluierung_id, FHC_INTEGER);
 		}
 
@@ -255,6 +262,7 @@ class lvevaluierung extends basis_db
 				$this->codes_ausgegeben = $row->codes_ausgegeben;
 				$this->insertamum = $row->insertamum;
 				$this->insertvon = $row->insertvon;
+				$this->verpflichtend = $this->db_parse_bool($row->verpflichtend);
 				$this->new=false;
 
 				return true;
@@ -301,6 +309,28 @@ class lvevaluierung extends basis_db
 		else
 		{
 			$this->errormsg = 'Fehler beim Laden der Daten';
+			return false;
+		}
+	}
+
+	/**
+	 * Loescht eine Evaluierung
+	 *
+	 * @param $lvevaluierung_id ID der Evaluierung die entfernt werden soll.
+	 * @return boolean true wenn erfolgreich, false im Fehlerfall.
+	 */
+	public function delete($lvevaluierung_id)
+	{
+		$qry = "DELETE FROM addon.tbl_lvevaluierung
+			WHERE lvevaluierung_id=".$this->db_add_param($lvevaluierung_id, FHC_INTEGER);
+
+		if($this->db_query($qry))
+		{
+			return true;
+		}
+		else
+		{
+			$this->errormsg = 'Fehler beim Löschen der Evaluierung';
 			return false;
 		}
 	}
