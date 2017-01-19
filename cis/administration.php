@@ -273,10 +273,12 @@ if(isset($_POST['saveSelbstevaluierung']) || isset($_POST['saveandsendSelbsteval
 			$stgleitung = $stg->getLeitung($lv->studiengang_kz);
 
 			// geschaeftsfuehrende Studiengangsleitung
+			/*
 			$bnf = new benutzerfunktion();
 			$bnf->getBenutzerFunktionen('gLtg', $stg->oe_kurzbz);
 			foreach($bnf->result as $rowbnf)
 				$stgleitung[]=$rowbnf->uid;
+			*/
 
 			// Institutsleitung (Nur wenn oe_kurzbz gesetzt)
 			$institutsleitung = array();
@@ -488,11 +490,12 @@ else
 	$stgleitung = $stg->getLeitung($lv->studiengang_kz);
 
 	// geschaeftsfuehrende Studiengangsleitung
+	/*
 	$bnf = new benutzerfunktion();
 	$bnf->getBenutzerFunktionen('gLtg', $stg->oe_kurzbz);
 	foreach($bnf->result as $rowbnf)
 		$stgleitung[]=$rowbnf->uid;
-
+	*/
 	// Institutsleitung (Nur wenn oe_kurzbz gesetzt)
 	$institutsleitung = array();
 	if ($lv->oe_kurzbz != '')
