@@ -84,6 +84,7 @@ $lv = new lehrveranstaltung();
 $lv->load($lehrveranstaltung_id);
 
 $stg = new studiengang();
+$stg->getAllTypes();
 $stg->load($lv->studiengang_kz);
 
 $studiengang_bezeichnung=$stg->bezeichnung;

@@ -60,7 +60,7 @@ if (isset($_REQUEST['code_id']) && is_numeric($_REQUEST['code_id']))
 	$code_id = $_REQUEST['code_id'];
 else
 	$code_id = '';
-	
+
 $lvevaluierung = new lvevaluierung();
 if (!$lvevaluierung->load($lvevaluierung_id))
 	die($lvevaluierung->errormsg);
@@ -84,6 +84,7 @@ $benutzer->load($leiter_uid);
 $lvleitung = $benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
 
 $stg = new studiengang();
+$stg->getAllTypes();
 $stg->load($lv->studiengang_kz);
 
 // Berechtigungen pruefen
@@ -237,13 +238,13 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 				{
 					if ($code_id != '')
 					{
-						echo '<a class="textantwort" title="'.$p->t('lvevaluierung/anklickenFuerGesamtauswertung').'" 
-								href="auswertung.php?lvevaluierung_id='.$lvevaluierung_id.'"><div class="textantwort"> 
+						echo '<a class="textantwort" title="'.$p->t('lvevaluierung/anklickenFuerGesamtauswertung').'"
+								href="auswertung.php?lvevaluierung_id='.$lvevaluierung_id.'"><div class="textantwort">
 								'.$db->convert_html_chars($antwort->antwort).'</div></a>';
 					}
 					else
 					{
-						echo '<a class="textantwort" title="'.$p->t('lvevaluierung/anklickenFuerEinzelauswertung').'" 
+						echo '<a class="textantwort" title="'.$p->t('lvevaluierung/anklickenFuerEinzelauswertung').'"
 								href="auswertung.php?lvevaluierung_id='.$lvevaluierung_id.'&code_id='.$antwort->lvevaluierung_code_id.'">
 								<div class="textantwort"> '.$db->convert_html_chars($antwort->antwort).'</div></a>';
 					}

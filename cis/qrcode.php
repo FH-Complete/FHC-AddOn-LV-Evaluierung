@@ -82,6 +82,7 @@ $benutzer->load($leiter_uid);
 $lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
 
 $stg = new studiengang();
+$stg->getAllTypes();
 $stg->load($lv->studiengang_kz);
 
 $studiengang_bezeichnung=$stg->bezeichnung;

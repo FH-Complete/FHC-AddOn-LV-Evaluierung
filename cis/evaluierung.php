@@ -36,10 +36,10 @@ session_start();
 // Wenn Code nicht gesetzt ist auf Login umleiten
 if (!isset($_SESSION['lvevaluierung/code']) || $_SESSION['lvevaluierung/code']=='')
 {
-    $_SESSION['request_uri']=$_SERVER['REQUEST_URI'];
+	$_SESSION['request_uri']=$_SERVER['REQUEST_URI'];
 
-    header('Location: index.php');
-    exit;
+	header('Location: index.php');
+	exit;
 }
 
 // Sprachewechsel
@@ -259,6 +259,7 @@ else
 		$lektoren = mb_substr($lektoren, 0, -2);
 
 		$stg = new studiengang();
+		$stg->getAllTypes();
 		$stg->load($lv->studiengang_kz);
 
 		$studiengang_bezeichnung=$stg->bezeichnung;
