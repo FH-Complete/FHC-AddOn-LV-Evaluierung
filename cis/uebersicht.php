@@ -219,10 +219,11 @@ if(!$rechte->isBerechtigt('addon/lvevaluierung'))
 
 $studiengang_kz = filter_input(INPUT_POST,'studiengang_kz');
 $semester = filter_input(INPUT_POST,'semester');
+$oe_kurzbz = filter_input(INPUT_POST,'oe_kurzbz');
 
 $studiengang = new studiengang();
-
-if(count($rechte->getFbKz('addon/lvevaluierung'))>0)
+$fachbereich_arr = $rechte->getFbKz('addon/lvevaluierung');
+if(count($fachbereich_arr)>0)
 {
 	$studiengang->getAll('typ, kurzbz',true);
 }
@@ -234,11 +235,12 @@ else
 
 echo '
 <form action="uebersicht.php" method="POST">
-<select name="studiengang_kz">';
+<select name="studiengang_kz">
+<option value="">-- '.$p->t('global/studiengang').' --</option>';
 foreach($studiengang->result as $row_stg)
 {
-	if($studiengang_kz=='')
-		$studiengang_kz=$row_stg->studiengang_kz;
+	//if($studiengang_kz=='')
+	//	$studiengang_kz=$row_stg->studiengang_kz;
 
 	if($studiengang_kz==$row_stg->studiengang_kz)
 		$selected = 'selected="selected"';
@@ -249,11 +251,12 @@ foreach($studiengang->result as $row_stg)
 }
 echo '
 </select>
-<select name="semester">';
+<select name="semester">
+<option value="">-- '.$p->t('global/semester').' --</option>';
 for($i=1;$i<=10;$i++)
 {
-	if($semester=='')
-		$semester = $i;
+	//if($semester=='')
+	// $semester = $i;
 
 	if($semester==$i)
 		$selected='selected="selected"';
@@ -264,11 +267,31 @@ for($i=1;$i<=10;$i++)
 }
 echo '
 </select>
+<select name="oe_kurzbz">
+<option value="">-- '.$p->t('global/institut').' --</option>';
+$fachbereich = new fachbereich();
+$fachbereich->loadArray($fachbereich_arr, 'bezeichnung');
+foreach($fachbereich->result as $row_fb)
+{
+	if($oe_kurzbz==$row_fb->oe_kurzbz)
+		$selected = 'selected="selected"';
+	else
+		$selected='';
+
+	echo '<option value="'.$row_fb->oe_kurzbz.'" '.$selected.'>'.$db->convert_html_chars($row_fb->bezeichnung).'</option>';
+}
+echo '
+</select>
 <input type="submit" value="'.$p->t('global/anzeigen').'">
 </form>';
-
+if($studiengang_kz=='' && $oe_kurzbz=='')
+{
+	echo $p->t('lvevaluierung/waehleStudiengangoderInstitut');
+	exit;
+}
 $lv = new lehrveranstaltung();
-$lv-> load_lva($studiengang_kz, $semester,null,true,true);
+if(!$lv->load_lva(($studiengang_kz!=''?$studiengang_kz:null), ($semester!=''?$semester:null),null,true,true, null, ($oe_kurzbz!=''?$oe_kurzbz:null)))
+	die($lv->errormsg);
 
 $stsem = new studiensemester();
 $stsem->getPlusMinus(1, 5);
@@ -285,10 +308,14 @@ foreach($stsem_rev as $row_stsem)
 echo '</tr>
 </thead>
 <tbody>';
-$stg = new studiengang();
-$stg->load($studiengang_kz);
+
 foreach($lv->lehrveranstaltungen as $row_lv)
 {
+	$tablerow = '';
+
+	$stg = new studiengang();
+	$stg->load($row_lv->studiengang_kz);
+
 	$lva = new lehrveranstaltung();
 	$lva->load($row_lv->lehrveranstaltung_id);
 	$oes = $lva->getAllOe();
@@ -300,14 +327,17 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 	if(!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
 		$allowed_to_show_lv=false;
 
-	echo '
+	$tablerow.='
 	<tr>
-	<td>'.$db->convert_html_chars($row_lv->bezeichnung.' '.$row_lv->orgform_kurzbz).'</td>';
-
+	<td>'.$db->convert_html_chars($stg->kuerzel.' '.$row_lv->semester.' '.$row_lv->bezeichnung.' '.$row_lv->orgform_kurzbz).'</td>';
+	$lvoffered_gesamt=false;
 	foreach($stsem_rev as $row_stsem)
 	{
 		$lv_offered = new lehrveranstaltung();
 		$lvoffered = $lv_offered->isOffered($row_lv->lehrveranstaltung_id,  $row_stsem->studiensemester_kurzbz);
+
+		if($lvoffered)
+			$lvoffered_gesamt=true;
 
 		if(!isset($arr_lvoffered[$row_stsem->studiensemester_kurzbz]['gesamt']))
 		{
@@ -320,17 +350,17 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 			$arr_lvoffered[$row_stsem->studiensemester_kurzbz]['gesamt']++;
 		}
 
-		echo '<td class="'.($lvoffered?'offered':'notoffered').'">';
+		$tablerow.= '<td class="'.($lvoffered?'offered':'notoffered').'">';
 		$evaluierung = new lvevaluierung();
 
 		if($evaluierung->getEvaluierung($row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz))
 		{
-			printVerpflichtend($evaluierung->verpflichtend, $row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz);
+			$tablerow.=printVerpflichtend($evaluierung->verpflichtend, $row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz);
 			if($evaluierung->verpflichtend)
 				$arr_lvoffered[$row_stsem->studiensemester_kurzbz]['verpflichtend']++;
 			if(!$allowed_to_show_lv)
 			{
-				echo 'X';
+				$tablerow.= 'X';
 				continue;
 			}
 
@@ -359,21 +389,26 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 			else
 				$prozent_abgeschlossen = 0;
 
-			echo '<a href="auswertung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" title="Rücklaufqoute - klicken für Detailauswertung">'.number_format($prozent_abgeschlossen,2).'</a>';
+			$tablerow.= '<a href="auswertung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" title="Rücklaufqoute - klicken für Detailauswertung">'.number_format($prozent_abgeschlossen,2).'</a>';
 
 			$sev = new lvevaluierung_selbstevaluierung();
 			if($sev->getSelbstevaluierung($evaluierung->lvevaluierung_id))
-				echo '&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.open(\'selbstevaluierung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'\',\'Selbstevaluierung\',\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;"><img src="../../../skin/images/edit-paste.png" height="15px" title="Selbstevaluierung anzeigen"/></a>';
+				$tablerow.= '&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.open(\'selbstevaluierung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'\',\'Selbstevaluierung\',\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;"><img src="../../../skin/images/edit-paste.png" height="15px" title="Selbstevaluierung anzeigen"/></a>';
 		}
 		else
 		{
 			if($lvoffered)
-				printVerpflichtend(false, $row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz);
+				$tablerow.=printVerpflichtend(false, $row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz);
 		}
-		echo '</td>';
+		$tablerow.= '</td>';
 
 	}
-	echo '</tr>';
+	$tablerow.= '</tr>';
+
+	// Wenn die Lehrveranstaltung in keinem der Studiensemester
+	// angeboten wurde, dann wird diese auch nicht angezeigt
+	if($lvoffered_gesamt)
+		echo $tablerow;
 }
 echo '</tbody>
 <tfoot>
@@ -425,7 +460,7 @@ function printVerpflichtend($verpflichtend, $lehrveranstaltung_id, $studiensemes
 	else
 		$title = $p->t('lvevaluierung/freiwillig');
 
-	echo '
+	return '
 	<a href="#change" onclick="changeState(\''.$lehrveranstaltung_id.'\',\''.$studiensemester_kurzbz.'\')">
 		<img src="../skin/images/'.($verpflichtend?'emblem-person-red.png':'emblem-person-green.png').'"'.
 		' height="20px" '.

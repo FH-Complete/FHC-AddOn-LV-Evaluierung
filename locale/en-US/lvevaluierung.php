@@ -79,4 +79,5 @@ $this->phrasen['lvevaluierung/legendenichtverpflichtend']='Evaluierung ist freiw
 $this->phrasen['lvevaluierung/verpflichtend']='verpflichtend';
 $this->phrasen['lvevaluierung/freiwillig']='freiwillig';
 $this->phrasen['lvevaluierung/verpflichtendInfotext']='Diese Lehrveranstaltung wurde zur verpflichtenden Evaluierung ausgewählt.';
+$this->phrasen['lvevaluierung/waehleStudiengangoderInstitut']='Please choose a Degree Programm or Department';
 ?>
