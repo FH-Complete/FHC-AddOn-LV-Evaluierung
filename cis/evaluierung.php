@@ -335,9 +335,9 @@ else
 					echo '<div><h2>'.$db->convert_html_chars($row_frage->bezeichnung[$sprache]).'</h2></div>';
 					break;
 					// Label Text
-					case 'labelsub':
-						echo '<div>'.$db->convert_html_chars($row_frage->bezeichnung[$sprache]).'<br><br></div>';
-						break;
+				case 'labelsub':
+					echo '<div>'.$db->convert_html_chars($row_frage->bezeichnung[$sprache]).'<br><br></div>';
+					break;
 
 				// Textarea
 				case 'text':
