@@ -179,6 +179,15 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 
 	switch($lvevaluierung_frage->typ)
 	{
+		case 'label':
+			$data[]['frage'] = array(	'frage_typ' => 'label',
+										'frage_text' => $lvevaluierung_frage->bezeichnung[$sprache]);
+			break;
+		case 'labelsub':
+			$data[]['frage'] = array(	'frage_typ' => 'labelsub',
+										'frage_text' => $lvevaluierung_frage->bezeichnung[$sprache]);
+			break;
+
 		case 'text':
 			foreach ($antworten as $antwort)
 			{

@@ -384,6 +384,8 @@ else
 			<select name="typ">
 				<option value="text" '.($frage->typ=='text'?'selected="selected"':'').'>Freitext</option>
 				<option value="singleresponse" '.($frage->typ=='singleresponse'?'selected="selected"':'').'>SingleResponse</option>
+				<option value="label" '.($frage->typ=='label'?'selected="selected"':'').'>Label Titel</option>
+				<option value="labelsub" '.($frage->typ=='labelsub'?'selected="selected"':'').'>Label Normaltext</option>
 			</select>
 		</th>
 		<th valign="top">
