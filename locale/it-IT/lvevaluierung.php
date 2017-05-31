@@ -1,6 +1,6 @@
 <?php
-$this->phrasen['lvevaluierung/lvevaluierung']='Valutazione corsi';
-$this->phrasen['lvevaluierung/welcome']='Valutazione corsi';
+$this->phrasen['lvevaluierung/lvevaluierung']='Valutazione corso';
+$this->phrasen['lvevaluierung/welcome']='Valutazione corso';
 $this->phrasen['lvevaluierung/code']='Codice';
 $this->phrasen['lvevaluierung/einleitungstext']='Inserire il codice per effettuare la valutazione del corso';
 $this->phrasen['lvevaluierung/codeAbgelaufen']='Questo codice è già stato utilizzato.';
@@ -66,8 +66,8 @@ $this->phrasen['lvevaluierung/infotextAllgemein']='Una descrizione dettagliata d
 $this->phrasen['lvevaluierung/pdfExport']='Esportazione PDF';
 $this->phrasen['lvevaluierung/einzelAuswertung']='Esito';
 $this->phrasen['lvevaluierung/alleAnzeigen']='Mostra tutto';
-$this->phrasen['lvevaluierung/anklickenFuerEinzelauswertung']='E’ possibile cliccare sulle singole risposte per vederne il rispettivo punteggio.';
-$this->phrasen['lvevaluierung/anklickenFuerGesamtauswertung']='Cliccare su una risposta per vedere nuovamente l’esito generale.';
+$this->phrasen['lvevaluierung/anklickenFuerEinzelauswertung']='Cliccare su un commento per vedere tutti i punteggi espressi dallo stesso studente.';
+$this->phrasen['lvevaluierung/anklickenFuerGesamtauswertung']='Cliccare su un commento per vedere nuovamente l’esito generale.';
 $this->phrasen['lvevaluierung/keineAuswahl']='Nessuna risposta';
 $this->phrasen['lvevaluierung/durchschnittsbewertung']='Punteggio medio';
 $this->phrasen['lvevaluierung/empfaengerDerSelbstevaluierung']='Supervisori per l’autovalutazione';
