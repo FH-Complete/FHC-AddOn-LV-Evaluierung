@@ -389,11 +389,11 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 			else
 				$prozent_abgeschlossen = 0;
 
-			$tablerow.= '<a href="auswertung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" title="Rücklaufqoute - klicken für Detailauswertung">'.number_format($prozent_abgeschlossen,2).'</a>';
+			$tablerow.= '<a href="auswertung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" title="'.$p->t('lvevaluierung/ruecklaufquoteDetailauswertung').'">'.number_format($prozent_abgeschlossen,2).'</a>';
 
 			$sev = new lvevaluierung_selbstevaluierung();
 			if($sev->getSelbstevaluierung($evaluierung->lvevaluierung_id))
-				$tablerow.= '&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.open(\'selbstevaluierung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'\',\'Selbstevaluierung\',\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;"><img src="../../../skin/images/edit-paste.png" height="15px" title="Selbstevaluierung anzeigen"/></a>';
+				$tablerow.= '&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.open(\'selbstevaluierung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'\',\'Selbstevaluierung\',\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;"><img src="../../../skin/images/edit-paste.png" height="15px" title="'.$p->t('lvevaluierung/selbstevaluierungAnzeigen').'"/></a>';
 		}
 		else
 		{

@@ -57,11 +57,11 @@ $this->phrasen['lvevaluierung/speichernundabschicken']='salva e invia';
 $this->phrasen['lvevaluierung/confirmEvaluierungAbschicken']='Si è scelto di inviare l’autovalutazione. Procedere?';
 
 $this->phrasen['lvevaluierung/XhatEineEvaluierungDurchgefuehrt']='%s ha svolto la valutazione del corso:';
-$this->phrasen['lvevaluierung/selbstevaluierungGruppe']='1. Qual è la Sua valutazione per gli studenti di questo corso? <br>(Si considerino ad esempio i seguenti fattori: preparazione, partecipazione, propensità all’apprendimento)';
+$this->phrasen['lvevaluierung/selbstevaluierungGruppe']='1. Qual è la Sua valutazione per gli studenti di questo corso? <br>(Si considerino ad esempio i seguenti fattori: preparazione, partecipazione, propensione all’apprendimento)';
 $this->phrasen['lvevaluierung/selbstevaluierungPersoenlich']='2. Qual è la Sua valutazione complessiva per questo corso? <br>(Si considerino ad esempio i seguenti fattori: soddisfazione personale, prestazione, esito del sondaggio)';
 $this->phrasen['lvevaluierung/selbstevaluierungGeplanteEntwicklung']='3. Quali miglioramenti propone per questo corso?';
 $this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. I miglioramenti proposti richiederebbero degli investimenti particolari? <br>(P.es. strumenti didattici, formazione, personale interno, collaborazioni esterne)';
-$this->phrasen['lvevaluierung/uebersicht']='Indice';
+$this->phrasen['lvevaluierung/uebersicht']='Indice supervisione valutazione corsi';
 $this->phrasen['lvevaluierung/infotextAllgemein']='Una descrizione dettagliata del processo è reperibile sul sito dedicato di <a href="#" target="_blank">CIS</a>';
 $this->phrasen['lvevaluierung/pdfExport']='Esportazione PDF';
 $this->phrasen['lvevaluierung/einzelAuswertung']='Esito';
@@ -80,4 +80,7 @@ $this->phrasen['lvevaluierung/verpflichtend']='obbligatorio';
 $this->phrasen['lvevaluierung/freiwillig']='facoltativo';
 $this->phrasen['lvevaluierung/verpflichtendInfotext']='Per questo corso la valutazione è stata resa obbligatoria.';
 $this->phrasen['lvevaluierung/waehleStudiengangoderInstitut']='Selezionare un corso di studi o un istituto.';
+
+$this->phrasen['lvevaluierung/selbstevaluierungAnzeigen']='visualizza autovalutazione';
+$this->phrasen['lvevaluierung/ruecklaufquoteDetailauswertung']='tasso di risposta - cliccare per l’esito dettagliato';
 ?>
