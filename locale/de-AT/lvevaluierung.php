@@ -80,8 +80,9 @@ $this->phrasen['lvevaluierung/verpflichtend']='verpflichtend';
 $this->phrasen['lvevaluierung/freiwillig']='freiwillig';
 $this->phrasen['lvevaluierung/verpflichtendInfotext']='Diese Lehrveranstaltung wurde zur verpflichtenden Evaluierung ausgewählt.';
 $this->phrasen['lvevaluierung/waehleStudiengangoderInstitut']='Bitte wählen Sie einen Studiengang oder ein Institut';
-
 $this->phrasen['lvevaluierung/selbstevaluierungAnzeigen']='Selbstevaluierung anzeigen';
 $this->phrasen['lvevaluierung/ruecklaufquoteDetailauswertung']='Rücklaufqoute - klicken für Detailauswertung';
-
+$this->phrasen['lvevaluierung/lvzurEvaluierungAusgewaehlt']='Diese LV wurde für die LV-Evaluierung ausgewählt.<br>
+- <a href="%1$s">Prozessbeschreibung</a><br>
+- <a href="%2$s">Information für Studierende</a>';
 ?>
