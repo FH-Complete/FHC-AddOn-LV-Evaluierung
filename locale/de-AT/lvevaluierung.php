@@ -83,6 +83,5 @@ $this->phrasen['lvevaluierung/waehleStudiengangoderInstitut']='Bitte wählen Sie
 $this->phrasen['lvevaluierung/selbstevaluierungAnzeigen']='Selbstevaluierung anzeigen';
 $this->phrasen['lvevaluierung/ruecklaufquoteDetailauswertung']='Rücklaufqoute - klicken für Detailauswertung';
 $this->phrasen['lvevaluierung/lvzurEvaluierungAusgewaehlt']='Diese LV wurde für die LV-Evaluierung ausgewählt.<br>
-- <a href="%1$s">Prozessbeschreibung</a><br>
-- <a href="%2$s">Information für Studierende</a>';
+<a href="%1$s">weitere Informationen zur Evaluierung anzeigen</a>';
 ?>

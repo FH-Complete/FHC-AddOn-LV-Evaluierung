@@ -22,6 +22,8 @@ require_once('../../../include/functions.inc.php');
 require_once('../../../include/phrasen.class.php');
 require_once('../include/lvevaluierung.class.php');
 
+$uid = get_uid();
+
 $sprache = getSprache();
 $p = new phrasen($sprache);
 
@@ -40,13 +42,15 @@ $evaluierung->getEvaluierung($lehrveranstaltung_id, $studiensemester_kurzbz);
 
 if($evaluierung->verpflichtend)
 {
-	$linkProzessbeschreibung = APP_ROOT.'cms/content.php?content_id='.$p->t('dms_link/lvevaluierungProzessbeschreibung');
-	$linkStudierendeninfo = APP_ROOT.'cms/content.php?content_id='.$p->t('dms_link/lvevaluierungStudierendeninformation');
+	if(check_lektor($uid))
+		$link = APP_ROOT.'cms/content.php?content_id='.$p->t('dms_link/lvevaluierungMitarbeiterCMS');
+	else
+		$link = APP_ROOT.'cms/content.php?content_id='.$p->t('dms_link/lvevaluierungStudierendeCMS');
 
 	echo json_encode(
 		array('message'=>'
 		<span style="color:red">'.
-		$p->t('lvevaluierung/lvzurEvaluierungAusgewaehlt',array($linkProzessbeschreibung,$linkStudierendeninfo)).'
+		$p->t('lvevaluierung/lvzurEvaluierungAusgewaehlt',array($link)).'
 		</span>')
 	);
 }
