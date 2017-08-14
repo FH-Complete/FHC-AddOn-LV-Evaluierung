@@ -220,7 +220,12 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 	if (!$lvevaluierung_frage->load($lvevaluierung_frage_id))
 		echo 'Fehler beim Laden der Frage:'.$lvevaluierung_frage->errormsg;
 
-	echo '<h2>'.$db->convert_html_chars($lvevaluierung_frage->bezeichnung[$sprache]).'</h2>';
+	if ($lvevaluierung_frage->typ == 'label')
+		echo '<h1>'.$db->convert_html_chars($lvevaluierung_frage->bezeichnung[$sprache]).'</h1>';
+	else if ($lvevaluierung_frage->typ == 'labelsub')
+		echo '<p>'.$db->convert_html_chars($lvevaluierung_frage->bezeichnung[$sprache]).'</p>';
+	else
+		echo '<h2>'.$db->convert_html_chars($lvevaluierung_frage->bezeichnung[$sprache]).'</h2>';
 	if ($lvevaluierung_frage->typ == 'text')
 	{
 		if ($code_id != '')
@@ -231,6 +236,9 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 
 	switch($lvevaluierung_frage->typ)
 	{
+		case 'label':
+		case 'labelsub':
+			break;
 		case 'text':
 			foreach ($antworten as $antwort)
 			{

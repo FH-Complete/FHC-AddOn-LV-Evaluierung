@@ -288,6 +288,15 @@ if(isset($_POST['saveSelbstevaluierung']) || isset($_POST['saveandsendSelbsteval
 				$bnf->getBenutzerFunktionen('Leitung', $lv->oe_kurzbz);
 				foreach($bnf->result as $rowbnf)
 					$institutsleitung[] = $rowbnf->uid;
+
+				if($rechte->getBenutzerFromBerechtigung('addon/lvevaluierung_mail', false, $lv->oe_kurzbz))
+				{
+					if(isset($rechte->result) && is_array($rechte->result))
+					{
+						foreach($rechte->result as $row_zusaetzlich)
+							$institutsleitung[] = $row_zusaetzlich->uid;
+					}
+				}
 			}
 
 			$leitung = array_merge($stgleitung, $institutsleitung);
@@ -504,6 +513,15 @@ else
 		$bnf->getBenutzerFunktionen('Leitung', $lv->oe_kurzbz);
 		foreach($bnf->result as $rowbnf)
 			$institutsleitung[] = $rowbnf->uid;
+
+		if($rechte->getBenutzerFromBerechtigung('addon/lvevaluierung_mail', false, $lv->oe_kurzbz))
+		{
+			if(isset($rechte->result) && is_array($rechte->result))
+			{
+				foreach($rechte->result as $row_zusaetzlich)
+					$institutsleitung[] = $row_zusaetzlich->uid;
+			}
+		}
 	}
 
 	$leitung = array_merge($stgleitung, $institutsleitung);
