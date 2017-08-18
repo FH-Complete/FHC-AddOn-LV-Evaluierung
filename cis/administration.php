@@ -289,6 +289,9 @@ if(isset($_POST['saveSelbstevaluierung']) || isset($_POST['saveandsendSelbsteval
 				foreach($bnf->result as $rowbnf)
 					$institutsleitung[] = $rowbnf->uid;
 
+				$rechte = new benutzerberechtigung();
+				$rechte->getBerechtigungen($uid);
+				
 				if($rechte->getBenutzerFromBerechtigung('addon/lvevaluierung_mail', false, $lv->oe_kurzbz))
 				{
 					if(isset($rechte->result) && is_array($rechte->result))
@@ -514,6 +517,9 @@ else
 		foreach($bnf->result as $rowbnf)
 			$institutsleitung[] = $rowbnf->uid;
 
+		$rechte = new benutzerberechtigung();
+		$rechte->getBerechtigungen($uid);
+		
 		if($rechte->getBenutzerFromBerechtigung('addon/lvevaluierung_mail', false, $lv->oe_kurzbz))
 		{
 			if(isset($rechte->result) && is_array($rechte->result))

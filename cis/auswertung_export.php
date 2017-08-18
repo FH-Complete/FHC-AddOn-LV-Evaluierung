@@ -111,11 +111,6 @@ if ($anzahl_codes_gesamt > 0)
 else
 	$prozent_abgeschlossen = 0;
 
-if ($sprache == 'English')
-	$doc = new dokument_export('LvEvaluierungAuswertungEng');
-else
-	$doc = new dokument_export('LvEvaluierungAuswertung');
-
 $leiter_uid = $lv->getLVLeitung($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 $benutzer = new benutzer();
 $benutzer->load($leiter_uid);
@@ -127,6 +122,17 @@ $stg->load($lv->studiengang_kz);
 
 $studiengang_bezeichnung = $stg->bezeichnung_arr[$sprache];
 $studiensemester = $lvevaluierung->studiensemester_kurzbz;
+
+if ($sprache == 'English')
+{
+	$doc = new dokument_export('LvEvaluierungAuswertungEng');
+	$doc->setFilename('Evaluation_'.$studiensemester.'_'.$stg->kuerzel.$lv->semester.'-'.$lv->orgform_kurzbz.'_'.$lv->kurzbz);
+}
+else
+{
+	$doc = new dokument_export('LvEvaluierungAuswertung');
+	$doc->setFilename('Evaluierung_'.$studiensemester.'_'.$stg->kuerzel.$lv->semester.'-'.$lv->orgform_kurzbz.'_'.$lv->kurzbz);
+}
 
 if ($anzahl_codes_beendet > 0)
 	$durchschnittszeit = (int)(($gesamtsekunden / $anzahl_codes_beendet) / 60).':'.(($gesamtsekunden / $anzahl_codes_beendet) % 60);
