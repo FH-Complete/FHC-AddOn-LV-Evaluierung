@@ -32,6 +32,7 @@ require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_selbstevaluierung.class.php');
 require_once('../include/lvevaluierung_code.class.php');
 require_once('../../../include/studiensemester.class.php');
+require_once('../../../include/organisationsform.class.php');
 $uid = get_uid();
 
 $rechte = new benutzerberechtigung();
@@ -220,6 +221,7 @@ if(!$rechte->isBerechtigt('addon/lvevaluierung'))
 $studiengang_kz = filter_input(INPUT_POST,'studiengang_kz');
 $semester = filter_input(INPUT_POST,'semester');
 $oe_kurzbz = filter_input(INPUT_POST,'oe_kurzbz');
+$orgform_kurzbz = filter_input(INPUT_POST,'orgform_kurzbz');
 
 $studiengang = new studiengang();
 $fachbereich_arr = $rechte->getFbKz('addon/lvevaluierung');
@@ -233,6 +235,9 @@ else
 	$studiengang->loadArray($stg_arr,'typ, kurzbz',true);
 }
 
+$types = new studiengang();
+$types->getAllTypes();
+$typ = '';
 echo '
 <form action="uebersicht.php" method="POST">
 <select name="studiengang_kz">
@@ -242,12 +247,21 @@ foreach($studiengang->result as $row_stg)
 	//if($studiengang_kz=='')
 	//	$studiengang_kz=$row_stg->studiengang_kz;
 
-	if($studiengang_kz==$row_stg->studiengang_kz)
+	if ($typ != $row_stg->typ || $typ=='')
+	{
+		if ($typ!='')
+			echo '</optgroup>';
+			echo '<optgroup label="'.($types->studiengang_typ_arr[$row_stg->typ]!=''?$types->studiengang_typ_arr[$row_stg->typ]:$row_stg->typ).'">';
+	}
+	
+	if($studiengang_kz == $row_stg->studiengang_kz)
 		$selected = 'selected="selected"';
 	else
 		$selected='';
+	
+	$typ = $row_stg->typ;
 
-	echo '<option value="'.$row_stg->studiengang_kz.'" '.$selected.'>'.$db->convert_html_chars($row_stg->kuerzel.' - '.$row_stg->kurzbzlang).'</option>';
+	echo '<option value="'.$row_stg->studiengang_kz.'" '.$selected.'>'.$db->convert_html_chars($row_stg->kuerzel.' - '.$row_stg->bezeichnung).'</option>';
 }
 echo '
 </select>
@@ -264,6 +278,21 @@ for($i=1;$i<=10;$i++)
 		$selected = '';
 
 	echo '<option value="'.$i.'" '.$selected.'>'.$i.'</option>';
+}
+echo '
+</select>
+<select name="orgform_kurzbz">
+<option value="">-- '.$p->t('global/organisationsform').' --</option>';
+$orgform = new organisationsform();
+$orgform->getOrgformLV();
+foreach ($orgform->result as $row_orgform)
+{
+	if($orgform_kurzbz == $row_orgform->orgform_kurzbz)
+		$selected = 'selected';
+	else
+		$selected = '';
+		
+	echo '<option value="'.$row_orgform->orgform_kurzbz.'" '.$selected.'>'.$db->convert_html_chars($row_orgform->orgform_kurzbz.' - '.$row_orgform->bezeichnung).'</OPTION>';
 }
 echo '
 </select>
@@ -290,7 +319,12 @@ if($studiengang_kz=='' && $oe_kurzbz=='')
 	exit;
 }
 $lv = new lehrveranstaltung();
-if(!$lv->load_lva(($studiengang_kz!=''?$studiengang_kz:null), ($semester!=''?$semester:null),null,true,true, null, ($oe_kurzbz!=''?$oe_kurzbz:null)))
+if(!$lv->load_lva(	($studiengang_kz != ''?$studiengang_kz:null), 
+					($semester != ''?$semester:null),
+					null,true,true,null, 
+					($oe_kurzbz != ''?$oe_kurzbz:null), 
+					null, 
+					($orgform_kurzbz != ''?$orgform_kurzbz:null)))
 	die($lv->errormsg);
 
 $stsem = new studiensemester();
