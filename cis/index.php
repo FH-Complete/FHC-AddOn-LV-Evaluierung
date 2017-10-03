@@ -171,7 +171,7 @@ if ($code && isset($_GET['submit_btn']))
 					</div>
 				</div>
 		</div>
-		<script src="../../../include/js/jquery.min.1.11.1.js"></script>
+		<script src="../../../vendor/jquery/jqueryV1/jquery-1.12.4.min.js"></script>
 		<script src="../../../vendor/components/bootstrap/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 

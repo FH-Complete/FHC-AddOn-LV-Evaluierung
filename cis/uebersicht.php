@@ -142,10 +142,14 @@ echo '<!DOCTYPE html>
 		<link href="../../../skin/style.css.php" rel="stylesheet" type="text/css">
 		<link href="../skin/lvevaluierung.css" rel="stylesheet" type="text/css">
 		<link rel="stylesheet" href="../../../skin/tablesort.css" type="text/css">
-		<link href="../../../skin/jquery.ui.timepicker.css" rel="stylesheet" type="text/css"/>
+		<link rel="stylesheet" href="../../../vendor/fgelinas/timepicker/jquery.ui.timepicker.css" type="text/css"/>
+		<link rel="stylesheet" type="text/css" ../../../vendor/components/jqueryui/themes/base/jquery-ui.min.css"/>
 		<link href="../../../skin/jquery-ui-1.9.2.custom.min.css" rel="stylesheet"  type="text/css">
-		<script type="text/javascript" src="../../../include/js/jquery1.9.min.js"></script>
-		<script src="../../../include/js/jquery.ui.timepicker.js" type="text/javascript" ></script>
+		<script type="text/javascript" src="../../../vendor/jquery/jqueryV1/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript" src="../../../vendor/christianbach/tablesorter/jquery.tablesorter.min.js"></script>
+		<script type="text/javascript" src="../../../vendor/components/jqueryui/jquery-ui.min.js"></script>
+		<script src="../../../vendor/fgelinas/timepicker/jquery.ui.timepicker.js" type="text/javascript" ></script>
+		<script type="text/javascript" src="../../../include/js/jquery.ui.datepicker.translation.js"></script>
 		<script>
 		$(document).ready(function()
 		{
@@ -253,12 +257,12 @@ foreach($studiengang->result as $row_stg)
 			echo '</optgroup>';
 			echo '<optgroup label="'.($types->studiengang_typ_arr[$row_stg->typ]!=''?$types->studiengang_typ_arr[$row_stg->typ]:$row_stg->typ).'">';
 	}
-	
+
 	if($studiengang_kz == $row_stg->studiengang_kz)
 		$selected = 'selected="selected"';
 	else
 		$selected='';
-	
+
 	$typ = $row_stg->typ;
 
 	echo '<option value="'.$row_stg->studiengang_kz.'" '.$selected.'>'.$db->convert_html_chars($row_stg->kuerzel.' - '.$row_stg->bezeichnung).'</option>';
@@ -291,7 +295,7 @@ foreach ($orgform->result as $row_orgform)
 		$selected = 'selected';
 	else
 		$selected = '';
-		
+
 	echo '<option value="'.$row_orgform->orgform_kurzbz.'" '.$selected.'>'.$db->convert_html_chars($row_orgform->orgform_kurzbz.' - '.$row_orgform->bezeichnung).'</OPTION>';
 }
 echo '
@@ -319,11 +323,11 @@ if($studiengang_kz=='' && $oe_kurzbz=='')
 	exit;
 }
 $lv = new lehrveranstaltung();
-if(!$lv->load_lva(	($studiengang_kz != ''?$studiengang_kz:null), 
+if(!$lv->load_lva(	($studiengang_kz != ''?$studiengang_kz:null),
 					($semester != ''?$semester:null),
-					null,true,true,null, 
-					($oe_kurzbz != ''?$oe_kurzbz:null), 
-					null, 
+					null,true,true,null,
+					($oe_kurzbz != ''?$oe_kurzbz:null),
+					null,
 					($orgform_kurzbz != ''?$orgform_kurzbz:null)))
 	die($lv->errormsg);
 
