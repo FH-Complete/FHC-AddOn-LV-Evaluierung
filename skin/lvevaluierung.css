@@ -31,6 +31,7 @@ div.textantwort
 	margin: 10px;
 	padding: 15px;
 }
+
 div.textantwort:hover
 {
 	width: 90%;
@@ -45,10 +46,12 @@ div.barchart
 	background-color:#7693ff;
 	text-align: right;
 }
+
 div.barchart_border
 {
 	/*border: 1px solid #5369bc;*/
 }
+
 div.barchart_nichtausgefuellt
 {
 	background-color:#cccccc;
@@ -102,6 +105,17 @@ a.textantwort:hover
 textarea
 {
 	font-size: 13px;
-	width: 80%;
-	height:6em;
+	width: 90%;
+	height: 6em;
+}
+
+#weiterbChkBx
+{
+	margin: 0;
+}
+
+#codesHinweistext
+{
+	font-size: 1.05em;
+	color: darkgreen;
 }

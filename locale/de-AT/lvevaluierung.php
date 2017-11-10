@@ -46,12 +46,16 @@ $this->phrasen['lvevaluierung/codesAusgegeben']='Ausgegebene Zugangscodes';
 $this->phrasen['lvevaluierung/codesAusgegebenInfotext']='Bitte tragen Sie hier die Anzahl der Codes ein, die tatsächlich bei der Evaluierung verwendet und am Formular abgezeichnet wurden.';
 $this->phrasen['lvevaluierung/codesAusgegebenAnzahl']='Anzahl der verwendeten Codes';
 $this->phrasen['lvevaluierung/mehrCodesAusgegebenAlsStudierende']='Die Anzahl der verwendeten Codes kann nicht höher sein als die Anzahl der Studierenden in der LV.';
+$this->phrasen['lvevaluierung/mehrAusgefuelltAlsAusgegeben']='Die Anzahl der verwendeten Codes kann nicht kleiner sein als die Anzahl der ausgefüllten Fragebögen.';
+$this->phrasen['lvevaluierung/codesNichtEingetragen']='Anzahl verwendeter Codes nicht eingetragen.';
+$this->phrasen['lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung']='Hinweis: Selbstevaluierung kann nur bei korrekter gespeicherter Anzahl der verwendeten Zugangscodes abgeschickt werden.';
 
 $this->phrasen['lvevaluierung/auswertungAnzeigen']='Auswertung';
 $this->phrasen['lvevaluierung/auswertungAnzeigenInfotext']='Klicken Sie hier, um die Ergebnisse der LV-Evaluierung anzuzeigen.';
 
 $this->phrasen['lvevaluierung/selbstevaluierung']='Selbstevaluierung';
-$this->phrasen['lvevaluierung/selbstevaluierungInfotext']='Füllen Sie die folgenden Felder zur Selbstevaluierung der Lehrveranstaltung aus. Beim Absenden der Daten werden diese an die Studiengangs- und Institutsleitung übermittelt.';
+$this->phrasen['lvevaluierung/selbstevaluierungInfotext']='Füllen Sie die folgenden Felder zur Selbstevaluierung der Lehrveranstaltung aus. Beim Absenden der Daten werden diese an die Studiengangs- und Institutsleitung übermittelt. Mit "*" markierte Felder sind Pflichtfelder.';
+$this->phrasen['lvevaluierung/selbstevaluierungWeiterbFehlt']='Bitte geben Sie den Bedarf an hochschuldidaktischer Weiterbildung (Frage 4) an.';
 
 $this->phrasen['lvevaluierung/speichernundabschicken']='Speichern und Abschicken';
 $this->phrasen['lvevaluierung/confirmEvaluierungAbschicken']='Die Eingabefelder werden gesperrt und die Selbstevaluierung abgeschickt.\nWollen Sie fortfahren?';
@@ -60,7 +64,8 @@ $this->phrasen['lvevaluierung/XhatEineEvaluierungDurchgefuehrt']='%s hat eine Ev
 $this->phrasen['lvevaluierung/selbstevaluierungGruppe']='1. Wie schätzen Sie die Gruppe der Studierenden ein (z.B. hinsichtlich Vorwissen, Lernbereitschaft, Engagement, Beteiligung…)?';
 $this->phrasen['lvevaluierung/selbstevaluierungPersoenlich']='2. Persönliche Einschätzung der LV vor dem Hintergrund der Evaluierungsergebnisse:';
 $this->phrasen['lvevaluierung/selbstevaluierungGeplanteEntwicklung']='3. Geplante Maßnahmen zur Weiterentwicklung der LV:';
-$this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. Ergibt sich für Sie aus den geplanten Maßnahmen zur Weiterentwicklung der LV ein Bedarf an hochschuldidaktischer Weiterbildung?';
+$this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. Ergibt sich aus den geplanten Maßnahmen zur Weiterentwicklung der LV ein Bedarf an hochschuldidaktischer Weiterbildung?';
+$this->phrasen['lvevaluierung/selbstevaluierungWeiterbildungArt']='5. Für welche Art der hochschuldidaktischen Weiterbildung besteht Bedarf?';
 $this->phrasen['lvevaluierung/uebersicht']='Übersicht';
 $this->phrasen['lvevaluierung/infotextAllgemein']='Eine detaillierte Prozessbeschreibung finden Sie im <a href="https://signavio.technikum-wien.at/p/portal#/model/5c5c159b5eb74c9dbb358e252b034457" target="_blank">Prozessportal Signavio</a>';
 $this->phrasen['lvevaluierung/pdfExport']='PDF Export';

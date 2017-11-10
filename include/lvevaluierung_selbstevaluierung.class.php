@@ -31,6 +31,7 @@ class lvevaluierung_selbstevaluierung extends basis_db
 	public $persoenlich;
 	public $gruppe;
 	public $entwicklung;
+	public $weiterbildung_bedarf;
 	public $weiterbildung;
 	public $insertamum;
 	public $insertvon;
@@ -76,6 +77,7 @@ class lvevaluierung_selbstevaluierung extends basis_db
 				$this->persoenlich = $row->persoenlich;
 				$this->gruppe = $row->gruppe;
 				$this->entwicklung = $row->entwicklung;
+				$this->weiterbildung_bedarf = $this->db_parse_bool($row->weiterbildung_bedarf);
 				$this->weiterbildung = $row->weiterbildung;
 				$this->insertamum = $row->insertamum;
 				$this->insertvon = $row->insertvon;
@@ -107,13 +109,14 @@ class lvevaluierung_selbstevaluierung extends basis_db
 		if($this->new)
 		{
 			$qry = 'BEGIN;INSERT INTO addon.tbl_lvevaluierung_selbstevaluierung(lvevaluierung_id, uid, freigegeben,
-					gruppe,  persoenlich, entwicklung,weiterbildung, insertamum, insertvon, updateamum, updatevon) VALUES('.
+					gruppe,  persoenlich, entwicklung, weiterbildung_bedarf, weiterbildung, insertamum, insertvon, updateamum, updatevon) VALUES('.
 					$this->db_add_param($this->lvevaluierung_id, FHC_INTEGER).','.
 					$this->db_add_param($this->uid).','.
 					$this->db_add_param($this->freigegeben, FHC_BOOLEAN).','.
 					$this->db_add_param($this->gruppe).','.
 					$this->db_add_param($this->persoenlich).','.
 					$this->db_add_param($this->entwicklung).','.
+					$this->db_add_param($this->weiterbildung_bedarf, FHC_BOOLEAN).','.
 					$this->db_add_param($this->weiterbildung).','.
 					$this->db_add_param($this->insertamum).','.
 					$this->db_add_param($this->insertvon).','.
@@ -129,6 +132,7 @@ class lvevaluierung_selbstevaluierung extends basis_db
 					' gruppe='.$this->db_add_param($this->gruppe).','.
 					' persoenlich='.$this->db_add_param($this->persoenlich).', '.
 					' entwicklung='.$this->db_add_param($this->entwicklung).', '.
+					' weiterbildung_bedarf='.$this->db_add_param($this->weiterbildung_bedarf, FHC_BOOLEAN).', '.
 					' weiterbildung='.$this->db_add_param($this->weiterbildung).', '.
 					' updateamum='.$this->db_add_param($this->updateamum).', '.
 					' updatevon='.$this->db_add_param($this->updatevon).' '.
@@ -200,6 +204,7 @@ class lvevaluierung_selbstevaluierung extends basis_db
 				$this->persoenlich = $row->persoenlich;
 				$this->gruppe = $row->gruppe;
 				$this->entwicklung = $row->entwicklung;
+				$this->weiterbildung_bedarf = $this->db_parse_bool($row->weiterbildung_bedarf);
 				$this->weiterbildung = $row->weiterbildung;
 				$this->insertamum = $row->insertamum;
 				$this->insertvon = $row->insertvon;

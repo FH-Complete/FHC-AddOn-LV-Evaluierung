@@ -318,6 +318,17 @@ if(!@$db->db_query("SELECT verpflichtend FROM addon.tbl_lvevaluierung LIMIT 1"))
 			echo 'Neue Spalte verpflichtend in addon.tbl_lvevaluierung hinzugefuegt<br>';
 }
 
+// Spalte weiterbildung_bedarf in addon.tbl_lvevaluierung_selbstevaluierung
+if(!@$db->db_query("SELECT weiterbildung_bedarf FROM addon.tbl_lvevaluierung_selbstevaluierung LIMIT 1"))
+{
+	$qry = "ALTER TABLE addon.tbl_lvevaluierung_selbstevaluierung ADD COLUMN weiterbildung_bedarf boolean DEFAULT NULL;";
+
+	if(!$db->db_query($qry))
+		echo '<strong>tbl_lvevaluierung_selbstevaluierung.weiterbildung_bedarf: '.$db->db_last_error().'</strong><br>';
+	else
+		echo 'Neue Spalte weiterbildung_bedarf in addon.tbl_lvevaluierung_selbstevaluierung hinzugefuegt<br>';
+}
+
 //Neue Berechtigung für das Addon hinzufügen
 if($result = $db->db_query("SELECT * FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='addon/lvevaluierung_mail'"))
 {
@@ -344,7 +355,7 @@ $tabellen=array(
 	"addon.tbl_lvevaluierung_frage"  => array("lvevaluierung_frage_id","typ","bezeichnung","aktiv","sort"),
 	"addon.tbl_lvevaluierung_frage_antwort"  => array("lvevaluierung_frage_antwort_id","lvevaluierung_frage_id","bezeichnung","sort","wert"),
 	"addon.tbl_lvevaluierung_antwort"  => array("lvevaluierung_antwort_id","lvevaluierung_code_id","lvevaluierung_frage_id","lvevaluierung_frage_antwort_id","antwort"),
-    "addon.tbl_lvevaluierung_selbstevaluierung" => array("lvevaluierung_selbstevaluierung_id","lvevaluierung_id","uid","freigegeben","persoenlich","gruppe","entwicklung","weiterbildung"),
+	"addon.tbl_lvevaluierung_selbstevaluierung" => array("lvevaluierung_selbstevaluierung_id","lvevaluierung_id","uid","freigegeben","persoenlich","gruppe","entwicklung","weiterbildung_bedarf", "weiterbildung"),
 );
 
 

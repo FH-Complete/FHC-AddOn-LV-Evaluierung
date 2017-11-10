@@ -169,7 +169,9 @@ echo '
 echo '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungGruppe').'</b><br /><div class="textantwort">'.nl2br($db->convert_html_chars($sev->gruppe)).'</div>';
 echo '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungPersoenlich').'</b><br /><div class="textantwort">'.nl2br($db->convert_html_chars($sev->persoenlich)).'</div>';
 echo '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungGeplanteEntwicklung').'</b><br /><div class="textantwort">'.nl2br($db->convert_html_chars($sev->entwicklung)).'</div>';
-echo '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungWeiterbildung').'</b><br /><div class="textantwort">'.nl2br($db->convert_html_chars($sev->weiterbildung)).'</div>';
+echo '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungWeiterbildung').'</b><br /><div class="textantwort">'.nl2br($sev->weiterbildung_bedarf === true?$p->t('global/ja'):($sev->weiterbildung_bedarf === false?$p->t('global/nein'):'')).'</div>';
+if($sev->weiterbildung_bedarf || !empty($sev->weiterbildung))
+	echo '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungWeiterbildungArt').'</b><br /><div class="textantwort">'.nl2br($db->convert_html_chars($sev->weiterbildung)).'</div>';
 
 echo '</div>
 </body>
