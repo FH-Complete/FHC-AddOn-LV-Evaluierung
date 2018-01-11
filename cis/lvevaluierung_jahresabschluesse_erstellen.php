@@ -209,7 +209,7 @@ function getEvaluierteLV($studiengang_kz, $ws, $ss)
     $selbstev_cnt = 0;
     
     //get all selbstevaluierungen per studiengang and studienjahr
-    $selbstevaluierung->getSelbstevaluierungenByStgAndStudienjahr($studiengang_kz, $ws, $ss);
+    $selbstevaluierung->getLVwhereSelbstevaluierungen($studiengang_kz, $ws, $ss);
     $selbstev_arr = $selbstevaluierung->result;
     if (count($selbstev_arr) > 0)
         $selbstev_cnt = count($selbstev_arr['bezeichnung']);

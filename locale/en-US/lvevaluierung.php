@@ -48,12 +48,16 @@ $this->phrasen['lvevaluierung/codesAusgegeben']='Access codes issued';
 $this->phrasen['lvevaluierung/codesAusgegebenInfotext']='Please enter here the number of codes that were in fact used in the evaluation and shown on the form.';
 $this->phrasen['lvevaluierung/codesAusgegebenAnzahl']='Number of codes used';
 $this->phrasen['lvevaluierung/mehrCodesAusgegebenAlsStudierende']='The number of codes used may not exceed the number of students in the course.';
+$this->phrasen['lvevaluierung/mehrAusgefuelltAlsAusgegeben']='The number of codes used cannot be lower than the number of questionnaires filled out.';
+$this->phrasen['lvevaluierung/codesNichtEingetragen']='Number of codes used not filled out.';
+$this->phrasen['lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung']='Notice: Self-evaluation can only be sent when number of used access codes is saved correctly.';
 
 $this->phrasen['lvevaluierung/auswertungAnzeigen']='Analysis';
 $this->phrasen['lvevaluierung/auswertungAnzeigenInfotext']='Click here to display the results of the course evaluation.';
 
 $this->phrasen['lvevaluierung/selbstevaluierung']='Self-evaluation';
 $this->phrasen['lvevaluierung/selbstevaluierungInfotext']='Complete the following fields in the self-evaluation of the course. The data will also be sent to the head of the degree program and the head of department.';
+$this->phrasen['lvevaluierung/selbstevaluierungWeiterbFehlt']='Please fill out he need for further training in university didactics (question 4).';
 
 $this->phrasen['lvevaluierung/speichernundabschicken']='Save and send';
 $this->phrasen['lvevaluierung/confirmEvaluierungAbschicken']='The text boxes are locked and the self-evaluation has been sent. Do you want to continue?';
@@ -62,8 +66,11 @@ $this->phrasen['lvevaluierung/XhatEineEvaluierungDurchgefuehrt']='%s has carried
 $this->phrasen['lvevaluierung/selbstevaluierungGruppe']='1. How do you rate the group of students (e.g. as regards prior knowledge, willingness to learn, commitment, participation…)?';
 $this->phrasen['lvevaluierung/selbstevaluierungPersoenlich']='2. Personal assessment of the course from the background of the results of the evaluation:';
 $this->phrasen['lvevaluierung/selbstevaluierungGeplanteEntwicklung']='3. Measures planned to develop the course:';
-$this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. From the measures planned to develop the course does a need arise for further training in university didactics?';
+
 $this->phrasen['lvevaluierung/uebersicht']='Overview Course Evaluations';
+$this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. Is further training in university didactics needed?';
+$this->phrasen['lvevaluierung/selbstevaluierungWeiterbildungArt']='5. What kind of training in university didactics is needed?';
+
 $this->phrasen['lvevaluierung/infotextAllgemein']='A detailed process description can be found on <a href="https://signavio.technikum-wien.at/p/portal#/model/5c5c159b5eb74c9dbb358e252b034457" target="_blank">Signavio</a>';
 $this->phrasen['lvevaluierung/pdfExport']='PDF Export';
 $this->phrasen['lvevaluierung/einzelAuswertung']='Single analysis';
