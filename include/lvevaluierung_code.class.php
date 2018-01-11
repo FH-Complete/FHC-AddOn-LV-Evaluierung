@@ -29,6 +29,7 @@ class lvevaluierung_code extends basis_db
 	public $code;
 	public $startzeit;
 	public $endezeit;
+    public $lektor_uid = '';
 
     /**
 	 * Konstruktor
@@ -56,6 +57,7 @@ class lvevaluierung_code extends basis_db
 				$this->startzeit = $row->startzeit;
 				$this->endezeit = $row->endezeit;
 				$this->lvevaluierung_id = $row->lvevaluierung_id;
+                $this->lektor_uid = $row->lektor_uid;
 				$this->new=false;
 				return true;
 			}
@@ -90,6 +92,7 @@ class lvevaluierung_code extends basis_db
 				$this->startzeit = $row->startzeit;
 				$this->endezeit = $row->endezeit;
 				$this->lvevaluierung_id = $row->lvevaluierung_id;
+                $this->lektor_uid = $row->lektor_uid;
 				$this->new=false;
 				return true;
 			}
@@ -114,11 +117,12 @@ class lvevaluierung_code extends basis_db
 	{
 		if($this->new)
 		{
-			$qry = "BEGIN;INSERT INTO addon.tbl_lvevaluierung_code(code, startzeit, endezeit, lvevaluierung_id) VALUES(".
+			$qry = "BEGIN;INSERT INTO addon.tbl_lvevaluierung_code(code, startzeit, endezeit, lvevaluierung_id, lektor_uid) VALUES(".
 				$this->db_add_param($this->code).','.
 				$this->db_add_param($this->startzeit).','.
 				$this->db_add_param($this->endezeit).','.
-				$this->db_add_param($this->lvevaluierung_id, FHC_INTEGER).');';
+				$this->db_add_param($this->lvevaluierung_id, FHC_INTEGER).',' .
+                $this->db_add_param($this->lektor_uid).');';
 		}
 		else
 		{
@@ -126,7 +130,8 @@ class lvevaluierung_code extends basis_db
 					'code='.$this->db_add_param($this->code).','.
 					'startzeit='.$this->db_add_param($this->startzeit).','.
 					'endezeit='.$this->db_add_param($this->endezeit).','.
-					'lvevaluierung_id='.$this->db_add_param($this->lvevaluierung_id, FHC_INTEGER).'
+					'lvevaluierung_id='.$this->db_add_param($this->lvevaluierung_id, FHC_INTEGER).','.
+                    'lektor_uid='.$this->db_add_param($this->lektor_uid).'
 					WHERE lvevaluierung_code_id='.$this->db_add_param($this->lvevaluierung_code_id, FHC_INTEGER);
 		}
 		if($this->db_query($qry))
@@ -190,6 +195,7 @@ class lvevaluierung_code extends basis_db
 				$obj->startzeit = $row->startzeit;
 				$obj->endezeit = $row->endezeit;
 				$obj->lvevaluierung_id = $row->lvevaluierung_id;
+                $this->lektor_uid = $row->lektor_uid;
 				$obj->new=false;
 
 				$this->result[] = $obj;

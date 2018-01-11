@@ -333,18 +333,103 @@ if($result = $db->db_query("SELECT * FROM system.tbl_berechtigung WHERE berechti
 	}
 }
 
+
+//CREATE TABLE tbl_lvevaluierung_jahresabschluss
+if(!@$db->db_query("SELECT 1 FROM addon.tbl_lvevaluierung_jahresabschluss LIMIT 1"))
+{
+	$qry = "CREATE TABLE addon.tbl_lvevaluierung_jahresabschluss
+        (
+            lvevaluierung_jahresabschluss_id integer,
+            oe_kurzbz varchar (32),
+            studienjahr_kurzbz varchar (16),
+            ergebnisse text,
+            verbesserungen text,
+            freigegeben boolean NOT NULL DEFAULT false,
+            insertamum timestamp DEFAULT now(),
+            insertvon varchar(32),
+            updateamum timestamp DEFAULT now(),
+            updatevon varchar(32)
+        );
+
+        ALTER TABLE addon.tbl_lvevaluierung_jahresabschluss ADD CONSTRAINT pk_addon_lvevaluierung_jahresabschluss_lvevaluierung_jahresabschluss_id PRIMARY KEY (lvevaluierung_jahresabschluss_id);
+
+    	CREATE SEQUENCE addon.tbl_lvevaluierung_jahresabschluss_lvevaluierung_jahresabschluss_id_seq
+    	INCREMENT BY 1
+    	NO MAXVALUE
+    	NO MINVALUE
+    	CACHE 1;
+
+        ALTER TABLE addon.tbl_lvevaluierung_jahresabschluss ALTER COLUMN lvevaluierung_jahresabschluss_id SET DEFAULT nextval('addon.tbl_lvevaluierung_jahresabschluss_lvevaluierung_jahresabschluss_id_seq');
+        ALTER TABLE addon.tbl_lvevaluierung_jahresabschluss ADD CONSTRAINT fk_addon_lvevaluierung_jahresabschluss_oe_kurzbz FOREIGN KEY (oe_kurzbz) REFERENCES public.tbl_organisationseinheit(oe_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+        ALTER TABLE addon.tbl_lvevaluierung_jahresabschluss ADD CONSTRAINT fk_addon_lvevaluierung_jahresabschluss_studienjahr_kurzbz FOREIGN KEY (studienjahr_kurzbz) REFERENCES public.tbl_studienjahr(studienjahr_kurzbz) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+        GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_lvevaluierung_jahresabschluss TO web;
+        GRANT SELECT, UPDATE, INSERT, DELETE ON addon.tbl_lvevaluierung_jahresabschluss TO vilesci;
+        GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_jahresabschluss_lvevaluierung_jahresabschluss_id_seq TO web;
+        GRANT SELECT, UPDATE ON addon.tbl_lvevaluierung_jahresabschluss_lvevaluierung_jahresabschluss_id_seq TO vilesci;
+
+        ";
+
+	if(!$db->db_query($qry))
+		echo '<strong>tbl_lvevaluierung_jahresabschluss: '.$db->db_last_error().'</strong><br>';
+	else
+		echo 'Neue Tabelle tbl_lvevaluierung_jahresabschluss hinzugefuegt<br>';
+}
+
+
+//Neue Berechtigung für das Addon hinzufügen
+if($result = $db->db_query("SELECT * FROM system.tbl_berechtigung WHERE berechtigung_kurzbz='addon/lvevaluierung_rektorat'"))
+{
+	if($db->db_num_rows($result) == 0)
+	{
+		$qry = "INSERT INTO system.tbl_berechtigung(berechtigung_kurzbz, beschreibung)
+				VALUES('addon/lvevaluierung_rektorat','AddOn LVEvaluierung - Rechte für Rektorat');";
+
+		if(!$db->db_query($qry))
+			echo '<strong>Berechtigung: '.$db->db_last_error().'</strong><br>';
+		else
+			echo 'Neue Berechtigung addon/lvevaluierung_rektorat hinzugefuegt!<br>';
+	}
+}
+
+
+// Spalte lv_aufgeteilt in addon.tbl_lvevaluierung
+if(!@$db->db_query("SELECT lv_isaufgeteilt FROM addon.tbl_lvevaluierung LIMIT 1"))
+{
+	$qry = "ALTER TABLE addon.tbl_lvevaluierung ADD COLUMN lv_aufgeteilt boolean NOT NULL DEFAULT false;";
+
+	if(!$db->db_query($qry))
+		echo '<strong>tbl_lvevaluierung.lv_aufgeteilt: '.$db->db_last_error().'</strong><br>';
+		else
+			echo 'Neue Spalte lv_aufgeteilt in addon.tbl_lvevaluierung hinzugefuegt<br>';
+}
+
+// Spalte lektor_uid in addon.tbl_lvevaluierung_code
+if(!@$db->db_query("SELECT lektor_uid FROM addon.tbl_lvevaluierung_code LIMIT 1"))
+{
+	$qry = "ALTER TABLE addon.tbl_lvevaluierung_code ADD COLUMN lektor_uid varchar(32);
+            ALTER TABLE addon.tbl_lvevaluierung_code ADD CONSTRAINT fk_lvevaluierung_code_lektor_uid FOREIGN KEY (lektor_uid) REFERENCES public.tbl_benutzer(uid) ON DELETE RESTRICT ON UPDATE CASCADE;";
+
+	if(!$db->db_query($qry))
+		echo '<strong>tbl_lvevaluierung_code.lektor_uid: '.$db->db_last_error().'</strong><br>';
+    else
+        echo 'Neue Spalte lektor_uid in addon.tbl_lvevaluierung_code hinzugefuegt<br>';
+}
+
+
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
 
 
 // Liste der verwendeten Tabellen / Spalten des Addons
 $tabellen=array(
-	"addon.tbl_lvevaluierung"  => array("lvevaluierung_id","lehrveranstaltung_id","studiensemester_kurzbz","startzeit","endezeit","dauer","codes_ausgegeben","insertamum","insertvon","updateamum","updatevon"),
+	"addon.tbl_lvevaluierung"  => array("lvevaluierung_id","lehrveranstaltung_id","studiensemester_kurzbz","startzeit","endezeit","dauer","codes_ausgegeben","insertamum","insertvon","updateamum","updatevon","verpflichtend","lv_isaufgeteilt"),
 	"addon.tbl_lvevaluierung_code"  => array("lvevaluierung_code_id","code","startzeit","endezeit","lvevaluierung_id"),
 	"addon.tbl_lvevaluierung_frage"  => array("lvevaluierung_frage_id","typ","bezeichnung","aktiv","sort"),
 	"addon.tbl_lvevaluierung_frage_antwort"  => array("lvevaluierung_frage_antwort_id","lvevaluierung_frage_id","bezeichnung","sort","wert"),
 	"addon.tbl_lvevaluierung_antwort"  => array("lvevaluierung_antwort_id","lvevaluierung_code_id","lvevaluierung_frage_id","lvevaluierung_frage_antwort_id","antwort"),
     "addon.tbl_lvevaluierung_selbstevaluierung" => array("lvevaluierung_selbstevaluierung_id","lvevaluierung_id","uid","freigegeben","persoenlich","gruppe","entwicklung","weiterbildung"),
+    "addon.tbl_lvevaluierung_jahresabschluss" => array("lvevaluierung_jahresabschluss_id", "oe_kurzbz", "studienjahr_kurzbz", "ergebnisse", "verbesserungen", "freigegeben", "insertamum", "insertvon", "updateamum", "updatevon")
 );
 
 

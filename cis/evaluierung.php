@@ -147,6 +147,7 @@ else
 		// Speichern der Daten
 		if(isset($_POST['submit_btn']))
 		{
+            $lektor_uid = (isset($_POST['lektor_uid'])) ? $_POST['lektor_uid'] : '';          
 			// Save
             $fragenantworten=array();
 			// Alle Antworten speichern
@@ -192,9 +193,10 @@ else
                     $antwort->save();
                 }
             }
-
-			// Code Endezeit setzen
+           
+			// Code Endezeit und Lektor setzen
 			$lvevaluierung_code->endezeit=date('Y-m-d H:i:s');
+            $lvevaluierung_code->lektor_uid = $lektor_uid;
 			$lvevaluierung_code->save();
 
 			// Ausloggen um umleiten
@@ -268,6 +270,8 @@ else
 		$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 		$anzahl_studierende=count($teilnehmer);
 		$lehrform = $lv->lehrform_kurzbz;
+        
+        $lv_aufgeteilt = $lvevaluierung->lv_aufgeteilt;   
 
 		echo '
 		 <div class="table-responsive" >
@@ -323,6 +327,22 @@ else
 
                         <form action ="'.basename(__FILE__).'" method="POST" id="umfrage" name="umfrage" class="form-vertical">';
 
+        //dropdown mit lektoren nur anzeigen, wenn LV von mehreren Lektoren gehalten worden ist (und bei erstellung der lvevaluierung checkbox gesetzt worden ist)
+        if ($lv_aufgeteilt){
+            echo '<div class="form-group">';
+            echo '<label>' . $p->t('lvevaluierung/lektorDropdown') . ':</label>';          
+            echo '          
+            <select required class="form-control" name="lektor_uid">
+            <option value="">' . $p->t('lvevaluierung/lektorWaehlen') . '</option>';
+            foreach($lem->result as $row) 
+            {  
+                echo '<option value="' . $row->uid . '">' . $row->titelpre . ' ' . $row->titelpost . ' ' . $row->vorname . ' ' . $row->nachname . '</option>';
+            }
+            echo '
+            </select>
+            </div></p>';
+        } 
+        
 		$frage = new lvevaluierung_frage();
 		$frage->getFragen($lvevaluierung_id);
 
@@ -437,11 +457,10 @@ else
 			$(function() {
 
 				$('#sprache-dropdown a').on('click', function() {
-
 					var sprache = $(this).attr('data-sprache');
 					changeSprache(sprache);
 				});
-
+              
 				<?php
 				if($restdauer>0)
 					echo 'count_down('.$restdauer.');';

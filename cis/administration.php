@@ -33,7 +33,6 @@ require_once('../include/lvevaluierung_code.class.php');
 require_once('../include/lvevaluierung_selbstevaluierung.class.php');
 
 $uid = get_uid();
-
 $sprache = getSprache();
 $p = new phrasen($sprache);
 
@@ -43,6 +42,7 @@ $evaluierung_zeitraum_msg='';
 $evaluierung_ausgegeben_msg='';
 $evaluierung_selbsteval_msg='';
 $jsjumpinfo='';
+$lv_aufgeteilt = false;
 
 echo '<!DOCTYPE html>
 <html>
@@ -132,6 +132,7 @@ if(isset($_POST['saveEvaluierung']))
 	$lvevaluierung_id = $_POST['lvevaluierung_id'];
 	$von_datum = $_POST['von_datum'];
 	$bis_datum = $_POST['bis_datum'];
+    $lv_aufgeteilt = (isset($_POST['lv_aufgeteilt'])) ? true : false;
 
 	//Datum auf Gueltigkeit pruefen
 	if (($von_datum=='' || $bis_datum=='') || !$datum_obj->formatDatum($von_datum,'Y-m-d') || !$datum_obj->formatDatum($bis_datum,'Y-m-d'))
@@ -155,7 +156,6 @@ if(isset($_POST['saveEvaluierung']))
 		}
 		else
 		{
-
 			$evaluierung = new lvevaluierung();
 
 			$error = false;
@@ -184,6 +184,7 @@ if(isset($_POST['saveEvaluierung']))
 				$evaluierung->insertvon = $uid;
 				$evaluierung->updateamum = date('Y-m-d H:i:s');
 				$evaluierung->updatevon = $uid;
+                $evaluierung->lv_aufgeteilt = $lv_aufgeteilt;
 
 				if($evaluierung->save())
 				{
@@ -353,14 +354,21 @@ if ($p->t('lvevaluierung/infotextAllgemein')!='')
 $stg = new studiengang();
 $stg->load($lv->studiengang_kz);
 
-echo LVEvaluierungGetInfoBlock($lv, $stg, $studiensemester_kurzbz);
+//echo LVEvaluierungGetInfoBlock($lv, $stg, $studiensemester_kurzbz);
+
+//check, ob eine LV mehrere Lektoren hat
+$le_mitarbeiter = new Lehreinheitmitarbeiter();
+$le_mitarbeiter->getMitarbeiterLV($lehrveranstaltung_id, $studiensemester_kurzbz);
+$hasMehrereLektoren = false;
+if (isset($le_mitarbeiter->result) && count($le_mitarbeiter->result) > 1)
+    $hasMehrereLektoren = true;
 
 // Evaluierungszeitraum Form
 echo '
 <div class="lvepanel">
 	<div class="lvepanel-head">'.$p->t('lvevaluierung/evaluierunganlegen').'</div>
 	<div class="lvepanel-body">
-		'.$p->t('lvevaluierung/evaluierunganlegenInfotext').'<br><br>';
+		';
 
 $evaluierung = new lvevaluierung();
 if(!$evaluierung->getEvaluierung($lehrveranstaltung_id, $studiensemester_kurzbz))
@@ -381,10 +389,19 @@ if($evaluierung->verpflichtend)
 
 echo '
 		<div id="formular">
-
 		<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
-		<input type="hidden" name="lvevaluierung_id" value="'.$db->convert_html_chars($evaluierung->lvevaluierung_id).'" />
-		<table>
+		<input type="hidden" name="lvevaluierung_id" value="' . $db->convert_html_chars($evaluierung->lvevaluierung_id) . '">';
+        
+        if($hasMehrereLektoren)
+        {
+            echo $p->t('lvevaluierung/mehrereLektorenEineLvTxt'); 
+            echo '<br><br>           
+            <input type="checkbox" name="lv_aufgeteilt"'; if ($evaluierung->lv_aufgeteilt) echo 'checked'; else echo ''; echo '>' . $p->t('lvevaluierung/lektorWaehlenTxt') . '<br><br><br>';             
+        }          
+        
+        echo $p->t('lvevaluierung/evaluierunganlegenInfotext').'<br><br>';
+echo '
+        <table>
 			<tr>
 				<td>'.$p->t('lvevaluierung/startzeit').'</td>
 				<td>
@@ -427,9 +444,8 @@ else
 	echo '
 	<div class="lvepanel '.($disabled?'disabled':'').'">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/codesErstellen').'</div>
-		<div class="lvepanel-body">'.$p->t('lvevaluierung/codesErstellenInfotext').'
-			<br>
-			<br>';
+		<div class="lvepanel-body">' .
+            $p->t('lvevaluierung/codesErstellenInfotext').'<br><br>';		
 			if(!$disabled)
 				echo '<a href="qrcode.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" onclick="showSpinner(\''.$anzahl_studierende.'\')">'.$p->t('lvevaluierung/CodeListeErstellen').'</a> <img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif">';
 			else
@@ -447,7 +463,7 @@ else
 		</div>
 	</div>';
 
-
+ 
 	// Ausgegebene Codes erfassen
 	echo '
 	<div class="lvepanel '.($disabled?'disabled':'').'" id="divcodes">
@@ -570,8 +586,8 @@ else
 			<td valign="top"><b>'.$p->t('lvevaluierung/selbstevaluierungPersoenlich').'</b></td>
 		</tr>
 		<tr>
-			<td>
-				<textarea name="persoenlich" '.$locked.'>'.$db->convert_html_chars($sev->persoenlich).'</textarea>
+			<td>	
+			<textarea name="persoenlich" '.$locked.'>'.$db->convert_html_chars($sev->persoenlich).'</textarea>
 			</td>
 		</tr>
 		<tr>

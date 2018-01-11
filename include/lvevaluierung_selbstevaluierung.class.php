@@ -221,5 +221,40 @@ class lvevaluierung_selbstevaluierung extends basis_db
 			return false;
 		}
 	}
+    
+    /**
+	 * Laedt Selbstevaluierung zu einem bestimmten Studiengang und Studienjahr
+	 * @param $studiengang_kz, $ws (wintersemester), $ss (sommersemester)
+	 * @return associative array
+	 */
+    public function getSelbstevaluierungenByStgAndStudienjahr($studiengang_kz, $ws, $ss)
+    {       
+         $qry = '
+            SELECT lv.bezeichnung, lv.orgform_kurzbz
+            FROM lehre.tbl_lehrveranstaltung lv
+            JOIN addon.tbl_lvevaluierung lvev USING (lehrveranstaltung_id)
+            JOIN addon.tbl_lvevaluierung_selbstevaluierung lvsev USING (lvevaluierung_id)
+            WHERE lv.studiengang_kz = ' . $this->db_add_param($studiengang_kz, FHC_INTEGER) . '
+            AND (lvev.studiensemester_kurzbz = ' . $this->db_add_param($ws, FHC_STRING) . ' OR lvev.studiensemester_kurzbz = ' . $this->db_add_param($ss, FHC_STRING) . ')
+            AND lvsev.freigegeben = true
+            ORDER BY lv.bezeichnung';
+
+        if ($result = $this->db_query($qry)) 
+        {
+            $selbstev_arr = array(); 
+            while ($row = $this->db_fetch_object($result)) 
+            {
+                $selbstev_arr['bezeichnung'][] = $row->bezeichnung;
+                $selbstev_arr['orgform_kurzbz'][] = $row->orgform_kurzbz;
+            }
+            $this->result = $selbstev_arr;
+            return true;
+        }
+        else
+        {
+            $this->errormsg = 'Fehler beim Laden der Daten';
+            return false;  
+        }
+    }
 }
 ?>

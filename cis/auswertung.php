@@ -31,7 +31,7 @@ require_once('../include/lvevaluierung_antwort.class.php');
 require_once('../include/lvevaluierung_frage.class.php');
 
 $uid = get_uid();
-
+//$uid = 'hubergri'; //wekerle shooman maderdon flynn    adams (check)
 $sprache = getSprache();
 $p = new phrasen($sprache);
 
@@ -90,6 +90,11 @@ $stg->load($lv->studiengang_kz);
 
 // Berechtigungen pruefen
 $lem = new lehreinheitmitarbeiter();
+$lem->getMitarbeiterLV($lehrveranstaltung_id, $studiensemester_kurzbz);
+$isLektor_lv_aufgeteilt = false;
+$isStgl = false;
+$isInstitutsleiter = false;
+
 if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz, $uid))
 {
 	$rechte = new benutzerberechtigung();
@@ -97,15 +102,33 @@ if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studie
 
 	$lva = new lehrveranstaltung();
 	$lva->load($lvevaluierung->lehrveranstaltung_id);
-	$oes = $lva->getAllOe();
+	$oes = $lva->getAllOe(); 
 	$oes[] = $lva->oe_kurzbz; // Institut
-	$oes[] = $stg->oe_kurzbz; // OE des Studiengangs der Lehrveranstaltung
+	$oes[] = $stg->oe_kurzbz; // OE des Studiengangs der Lehrveranstaltung 
 	if (!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung', $oes, 's'))
 	{
 		die($p->t('global/keineBerechtigungFuerDieseSeite'));
 	}
+    else 
+    {
+        $isStgl = true;
+        $isInstitutsleiter = true;
+    }
+} 
+//User ist der LV + dem Studiensemester zugeordent
+else
+{
+    //wenn Evaulierung für verschiedene Lektoren gewählt worden ist, check ob aktuelle uid einer von diesen ist
+   if($lvevaluierung->lv_aufgeteilt)
+   {       
+       foreach($lem->result as $lektor)
+       {
+           if($uid == $lektor->uid)
+               $isLektor_lv_aufgeteilt = true;
+       }
+   }
 }
-
+    
 $studiengang_bezeichnung = $stg->bezeichnung_arr[$sprache];
 $studiensemester = $studiensemester_kurzbz;
 
@@ -145,10 +168,51 @@ if ($anzahl_codes_gesamt > 0)
 else
 	$prozent_abgeschlossen = 0;
 
+$auswertung = (isset($_POST['auswertung']) ? $_POST['auswertung'] : '');
+
+//dropdown nur für lektoren, die persönliche Auswertung erhalten haben
+//wahl: gesamtauswertung + persönliche auswertung
+if($isLektor_lv_aufgeteilt)
+{
+    echo '<form method="POST" action="">';
+    echo '<span>Bitte wählen Sie Ihre gewünschte Auswertung: </span>';          
+    echo '          
+    <select name="auswertung"">
+        <option value="gesamt"' . (($auswertung == 'gesamt') ? "selected" : "") . '>Gesamtauswertung</option>
+        <option value="persoenlich"' . (($auswertung == 'persoenlich') ? "selected" : "") . '>Persönliche Auswertung</option>         
+    </select>
+    <input type="submit" value="'.$p->t('global/auswaehlen').'" />
+    </form></p>';           
+}
+
+//dropdown nur für studiengangs- und institutsleiter 
+//wahl: gesamtauswertung + individuelle auswertungen der jeweiligen lektoren dieser lv
+if($isStgl || $isInstitutsleiter)
+{
+    echo '<form method="POST" action="">';
+    echo '<span>Bitte wählen Sie Ihre gewünschte Auswertung: </span>';          
+    echo '          
+    <select name="auswertung">
+        <option value="gesamt"' . (($auswertung == 'gesamt') ? "selected" : "") . '>Gesamtauswertung</option>';
+        foreach($lem->result as $row) 
+        {  
+            echo '<option value="' . $row->uid . '"' . (($auswertung == $row->uid) ? "selected" : "") . '>' . $row->titelpre . ' ' . $row->titelpost . ' ' . $row->vorname . ' ' . $row->nachname . '</option>';
+        }
+    echo '
+    </select>
+    <input type="submit" value="'.$p->t('global/auswaehlen').'" />
+    </form></p>';           
+}
+
 if ($code_id != '')
 	echo '<a href="auswertung.php?lvevaluierung_id='.$lvevaluierung_id.'">'.$p->t('lvevaluierung/alleAnzeigen').'</a>';
+elseif ($auswertung != 'gesamt')
+{
+    $lektor_uid = ($auswertung == 'persoenlich') ? $uid : $auswertung;
+    echo '<a href="auswertung_export.php?lvevaluierung_id='.$lvevaluierung_id.'&lektor_uid=' . $lektor_uid . '">'.$p->t('lvevaluierung/pdfExport').'</a>';
+}
 else
-	echo '<a href="auswertung_export.php?lvevaluierung_id='.$lvevaluierung_id.'">'.$p->t('lvevaluierung/pdfExport').'</a>';
+    echo '<a href="auswertung_export.php?lvevaluierung_id='.$lvevaluierung_id.'">'.$p->t('lvevaluierung/pdfExport').'</a>';
 
 echo '
 	<table class="tablesorter">
@@ -210,7 +274,12 @@ echo '
 
 // Antworten zu dieser Evaluierung laden
 $lvevaluierung_antwort = new lvevaluierung_antwort();
-$lvevaluierung_antwort->loadAntworten($lvevaluierung_id, $code_id);
+if ($auswertung == 'persoenlich')
+    $lvevaluierung_antwort->loadAntworten($lvevaluierung_id, $code_id, $uid);
+elseif (($isStgl || $isInstitutsleiter) && $auswertung != 'gesamt')
+    $lvevaluierung_antwort->loadAntworten($lvevaluierung_id, $code_id, $auswertung);
+else
+    $lvevaluierung_antwort->loadAntworten($lvevaluierung_id, $code_id);
 
 $sprache = getSprache();
 $db = new basis_db();

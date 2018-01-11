@@ -114,7 +114,7 @@ class lvevaluierung_antwort extends basis_db
 	 * @param integer $code Optional. Code, dessen Ergebnisse geladen werden sollen
 	 * @return boolean true wenn ok, false im Fehlerfall
 	 */
-	public function loadAntworten($lvevaluierung_id, $code_id='')
+	public function loadAntworten($lvevaluierung_id, $code_id='', $uid = '')
 	{
 
 		$qry = "SELECT
@@ -130,6 +130,9 @@ class lvevaluierung_antwort extends basis_db
 							
 				if ($code_id != '')
 					$qry .= " AND lvevaluierung_code_id=".$this->db_add_param($code_id, FHC_INTEGER);
+                
+                if ($uid != '')
+					$qry .= " AND lektor_uid=".$this->db_add_param($uid, FHC_STRING);
 					
 				$qry .= " ORDER BY tbl_lvevaluierung_frage.sort";
 

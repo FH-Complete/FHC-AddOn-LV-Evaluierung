@@ -42,6 +42,8 @@ if (!isset($_GET['lvevaluierung_id']))
 if (!is_numeric($_GET['lvevaluierung_id']))
 	die('Id ist ungueltig');
 
+$lektor_uid = (isset($_GET['lektor_uid'])) ? $_GET['lektor_uid'] : '';
+
 $output = 'pdf';
 
 if (isset($_GET['output']) && ($output = 'odt' || $output = 'doc'))
@@ -56,6 +58,10 @@ if (!$lvevaluierung->load($lvevaluierung_id))
 
 // Berechtigungen pruefen
 $lem = new lehreinheitmitarbeiter();
+$isLektor_lv_aufgeteilt = false;
+$isStgl = false;
+$isInstitutsleiter = false;
+
 if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz, $uid))
 {
 	$rechte = new benutzerberechtigung();
@@ -69,6 +75,24 @@ if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studie
 	{
 		die($rechte->errormsg);
 	}
+      else 
+    {
+        $isStgl = true;
+        $isInstitutsleiter = true;
+    }
+} 
+//User ist der LV + dem Studiensemester zugeordent
+else
+{
+    //wenn Evaulierung für verschiedene Lektoren gewählt worden ist, check ob aktuelle uid einer von diesen ist
+   if($lvevaluierung->lv_aufgeteilt)
+   {       
+       foreach($lem->result as $lektor)
+       {
+           if($uid == $lektor->uid)
+               $isLektor_lv_aufgeteilt = true;
+       }
+   }
 }
 
 $lv = new lehrveranstaltung();
@@ -146,7 +170,19 @@ $lehrform = $lv->lehrform_kurzbz;
 
 $stg->getAllTypes();
 
+if($lektor_uid)
+{
+    $person = new person();
+    $person->getPersonFromBenutzer($lektor_uid);
+    $name = $person->getFullName();
+    
+    $lektor_name = ' - ' . $name;
+}
+else
+    $lektor_name = '';
+
 $data = array(
+    'lektor_name' => $lektor_name,
 	'bezeichnung' => $lv->bezeichnung,
 	'bezeichnung_englisch' => $lv->bezeichnung_english,
 	'lehrveranstaltung_id' => $lv->lehrveranstaltung_id,
@@ -170,7 +206,11 @@ $data = array(
 );
 
 $lvevaluierung_antwort = new lvevaluierung_antwort();
-$lvevaluierung_antwort->loadAntworten($lvevaluierung_id);
+if(!empty($lektor_uid))
+
+    $lvevaluierung_antwort->loadAntworten($lvevaluierung_id, "", $lektor_uid);
+else  
+    $lvevaluierung_antwort->loadAntworten($lvevaluierung_id);
 
 $sprache = getSprache();
 $db = new basis_db();
@@ -209,8 +249,8 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 		case 'singleresponse':
 
 			// Alle moeglichen Antworten zu dieser Frage holen
-			$lv_frage = new lvevaluierung_frage();
-			$lv_frage->loadAntworten($lvevaluierung_frage_id);
+			$lv_frage = new lvevaluierung_frage();  
+            $lv_frage->loadAntworten($lvevaluierung_frage_id);
 			$antworten_array = array();
 			$frage_minwert = null;
 			$frage_maxwert = null;

@@ -36,6 +36,7 @@ class lvevaluierung extends basis_db
 	public $updateamum;
 	public $updatevon;
 	public $verpflichtend=false;
+    public $lv_aufgeteilt=false;
 
 	/**
 	 * Konstruktor
@@ -81,6 +82,7 @@ class lvevaluierung extends basis_db
 				$this->updateamum = $row->updateamum;
 				$this->updatevon = $row->updatevon;
 				$this->verpflichtend = $this->db_parse_bool($row->verpflichtend);
+                $this->lv_aufgeteilt = $this->db_parse_bool($row->lv_aufgeteilt);
 
 				$this->new = false;
 
@@ -143,7 +145,7 @@ class lvevaluierung extends basis_db
 		{
 			$qry = 'BEGIN;INSERT INTO addon.tbl_lvevaluierung(lehrveranstaltung_id, studiensemester_kurzbz,
 					startzeit, endezeit, dauer, codes_ausgegeben, insertamum, insertvon,
-					updateamum, updatevon, verpflichtend) VALUES('.
+					updateamum, updatevon, verpflichtend, lv_aufgeteilt) VALUES('.
 					$this->db_add_param($this->lehrveranstaltung_id, FHC_INTEGER).','.
 					$this->db_add_param($this->studiensemester_kurzbz).','.
 					$this->db_add_param($this->startzeit).','.
@@ -154,7 +156,8 @@ class lvevaluierung extends basis_db
 					$this->db_add_param($this->insertvon).','.
 					$this->db_add_param($this->updateamum).','.
 					$this->db_add_param($this->updatevon).','.
-					$this->db_add_param($this->verpflichtend, FHC_BOOLEAN).');';
+					$this->db_add_param($this->verpflichtend, FHC_BOOLEAN).','.
+                    $this->db_add_param($this->lv_aufgeteilt, FHC_BOOLEAN).');';
 		}
 		else
 		{
@@ -167,7 +170,8 @@ class lvevaluierung extends basis_db
 					' codes_ausgegeben='.$this->db_add_param($this->codes_ausgegeben, FHC_INTEGER).', '.
 					' updateamum='.$this->db_add_param($this->updateamum).', '.
 					' updatevon='.$this->db_add_param($this->updatevon).', '.
-					' verpflichtend='.$this->db_add_param($this->verpflichtend, FHC_BOOLEAN).
+					' verpflichtend='.$this->db_add_param($this->verpflichtend, FHC_BOOLEAN).', '.
+                    ' lv_aufgeteilt='.$this->db_add_param($this->lv_aufgeteilt, FHC_BOOLEAN).
 					' WHERE lvevaluierung_id='.$this->db_add_param($this->lvevaluierung_id, FHC_INTEGER);
 		}
 
@@ -263,6 +267,7 @@ class lvevaluierung extends basis_db
 				$this->insertamum = $row->insertamum;
 				$this->insertvon = $row->insertvon;
 				$this->verpflichtend = $this->db_parse_bool($row->verpflichtend);
+                $this->lv_aufgeteilt = $this->db_parse_bool($row->lv_aufgeteilt);
 				$this->new=false;
 
 				return true;
