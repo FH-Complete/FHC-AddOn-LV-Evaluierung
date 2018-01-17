@@ -43,7 +43,8 @@ $this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Bitte legen Sie hier
 $this->phrasen['lvevaluierung/dauerInfotext']='Die Bearbeitungszeit definiert, wie lange Studierende nach dem Start der Evaluierung Zeit haben, diese auszufüllen. Wir empfehlen, die voreingestellten 10 Minuten beizubehalten. Sie können den Wert aber auch adaptieren.';
 
 $this->phrasen['lvevaluierung/codesErstellen']='Liste der Zugangscodes drucken';
-$this->phrasen['lvevaluierung/codesErstellenInfotext']='Klicken Sie auf den Link um ein PDF mit Codes herunterzuladen. Dies kann bei großen Gruppen ein paar Sekunden dauern.<br>Drucken Sie das Dokument anschließend aus.';
+$this->phrasen['lvevaluierung/codesErstellenInfotext']='Klicken Sie auf den Link um ein PDF mit Codes herunterzuladen. Dies kann bei großen Gruppen ein paar Sekunden dauern.<br>Drucken Sie das Dokument anschließend einseitig* aus.
+														<br><small>*Da die QR-Codes ausgeschnitten werden, sollten Sie pro Blatt nur einseitig ausdrucken. Achten Sie dafür auf Ihre Druckereinstellungen.</small>';
 
 $this->phrasen['lvevaluierung/evaluierungDruchfuehren']='Evaluierung durchführen';
 $this->phrasen['lvevaluierung/evaluierungDruchfuehrenInfotext']='Führen Sie die LV-Evaluierung im festgelegten Zeitraum durch.';
@@ -105,7 +106,7 @@ $this->phrasen['lvevaluierung/evaluierungenAnfordern'] = 'LV Evaluierungen & Aus
 $this->phrasen['lvevaluierung/evaluierungenAnfordernTxt'] = 'Hier können Sie die Selbstsevaluierungen der Lektoren und die zugehörigen Auswertungen der Studenten einsehen. <br>
                 Zudem können Sie Selbstevaluierungen als verpflichtend abzugeben markieren.';
 $this->phrasen['lvevaluierung/jahresabschlussberichtErstellen'] = 'LV Evaluierung Jahresabschlussbericht anzeigen, bearbeiten & drucken';
-$this->phrasen['lvevaluierung/jahresabschlussberichtErstellenTxt'] = 'Hier können Sie den Lehrveranstaltungevaluierung Jahresabschlussbericht erstellen und an das Rektorat verschicken.<br>
+$this->phrasen['lvevaluierung/jahresabschlussberichtErstellenTxt'] = 'Hier können Sie den Jahresabschlussbericht über die LV Evaluierungen erstellen und an das Rektorat verschicken.<br>
                 Sie können auch vergangene Jahresabschlussberichte einsehen und drucken. ';
 $this->phrasen['lvevaluierung/evaluierungenPruefen'] = 'LV Evaluierungen prüfen';
 $this->phrasen['lvevaluierung/evaluierungenPruefenTxt'] = 'Hier können Sie alle Lehrveranstaltungsevaluierungen prüfen, bei denen der Vortragende zugleich der Studiengangsleiter war.';

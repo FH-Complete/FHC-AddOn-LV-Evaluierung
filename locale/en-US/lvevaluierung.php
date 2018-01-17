@@ -41,7 +41,8 @@ $this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Please specify here 
 $this->phrasen['lvevaluierung/dauerInfotext']='The processing time defines how much time the students have to complete the evaluation after it has been started. We recommend that you keep to the preset 10 minutes. However, the length of time can be adapted.';
 
 $this->phrasen['lvevaluierung/codesErstellen']='Print the list of the access codes';
-$this->phrasen['lvevaluierung/codesErstellenInfotext']='Click on the link to download a PDF with codes. This can take a few seconds with a large group. Then print the document.';
+$this->phrasen['lvevaluierung/codesErstellenInfotext']='Click on the link to download a PDF with codes. This can take a few seconds with a large group. Then print the document one-sided*.
+	 <br><small>ENGLISH *Da die QR-Codes ausgeschnitten werden, sollten Sie pro Blatt nur einseitig ausdrucken. Achten Sie dafür auf Ihre Druckereinstellungen.</small>';
 
 $this->phrasen['lvevaluierung/evaluierungDruchfuehren']='Carry out the evaluation';
 $this->phrasen['lvevaluierung/evaluierungDruchfuehrenInfotext']='Carry out the course evaluation within the specified time period.';

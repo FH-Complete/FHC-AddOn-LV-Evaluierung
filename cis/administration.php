@@ -471,7 +471,7 @@ echo '
 		{
 			echo $p->t('lvevaluierung/mehrereLektorenEineLvTxt'); 
 			echo '<br><br>
-			<input type="checkbox" name="lv_aufgeteilt"'; if ($evaluierung->lv_aufgeteilt) echo 'checked'; else echo ''; echo '>' . $p->t('lvevaluierung/lektorWaehlenTxt') . '<br><br><br>';
+			<input type="checkbox" name="lv_aufgeteilt"'; if ($evaluierung->lv_aufgeteilt) echo 'checked '; else echo ''; echo $locked; echo '>' . $p->t('lvevaluierung/lektorWaehlenTxt') . '<br><br><br>';
 		}
 		
 		echo $p->t('lvevaluierung/evaluierunganlegenInfotext').'<br><br>';
@@ -506,8 +506,10 @@ echo '
 </div>
 ';
 
-// Weitere Informationen werden erst angezeigt wenn eine Evaluierung angelegt wurde
-if($evaluierung->lvevaluierung_id!='')
+// Weitere Informationen werden erst angezeigt wenn Codes vorhanden
+$codes = new lvevaluierung_code();
+$codes->loadCodes($evaluierung->lvevaluierung_id);
+if(count($codes->result) > 0)
 	$disabled=false;
 else
 	$disabled=true;
