@@ -272,10 +272,21 @@ xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
 </xsl:template>
 	
 <xsl:template match="frage">
+
+<xsl:choose>
+<xsl:when test="frage_typ='labelsub'">
+<text:p text:style-name="P4"><xsl:value-of select="frage_text"/></text:p>
+<text:p text:style-name="P4"/>
+</xsl:when>
+<xsl:otherwise>
 <text:p text:style-name="P3"><xsl:value-of select="frage_text"/></text:p>
-<text:p text:style-name="P5"/>
+</xsl:otherwise>
+</xsl:choose>
+
+
 <xsl:choose>
 	<xsl:when test="frage_typ='singleresponse'">
+<text:p text:style-name="P5"/>
 		<table:table table:name="Tabelle1" table:style-name="Tabelle1">
 			<table:table-column table:style-name="Tabelle1.A"/>
 			<table:table-column table:style-name="Tabelle1.B"/>
@@ -288,17 +299,26 @@ xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
 			<text:s/>
 		</text:p>
 		<text:p text:style-name="P4">Durchschnittsbewertung: <xsl:value-of select="format-number(durchschnitt, '#.00')"/></text:p>
+<text:p text:style-name="P4"/>
 	</xsl:when>
 	<xsl:when test="frage_typ='text'">
+<text:p text:style-name="P5"/>
 		<text:list xml:id="list552602976922715883" text:style-name="L1">
 			<xsl:apply-templates select="antwort" mode="text"/>
 		</text:list>
+<text:p text:style-name="P4"/>
+	</xsl:when>
+        <xsl:when test="frage_typ='label'">
+
+	</xsl:when>
+        <xsl:when test="frage_typ='labelsub'">
+
 	</xsl:when>
 	<xsl:otherwise>
 		<text:p text:style-name="P11">Unknown type</text:p>
 	</xsl:otherwise>
 </xsl:choose>
-<text:p text:style-name="P4"/>
+
 </xsl:template>
 
 <xsl:template match="antwort" mode="singleresponse">

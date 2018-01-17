@@ -147,9 +147,9 @@ else
 		// Speichern der Daten
 		if(isset($_POST['submit_btn']))
 		{
-            $lektor_uid = (isset($_POST['lektor_uid'])) ? $_POST['lektor_uid'] : '';          
+			$lektor_uid = (isset($_POST['lektor_uid'])) ? $_POST['lektor_uid'] : '';
 			// Save
-            $fragenantworten=array();
+			$fragenantworten=array();
 			// Alle Antworten speichern
 			foreach($_POST as $key_post=>$value_post)
 			{
@@ -172,31 +172,31 @@ else
 
 						$antwort->save();
 					}
-                    $fragenantworten[]=$frage_id;
+					$fragenantworten[]=$frage_id;
 				}
 			}
-            // Fragen die gestellt wurden, aber nicht beantwortet werden auch geholt und ohne Antwort gespeichert
-            // damit erfasst ist, dass er die Frage bekommen hat
+			// Fragen die gestellt wurden, aber nicht beantwortet werden auch geholt und ohne Antwort gespeichert
+			// damit erfasst ist, dass er die Frage bekommen hat
 
-            $fragen_obj = new lvevaluierung_frage();
-            $fragen_obj->getFragen();
-            foreach($fragen_obj->result as $row_fragen)
-            {
-                if(!in_array($row_fragen->lvevaluierung_frage_id, $fragenantworten))
-                {
-                    $antwort = new lvevaluierung_antwort();
+			$fragen_obj = new lvevaluierung_frage();
+			$fragen_obj->getFragen();
+			foreach($fragen_obj->result as $row_fragen)
+			{
+				if(!in_array($row_fragen->lvevaluierung_frage_id, $fragenantworten))
+				{
+					$antwort = new lvevaluierung_antwort();
 
-                    $antwort->lvevaluierung_frage_id=$row_fragen->lvevaluierung_frage_id;
-                    $antwort->lvevaluierung_code_id = $lvevaluierung_code->lvevaluierung_code_id;
-                    $antwort->antwort = '';
-                    $antwort->lvevaluierung_frage_antwort_id = '';
-                    $antwort->save();
-                }
-            }
-           
+					$antwort->lvevaluierung_frage_id=$row_fragen->lvevaluierung_frage_id;
+					$antwort->lvevaluierung_code_id = $lvevaluierung_code->lvevaluierung_code_id;
+					$antwort->antwort = '';
+					$antwort->lvevaluierung_frage_antwort_id = '';
+					$antwort->save();
+				}
+			}
+
 			// Code Endezeit und Lektor setzen
 			$lvevaluierung_code->endezeit=date('Y-m-d H:i:s');
-            $lvevaluierung_code->lektor_uid = $lektor_uid;
+			$lvevaluierung_code->lektor_uid = $lektor_uid;
 			$lvevaluierung_code->save();
 
 			// Ausloggen um umleiten
@@ -250,14 +250,15 @@ else
 		$benutzer = new benutzer();
 		$benutzer->load($leiter_uid);
 
-        $lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
+		$lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
 
-        $lem = new lehreinheitmitarbeiter();
-        $lem->getMitarbeiterLV($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-
-        $lektoren='';
-        foreach($lem->result as $row_lektoren)
-            $lektoren .= $row_lektoren->titelpre.' '.$row_lektoren->vorname.' '.$row_lektoren->nachname.' '.$row_lektoren->titelpost.', ';
+		$lem = new lehreinheitmitarbeiter();
+		$lem->getMitarbeiterLV($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
+		$anzahl_lem = count($lem->result);
+		
+		$lektoren='';
+		foreach($lem->result as $row_lektoren)
+			$lektoren .= $row_lektoren->titelpre.' '.$row_lektoren->vorname.' '.$row_lektoren->nachname.' '.$row_lektoren->titelpost.', ';
 		$lektoren = mb_substr($lektoren, 0, -2);
 
 		$stg = new studiengang();
@@ -270,8 +271,8 @@ else
 		$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 		$anzahl_studierende=count($teilnehmer);
 		$lehrform = $lv->lehrform_kurzbz;
-        
-        $lv_aufgeteilt = $lvevaluierung->lv_aufgeteilt;   
+		
+		$lv_aufgeteilt = $lvevaluierung->lv_aufgeteilt;
 
 		echo '
 		 <div class="table-responsive" >
@@ -281,7 +282,12 @@ else
 				<td>'.$db->convert_html_chars($lv->bezeichnung.' ('.$lv->lehrveranstaltung_id.')').'</td>
 			</tr>
 			<tr>
-				<td>'.$p->t('lvevaluierung/lvleitung').'</td>
+				<td>'; 
+				if ($anzahl_lem == 1) 
+					echo $p->t('lvevaluierung/lvleitung'); 
+				else
+					echo $p->t('global/lektorInnen'); 
+		echo '</td>
 				<td>'.$db->convert_html_chars($lektoren).'</td>
 			</tr>
 			<tr>
@@ -325,24 +331,24 @@ else
 		echo '	<div class="row">
 					<div class="col-xs-10 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
 
-                        <form action ="'.basename(__FILE__).'" method="POST" id="umfrage" name="umfrage" class="form-vertical">';
+						<form action ="'.basename(__FILE__).'" method="POST" id="umfrage" name="umfrage" class="form-vertical">';
 
-        //dropdown mit lektoren nur anzeigen, wenn LV von mehreren Lektoren gehalten worden ist (und bei erstellung der lvevaluierung checkbox gesetzt worden ist)
-        if ($lv_aufgeteilt){
-            echo '<div class="form-group">';
-            echo '<label>' . $p->t('lvevaluierung/lektorDropdown') . ':</label>';          
-            echo '          
-            <select required class="form-control" name="lektor_uid">
-            <option value="">' . $p->t('lvevaluierung/lektorWaehlen') . '</option>';
-            foreach($lem->result as $row) 
-            {  
-                echo '<option value="' . $row->uid . '">' . $row->titelpre . ' ' . $row->titelpost . ' ' . $row->vorname . ' ' . $row->nachname . '</option>';
-            }
-            echo '
-            </select>
-            </div></p>';
-        } 
-        
+		//dropdown mit lektoren nur anzeigen, wenn LV von mehreren Lektoren gehalten worden ist (und bei erstellung der lvevaluierung checkbox gesetzt worden ist)
+		if ($lv_aufgeteilt){
+			echo '<div class="form-group">';
+			echo '<label>' . $p->t('lvevaluierung/lektorDropdown') . ':</label>';
+			echo '
+			<select required class="form-control" name="lektor_uid">
+				<option value="">' . $p->t('lvevaluierung/lektorWaehlen') . '</option>';
+			foreach($lem->result as $row) 
+				{  
+				echo '<option value="' . $row->uid . '">' . $row->titelpre . ' ' . $row->titelpost . ' ' . $row->vorname . ' ' . $row->nachname . '</option>';
+			}
+			echo '
+			</select>
+			</div></p>';
+		} 
+		
 		$frage = new lvevaluierung_frage();
 		$frage->getFragen($lvevaluierung_id);
 
@@ -384,44 +390,44 @@ else
 
 					foreach($antwort->result as $row_antwort)
 					{
-                        if($row_antwort->wert!=0)
-                        	if($row_antwort->bezeichnung[$sprache]!='')
-							    $antwortinfo.= ' '.$db->convert_html_chars($row_antwort->wert).'='.$db->convert_html_chars($row_antwort->bezeichnung[$sprache]).';';
+						if($row_antwort->wert!=0)
+							if($row_antwort->bezeichnung[$sprache]!='')
+								$antwortinfo.= ' '.$db->convert_html_chars($row_antwort->wert).'='.$db->convert_html_chars($row_antwort->bezeichnung[$sprache]).';';
 					}
-                    echo '<span class="antwortinfo">';
-                    echo mb_substr($antwortinfo,0,-1);
-                    echo '</span>';
-                    echo '</label>';
+					echo '<span class="antwortinfo">';
+					echo mb_substr($antwortinfo,0,-1);
+					echo '</span>';
+					echo '</label>';
 
 
-                    echo '
-            			<div class="btn-group" data-toggle="buttons">';
+					echo '
+						<div class="btn-group" data-toggle="buttons">';
 
 					foreach($antwort->result as $row_antwort)
 					{
-                        if($row_antwort->wert!=0)
-                        {
-    						echo '
-    							<label class="btn btn-primary">
-    								<input type="radio" name="antwort_'.$row_antwort->lvevaluierung_frage_id.'" value="'.$row_antwort->lvevaluierung_frage_antwort_id.'" />'.$db->convert_html_chars($row_antwort->wert).'
-    							</label>';
-                        }
-                        else
-                        {
-                            // keine Angabe
-                            echo '
-        							<label class="btn btn-primary">
-        								<input type="radio" name="antwort_'.$row_antwort->lvevaluierung_frage_id.'" value="'.$row_antwort->lvevaluierung_frage_antwort_id.'" />'.$db->convert_html_chars($row_antwort->bezeichnung[$sprache]).'
-        							</label>';
-                        }
+						if($row_antwort->wert!=0)
+						{
+							echo '
+								<label class="btn btn-primary">
+									<input type="radio" name="antwort_'.$row_antwort->lvevaluierung_frage_id.'" value="'.$row_antwort->lvevaluierung_frage_antwort_id.'" />'.$db->convert_html_chars($row_antwort->wert).'
+								</label>';
+						}
+						else
+						{
+							// keine Angabe
+							echo '
+									<label class="btn btn-primary">
+										<input type="radio" name="antwort_'.$row_antwort->lvevaluierung_frage_id.'" value="'.$row_antwort->lvevaluierung_frage_antwort_id.'" />'.$db->convert_html_chars($row_antwort->bezeichnung[$sprache]).'
+									</label>';
+						}
 					}
 
 					echo '</div>';
 
-                    echo '
+					echo '
 					</div>';
 
-                    echo '<hr>';
+					echo '<hr>';
 					break;
 
 				default:
@@ -460,7 +466,7 @@ else
 					var sprache = $(this).attr('data-sprache');
 					changeSprache(sprache);
 				});
-              
+
 				<?php
 				if($restdauer>0)
 					echo 'count_down('.$restdauer.');';

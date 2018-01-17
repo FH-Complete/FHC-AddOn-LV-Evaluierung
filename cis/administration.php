@@ -17,7 +17,7 @@
  *
  * Authors: Andreas Österreicher <andreas.oesterreicher@technikum-wien.at>,
  * 			Alexei Karpenko <karpenko@technikum-wien.at>,
- *          Cristina Hainberger <cristina.hainberg@technikum-wien.at>
+ *			Cristina Hainberger <cristina.hainberg@technikum-wien.at>
  */
 require_once('../../../config/cis.config.inc.php');
 require_once('../../../include/functions.inc.php');
@@ -35,6 +35,7 @@ require_once('../include/lvevaluierung_code.class.php');
 require_once('../include/lvevaluierung_selbstevaluierung.class.php');
 
 $uid = get_uid();
+//$uid = "kuba";
 $sprache = getSprache();
 $p = new phrasen($sprache);
 
@@ -179,7 +180,7 @@ if(isset($_POST['saveEvaluierung']))
 	$lvevaluierung_id = $_POST['lvevaluierung_id'];
 	$von_datum = $_POST['von_datum'];
 	$bis_datum = $_POST['bis_datum'];
-    $lv_aufgeteilt = (isset($_POST['lv_aufgeteilt'])) ? true : false;
+	$lv_aufgeteilt = (isset($_POST['lv_aufgeteilt'])) ? true : false;
 
 	//Datum auf Gueltigkeit pruefen
 	if (($von_datum=='' || $bis_datum=='') || !$datum_obj->formatDatum($von_datum,'Y-m-d') || !$datum_obj->formatDatum($bis_datum,'Y-m-d'))
@@ -231,7 +232,7 @@ if(isset($_POST['saveEvaluierung']))
 				$evaluierung->insertvon = $uid;
 				$evaluierung->updateamum = date('Y-m-d H:i:s');
 				$evaluierung->updatevon = $uid;
-                $evaluierung->lv_aufgeteilt = $lv_aufgeteilt;
+				$evaluierung->lv_aufgeteilt = $lv_aufgeteilt;
 
 				if($evaluierung->save())
 				{
@@ -431,7 +432,7 @@ $le_mitarbeiter = new Lehreinheitmitarbeiter();
 $le_mitarbeiter->getMitarbeiterLV($lehrveranstaltung_id, $studiensemester_kurzbz);
 $hasMehrereLektoren = false;
 if (isset($le_mitarbeiter->result) && count($le_mitarbeiter->result) > 1)
-    $hasMehrereLektoren = true;
+	$hasMehrereLektoren = true;
 
 // Evaluierungszeitraum Form
 echo '
@@ -466,17 +467,17 @@ echo '
 		<div id="formular">
 		<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
 		<input type="hidden" name="lvevaluierung_id" value="' . $db->convert_html_chars($evaluierung->lvevaluierung_id) . '">';
-        
-        if($hasMehrereLektoren)
-        {
-            echo $p->t('lvevaluierung/mehrereLektorenEineLvTxt'); 
-            echo '<br><br>           
-            <input type="checkbox" name="lv_aufgeteilt"'; if ($evaluierung->lv_aufgeteilt) echo 'checked'; else echo ''; echo '>' . $p->t('lvevaluierung/lektorWaehlenTxt') . '<br><br><br>';             
-        }          
-        
-        echo $p->t('lvevaluierung/evaluierunganlegenInfotext').'<br><br>';
+
+		if($hasMehrereLektoren)
+		{
+			echo $p->t('lvevaluierung/mehrereLektorenEineLvTxt'); 
+			echo '<br><br>
+			<input type="checkbox" name="lv_aufgeteilt"'; if ($evaluierung->lv_aufgeteilt) echo 'checked'; else echo ''; echo '>' . $p->t('lvevaluierung/lektorWaehlenTxt') . '<br><br><br>';
+		}
+		
+		echo $p->t('lvevaluierung/evaluierunganlegenInfotext').'<br><br>';
 echo '
-        <table>
+		<table>
 			<tr>
 				<td>'.$p->t('lvevaluierung/startzeit').'</td>
 				<td>
@@ -520,7 +521,7 @@ else
 	<div class="lvepanel '.($disabled?'disabled':'').'">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/codesErstellen').'</div>
 		<div class="lvepanel-body">' .
-            $p->t('lvevaluierung/codesErstellenInfotext').'<br><br>';		
+			$p->t('lvevaluierung/codesErstellenInfotext').'<br><br>';		
 			if(!$disabled)
 				echo '<a href="qrcode.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" onclick="showSpinner(\''.$anzahl_studierende.'\')">'.$p->t('lvevaluierung/CodeListeErstellen').'</a> <img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif">';
 			else

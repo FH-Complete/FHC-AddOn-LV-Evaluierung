@@ -27,12 +27,14 @@ $this->phrasen['lvevaluierung/ruecklaufquote']='ENGLISH Rücklaufquote';
 $this->phrasen['lvevaluierung/keineEvaluierungAngelegt']='At this time no evaluation for this course has been created. Please complete the following form to create an evaluation';
 $this->phrasen['lvevaluierung/CodeListeErstellen']='Create code list';
 $this->phrasen['lvevaluierung/Auswertung']='Display analysis';
+$this->phrasen['lvevaluierung/gesamtauswertung']='Total Analysis';
 $this->phrasen['lvevaluierung/persoenlicheAuswertung']='ENG Persönliche Auswertung anzeigen';
 $this->phrasen['lvevaluierung/abgeschlossen']='Completed';
 $this->phrasen['lvevaluierung/durchschnittszeit']='Average duration';
 $this->phrasen['lvevaluierung/anzahlausgegeben']='Codes issued: ';
 $this->phrasen['lvevaluierung/endeGroesserStart']='The end of the evaluation may not be before the start';
 $this->phrasen['lvevaluierung/bitteGueltigesDatumEingeben']='The date for the start and end may not be left blank and must be entered in the DD.MM.YYYY format';
+$this->phrasen['lvevaluierung/auswertungWaehlen']='English Bitte wählen Sie Ihre gewünschte Auswertung';
 
 $this->phrasen['lvevaluierung/evaluierunganlegen']='Specify evaluation criteria';
 $this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Please specify here the period in which the course evaluation is to take place. Access to the evaluation is only available to students in this period. You may correct the period at any time, as long as the evaluation has not yet been carried out.';
@@ -96,9 +98,9 @@ $this->phrasen['lvevaluierung/ruecklaufquoteDetailauswertung']='Return rate - cl
 $this->phrasen['lvevaluierung/selbstevaluierungAbschicken'] = 'English Die Eingabefelder werden gesperrt und die Selbstevaluierung abgeschickt.\nWollen Sie fortfahren?';
 $this->phrasen['lvevaluierung/XhatEinenJahresabschlussDurchgefuehrt'] = 'English %1\s hat den LV-Evaluierungs - Jahresabschlussbericht für den Studiengang %2\s abgeschlossen und freigegeben.';
 $this->phrasen['lvevaluierung/folgenSieDenLinks'] = 'English Folgen Sie den links für weiterführende Informationen.';
-$this->phrasen['lvevaluierung/evaluierungenAnfordern'] = 'Request annual report for course evaluations';
-$this->phrasen['lvevaluierung/evaluierungenAnfordernTxt'] = 'English Hier können Sie die Selbstsevaluierungen der Lektoren für die Lehrveranstaltungen anfordern. <br>
-                Zudem wird nach erfolgter Evaluierung auch die Rücklaufquote angezeigt.';
+$this->phrasen['lvevaluierung/evaluierungenAnfordern'] = 'English LV Evaluierungen & Auswertungen einsehen und anfordern';
+$this->phrasen['lvevaluierung/evaluierungenAnfordernTxt'] = 'English Hier können Sie die Selbstsevaluierungen der Lektoren und die zugehörigen Auswertungen der Studenten einsehen. <br>
+                Zudem können Sie Selbstevaluierungen als verpflichtend abzugeben markieren.';
 $this->phrasen['lvevaluierung/jahresabschlussberichtErstellen'] = 'Create, show & print course evaluations';
 $this->phrasen['lvevaluierung/jahresabschlussberichtErstellenTxt'] = 'English Hier können Sie den Lehrveranstaltungevaluierung Jahresabschlussbericht erstellen und an das Rektorat verschicken.<br>
                 Sie können auch vergangene Jahresabschlussberichte einsehen und drucken. ';

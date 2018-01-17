@@ -24,11 +24,13 @@ $this->phrasen['lvevaluierung/evaluierungAnfordern']='Evaluierung anfordern';
 $this->phrasen['lvevaluierung/zeitinfo']='Die LV Evaluierung findet von %s bis %s statt.';
 $this->phrasen['lvevaluierung/restzeit']='Verbleibende Zeit:';
 $this->phrasen['lvevaluierung/auswertung']='Auswertung';
+$this->phrasen['lvevaluierung/gesamtauswertung']='Gesamtauswertung';
 $this->phrasen['lvevaluierung/ruecklaufquote']='Rücklaufquote';
 
 $this->phrasen['lvevaluierung/keineEvaluierungAngelegt']='Derzeit ist noch keine Evaluierung für diese Lehrveranstaltung angelegt. Füllen Sie das folgende Formular aus um eine Evaluierung anzulegen';
 $this->phrasen['lvevaluierung/CodeListeErstellen']='Code Liste erstellen';
 $this->phrasen['lvevaluierung/Auswertung']='Auswertung anzeigen';
+$this->phrasen['lvevaluierung/auswertungWaehlen']='Bitte wählen Sie Ihre gewünschte Auswertung';
 $this->phrasen['lvevaluierung/persoenlicheAuswertung']='Persönliche Auswertung anzeigen';
 $this->phrasen['lvevaluierung/abgeschlossen']='Abgeschlossen';
 $this->phrasen['lvevaluierung/durchschnittszeit']='Durchschnittliche Dauer';
@@ -99,9 +101,9 @@ $this->phrasen['lvevaluierung/lvzurEvaluierungAusgewaehlt']='Diese LV wurde für
 $this->phrasen['lvevaluierung/selbstevaluierungAbschicken'] = 'Die Eingabefelder werden gesperrt und die Selbstevaluierung abgeschickt.\nWollen Sie fortfahren?';
 $this->phrasen['lvevaluierung/XhatEinenJahresabschlussDurchgefuehrt'] = '%s hat den LV-Evaluierungs - Jahresabschlussbericht für den Studiengang %s abgeschlossen und freigegeben.';
 $this->phrasen['lvevaluierung/folgenSieDenLinks'] = 'Folgen Sie den links für weiterführende Informationen:';
-$this->phrasen['lvevaluierung/evaluierungenAnfordern'] = 'LV Evaluierung anfordern';
-$this->phrasen['lvevaluierung/evaluierungenAnfordernTxt'] = 'Hier können Sie die Selbstsevaluierungen der Lektoren für die Lehrveranstaltungen anfordern. <br>
-                Zudem wird nach erfolgter Evaluierung auch die Rücklaufquote angezeigt.';
+$this->phrasen['lvevaluierung/evaluierungenAnfordern'] = 'LV Evaluierungen & Auswertungen einsehen und anfordern';
+$this->phrasen['lvevaluierung/evaluierungenAnfordernTxt'] = 'Hier können Sie die Selbstsevaluierungen der Lektoren und die zugehörigen Auswertungen der Studenten einsehen. <br>
+                Zudem können Sie Selbstevaluierungen als verpflichtend abzugeben markieren.';
 $this->phrasen['lvevaluierung/jahresabschlussberichtErstellen'] = 'LV Evaluierung Jahresabschlussbericht anzeigen, bearbeiten & drucken';
 $this->phrasen['lvevaluierung/jahresabschlussberichtErstellenTxt'] = 'Hier können Sie den Lehrveranstaltungevaluierung Jahresabschlussbericht erstellen und an das Rektorat verschicken.<br>
                 Sie können auch vergangene Jahresabschlussberichte einsehen und drucken. ';

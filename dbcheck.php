@@ -405,7 +405,7 @@ if($result = $db->db_query("SELECT * FROM system.tbl_berechtigung WHERE berechti
 
 
 // Spalte lv_aufgeteilt in addon.tbl_lvevaluierung
-if(!@$db->db_query("SELECT lv_isaufgeteilt FROM addon.tbl_lvevaluierung LIMIT 1"))
+if(!@$db->db_query("SELECT lv_aufgeteilt FROM addon.tbl_lvevaluierung LIMIT 1"))
 {
 	$qry = "ALTER TABLE addon.tbl_lvevaluierung ADD COLUMN lv_aufgeteilt boolean NOT NULL DEFAULT false;";
 
