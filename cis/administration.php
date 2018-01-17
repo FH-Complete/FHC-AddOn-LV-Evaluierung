@@ -35,7 +35,6 @@ require_once('../include/lvevaluierung_code.class.php');
 require_once('../include/lvevaluierung_selbstevaluierung.class.php');
 
 $uid = get_uid();
-//$uid = "kuba";
 $sprache = getSprache();
 $p = new phrasen($sprache);
 
