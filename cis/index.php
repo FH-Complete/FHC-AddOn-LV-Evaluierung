@@ -101,7 +101,7 @@ if ($code && isset($_GET['submit_btn']))
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<meta name="robots" content="noindex">
-		<link href="../../../vendor/components/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="../../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <!--		<link href="../../../skin/style.css.php" rel="stylesheet" type="text/css">-->
 		<link href="../skin/lvevaluierung.css" rel="stylesheet" type="text/css">
 	</head>
@@ -172,7 +172,7 @@ if ($code && isset($_GET['submit_btn']))
 				</div>
 		</div>
 		<script src="../../../vendor/jquery/jqueryV1/jquery-1.12.4.min.js"></script>
-		<script src="../../../vendor/components/bootstrap/js/bootstrap.min.js"></script>
+		<script src="../../../vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 
 			function changeSprache(sprache)
