@@ -96,7 +96,7 @@ else
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<meta name="robots" content="noindex">
-		<link href="../../../vendor/components/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+		<link href="../../../vendor/twbs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <!--		<link href="../../../skin/style.css.php" rel="stylesheet" type="text/css">-->
 		<link href="../skin/lvevaluierung.css" rel="stylesheet" type="text/css">
 
@@ -255,7 +255,7 @@ else
 		$lem = new lehreinheitmitarbeiter();
 		$lem->getMitarbeiterLV($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 		$anzahl_lem = count($lem->result);
-		
+
 		$lektoren='';
 		foreach($lem->result as $row_lektoren)
 			$lektoren .= $row_lektoren->titelpre.' '.$row_lektoren->vorname.' '.$row_lektoren->nachname.' '.$row_lektoren->titelpost.', ';
@@ -271,7 +271,7 @@ else
 		$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 		$anzahl_studierende=count($teilnehmer);
 		$lehrform = $lv->lehrform_kurzbz;
-		
+
 		$lv_aufgeteilt = $lvevaluierung->lv_aufgeteilt;
 
 		echo '
@@ -282,11 +282,11 @@ else
 				<td>'.$db->convert_html_chars($lv->bezeichnung.' ('.$lv->lehrveranstaltung_id.')').'</td>
 			</tr>
 			<tr>
-				<td>'; 
-				if ($anzahl_lem == 1) 
-					echo $p->t('lvevaluierung/lvleitung'); 
+				<td>';
+				if ($anzahl_lem == 1)
+					echo $p->t('lvevaluierung/lvleitung');
 				else
-					echo $p->t('global/lektorInnen'); 
+					echo $p->t('global/lektorInnen');
 		echo '</td>
 				<td>'.$db->convert_html_chars($lektoren).'</td>
 			</tr>
@@ -340,15 +340,15 @@ else
 			echo '
 			<select required class="form-control" name="lektor_uid">
 				<option value="">' . $p->t('lvevaluierung/lektorWaehlen') . '</option>';
-			foreach($lem->result as $row) 
-				{  
+			foreach($lem->result as $row)
+				{
 				echo '<option value="' . $row->uid . '">' . $row->titelpre . ' ' . $row->titelpost . ' ' . $row->vorname . ' ' . $row->nachname . '</option>';
 			}
 			echo '
 			</select>
 			</div></p>';
-		} 
-		
+		}
+
 		$frage = new lvevaluierung_frage();
 		$frage->getFragen($lvevaluierung_id);
 
@@ -452,7 +452,7 @@ else
 				</div>
 		</div>
 		<script src="../../../vendor/jquery/jqueryV1/jquery-1.12.4.min.js"></script>
-		<script src="../../../vendor/components/bootstrap/js/bootstrap.min.js"></script>
+		<script src="../../../vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 
 			function changeSprache(sprache)
