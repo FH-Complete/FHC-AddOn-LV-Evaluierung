@@ -91,6 +91,13 @@ list(
 	$selbstev_cnt) =					//sums up number of selbstevaluierungen per studiengang and studienjahr
 	getEvaluierteLV($studiengang_kz, $ws, $ss);
 
+
+if (isset($selbstev_arr['orgform_kurzbz']))
+{
+	$orgform_unique_arr = array_unique($selbstev_arr['orgform_kurzbz']);
+	sort($orgform_unique_arr);
+}
+
 $display_whenFilterNoResult = (count($selbstev_arr) != 0) ? 'style = "display: none;"' : ''; 
 
 
@@ -208,7 +215,7 @@ function getEvaluierteLV($studiengang_kz, $ws, $ss)
 
 	//get all selbstevaluierungen per studiengang and studienjahr
 	$selbstevaluierung->getLVwhereSelbstevaluierungen($studiengang_kz, $ws, $ss);
-	$selbstev_arr = $selbstevaluierung->result;
+	$selbstev_arr = $selbstevaluierung->result;	
 	if (count($selbstev_arr) > 0)
 		$selbstev_cnt = count($selbstev_arr['bezeichnung']);
 
@@ -343,26 +350,37 @@ function printJahresabschlussbericht($lvevaluierung_jahresabschluss_id)
 <!-- ***************************************	 table evaluierte lehrveranstaltungen  -->
 		<table class="table" width ="100%">
 			<tbody>
-				<tr>
-					<th><b><?php echo $p->t('lvevaluierung/evaluierteLVs') ?></b></th>
-					<th><b><?php echo $p->t('global/organisationsform') ?></b></th>
-				</tr>
 				<?php
-					for ($i = 0; $i < $selbstev_cnt; $i++)
+				if (isset($orgform_unique_arr))
+				{
+					foreach($orgform_unique_arr as $orgform)
 					{
-						echo '
-						<tr>
-						<td>'.$selbstev_arr['bezeichnung'][$i].'</td>
-						<td>'.$selbstev_arr['orgform_kurzbz'][$i].'</td>
-						</tr>';
+					?>	
+					<tr>
+						<th><b><?php echo $p->t('lvevaluierung/evaluierteLVs') . ' ' . $orgform ?></b></th>
+					</tr>
+					<?php
+						for ($i = 0; $i < $selbstev_cnt; $i++)
+						{
+
+							if ($selbstev_arr['orgform_kurzbz'][$i] == $orgform)
+							{
+								echo '
+								<tr>
+								<td>'.$selbstev_arr['bezeichnung'][$i].'</td>
+
+								</tr>';
+							}
+						}
 					}
-				?>
+				}
+				?>	
 			</tbody>
 		</table>
 
 <!-- ***************************************	 panel info no values found (only if no lv-evaluierungen)  -->
 		<div class="lvepanel lvepanel-body" <?php echo $display_whenFilterNoResult ?>>
-			<?php echo $p->t('global/keineSuchergebnisse') ?> 
+			<?php echo $p->t('lvevaluierung/keineEvaluierteLvs') ?> 
 		</div>
 
 <!-- ***************************************	 FORM START  -->

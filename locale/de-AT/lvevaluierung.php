@@ -135,6 +135,7 @@ $this->phrasen['lvevaluierung/welcheVerbesserungen'] = 'Welche Verbesserungen wu
 $this->phrasen['lvevaluierung/jahresabschlussberichtGesperrt'] = 'Der Studienabschlussbericht ist am %s freigegeben worden und kann daher nicht mehr bearbeitet werden.';
 $this->phrasen['lvevaluierung/jahresabschlussberichtNichtVorhanden'] = 'Es gibt im gewählten Jahr zu diesem Studiengang noch keinen Studienjahrabschlussbericht.';
 $this->phrasen['lvevaluierung/lektorIstStgl'] = 'Lektor (zugleich Studiengangsleiter)';
+$this->phrasen['lvevaluierung/keineEvaluierteLvs'] = 'In diesem Studienjahr wurden noch keine Lehrveranstaltungen evaluiert.';
 
 
 

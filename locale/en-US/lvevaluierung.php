@@ -131,5 +131,6 @@ $this->phrasen['lvevaluierung/jahresabschlussberichtGesperrt'] = 'English Der St
 $this->phrasen['lvevaluierung/evaluierungAnfordern']='English Evaluierung anfordern';
 $this->phrasen['lvevaluierung/jahresabschlussberichtNichtVorhanden'] = 'English Es gibt im gewählten Jahr zu diesem Studiengang noch keinen Studienjahrabschlussbericht.';
 $this->phrasen['lvevaluierung/lektorIstStgl'] = 'Lector (course manager at the same time)';
+$this->phrasen['lvevaluierung/keineEvaluierteLvs'] = 'No courses were evaluated in this academic year.';
 
 ?>

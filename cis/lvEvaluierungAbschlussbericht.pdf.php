@@ -85,15 +85,15 @@ $stg->getStudiengangFromOe($oe_kurzbz);
 $studiengang_kz = $stg->studiengang_kz;
 $stg_bezeichnung = $stg->bezeichnung;
 $stg_bezeichnung_eng = $stg->english;
-//var_dump($stg);
 
 //Wintersemester / Sommersemester
 $ws = 'WS'. substr($studienjahr_kurzbz, 0, 4);                               
 $ss = 'SS'. strval(substr($studienjahr_kurzbz, 0, 4) + 1);   
 
 list(
-    $selbstev_arr,                  //saves all selbstevaluierungen per studiengang and studienjahr
-    $selbstev_cnt) =                //sums up number of selbstevaluierungen per studiengang and studienjahr
+    $selbstev_arr,                  //all selbstevaluierungen per studiengang and studienjahr
+    $selbstev_cnt,					//sums up number of selbstevaluierungen per studiengang and studienjahr
+	$orgform_container) =           //all evaluierte lvs blocked by organisationsform    
     getEvaluierteLV($studiengang_kz, $ws, $ss);
 
 list (
@@ -200,8 +200,28 @@ function getEvaluierteLV($studiengang_kz, $ws, $ss)
             $selbstev_cnt++;
             }
         }
-        
-    return array($selbstev_arr, $selbstev_cnt);    
+		
+		$orgform_container = array();
+		if (isset($selbstev_arr['orgform_kurzbz']))
+		{
+			$orgform_unique_arr = array_unique($selbstev_arr['orgform_kurzbz']);
+
+			if (count($orgform_unique_arr) > 0)
+			{
+				sort($orgform_unique_arr);
+
+				foreach($orgform_unique_arr as $orgform){
+					for ($i = 0; $i < $selbstev_cnt; $i++){
+						if ($selbstev_arr['orgform_kurzbz'][$i] == $orgform)
+						{	
+							$orgform_container[$orgform][] = array('lv' => $selbstev_arr['bezeichnung'][$i]); 
+
+						}
+					}
+				}
+			}
+		}
+    return array($selbstev_arr, $selbstev_cnt, $orgform_container);    
     }
 
        
@@ -220,15 +240,28 @@ $data = array(
     'ergebnisse' => $ergebnisse,
     'verbesserungen' => $verbesserungen
 );
-for ($i = 0; $i < $selbstev_cnt; $i++)
+
+if(count($orgform_container) > 0)
 {
-    $data[]= array(
-        'evaluierte_lehrveranstaltungen' => array(
-            'evaluierte_lvs' => $selbstev_arr['bezeichnung'][$i],
-            'org_form' => $selbstev_arr['orgform_kurzbz'][$i]
-        )
-    );
+	foreach($orgform_container as $key => $value)
+	{
+		$data[]= array(
+			'evaluierte_lehrveranstaltungen' => array(
+			'org_form' => ' - ' . $key,
+			'evaluierte_lvs' => $value      
+			)
+		);
+	}
 }
+else 
+	{
+		$data[]= array(
+			'evaluierte_lehrveranstaltungen' => array(
+			'org_form' => '',
+			'evaluierte_lvs' => ''     
+			)
+		);
+	}
 
 //add data to lvEvaluierungAbschlussbericht.xsl
 $doc->addDataArray($data, 'abschlussbericht');
