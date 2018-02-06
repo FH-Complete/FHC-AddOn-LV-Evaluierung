@@ -83,21 +83,21 @@ echo '<!DOCTYPE html>
 
 			//Setzen des events für Anzeigen/Verstecken des Weiterbildung-textfeldes der Selbstevaluierung
 			$("input[name=weiterbildung_bedarf]").click(toggleWeiterbildung);
-			
+
 		});
-		
+
 		function setBisdatum(datum)
 		{
 			if(document.getElementById("bis_datum").value=="")
 				document.getElementById("bis_datum").value=datum;
 		}
-		
+
 		function showSpinner(anz)
 		{
 			document.getElementById("spinner").style.display="inline";
 			window.setTimeout("ausblenden()", 180*anz);
 		}
-		
+
 		function ausblenden()
 		{
 			$("#spinner").hide();
@@ -121,9 +121,9 @@ echo '<!DOCTYPE html>
 				$("textarea[name=weiterbildung]").val("");
 			}
 		}
-		
+
 		/**
-		* clientseitige Validierung des Selbstevaluierungsformulars.  
+		* clientseitige Validierung des Selbstevaluierungsformulars.
 		* @param confirmtext Text der vor der Bestätigung durch den User zu Abschicken und Sperren des Formulars angezeigt wird
 		* @param errormsg Fehlermeldung bei fehlerhaften/fehlenden Daten
 		* @returns {boolean} ob das Formular richtig ausgefüllt wurde
@@ -140,7 +140,7 @@ echo '<!DOCTYPE html>
 			else
 				return confirm(confirmtext);
 		}
-		
+
 		</script>
 	</head>
 <body>
@@ -467,13 +467,8 @@ echo '
 		<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
 		<input type="hidden" name="lvevaluierung_id" value="' . $db->convert_html_chars($evaluierung->lvevaluierung_id) . '">';
 
-		if($hasMehrereLektoren)
-		{
-			echo $p->t('lvevaluierung/mehrereLektorenEineLvTxt'); 
-			echo '<br><br>
-			<input type="checkbox" name="lv_aufgeteilt"'; if ($evaluierung->lv_aufgeteilt) echo 'checked '; else echo ''; echo $locked; echo '>' . $p->t('lvevaluierung/lektorWaehlenTxt') . '<br><br><br>';
-		}
-		
+
+
 		echo $p->t('lvevaluierung/evaluierunganlegenInfotext').'<br><br>';
 echo '
 		<table>
@@ -495,6 +490,14 @@ echo '
 				<td data-toggle="tooltip">'.$p->t('lvevaluierung/dauer').' <img src="'.APP_ROOT.'skin/images/information.png" title="'.$p->t('lvevaluierung/dauerInfotext').'" onclick="document.getElementById(\'dauer_infotext\').style.display=\'inline\'"></td>
 				<td><input type="text" name="dauer" value="'.$db->convert_html_chars(mb_substr($evaluierung->dauer,0,5)).'" size="5" data-toggle="tooltip" title="'.$p->t('lvevaluierung/dauerInfotext').'" '.$locked.' /> HH:MM   <span id="dauer_infotext" style="display: none">('.$p->t('lvevaluierung/dauerInfotext').')</span></td>
 			</tr>
+			<tr>';
+if($hasMehrereLektoren)
+{
+	echo '<tr><td colspan="2"><hr><br>';
+	echo $p->t('lvevaluierung/mehrereLektorenEineLvTxt');
+	echo '<br><br><input type="checkbox" name="lv_aufgeteilt"'; if ($evaluierung->lv_aufgeteilt) echo 'checked '; else echo ''; echo $locked; echo '>' . $p->t('lvevaluierung/lektorWaehlenTxt') . '<hr><br></td></tr>';
+}
+echo		'</tr>
 			<tr>
 				<td></td>
 				<td><input type="submit" name="saveEvaluierung" value="'.$p->t('global/speichern').'" '.$locked.' /> '.$evaluierung_zeitraum_msg.'</td>
@@ -522,7 +525,7 @@ else
 	<div class="lvepanel '.($disabled?'disabled':'').'">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/codesErstellen').'</div>
 		<div class="lvepanel-body">' .
-			$p->t('lvevaluierung/codesErstellenInfotext').'<br><br>';		
+			$p->t('lvevaluierung/codesErstellenInfotext').'<br><br>';
 			if(!$disabled)
 				echo '<a href="qrcode.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" onclick="showSpinner(\''.$anzahl_studierende.'\')">'.$p->t('lvevaluierung/CodeListeErstellen').'</a> <img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif">';
 			else
@@ -540,7 +543,7 @@ else
 		</div>
 	</div>';
 
- 
+
 	// Ausgegebene Codes erfassen
 	echo '
 	<div class="lvepanel '.($disabled?'disabled':'').'" id="divcodes">
@@ -640,7 +643,7 @@ foreach($leitung as $leiter_uid)
 }
 
 if($disabled && !$sev->freigegeben)
-	echo '<div id ="codesHinweistext">'.$p->t('lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung').'</div>';
+	echo '<div id ="codesHinweistext" class="lvepanel"><div class="lvepanel-body"><br>'.$p->t('lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung').'<br><br></div></div>';
 
 $checked = $display = $checkedNein = '';
 
@@ -684,7 +687,7 @@ echo '
 		</tr>
 		<tr>
 
-			
+
 
 			<td colspan="2">
 				<textarea name="persoenlich" '.$locked.'>'.$db->convert_html_chars($sev->persoenlich).'</textarea>
