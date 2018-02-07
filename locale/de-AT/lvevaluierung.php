@@ -112,10 +112,10 @@ $this->phrasen['lvevaluierung/evaluierungenPruefen'] = 'LV Evaluierungen prüfen
 $this->phrasen['lvevaluierung/evaluierungenPruefenTxt'] = 'Hier können Sie alle Lehrveranstaltungsevaluierungen prüfen, bei denen der Vortragende zugleich der Studiengangsleiter war.';
 $this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigen'] = 'Alle Studienjahr-Abschlussberichte anzeigen';
 $this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigenTxt'] = 'Hier können Sie alle Studienjahr-Abschlussberichte einsehen und drucken.';
-$this->phrasen['lvevaluierung/mehrereLektorenEineLvTxt'] = 'Eine Lehrveranstaltung kann von mehreren Lektoren durchgeführt worden sein.<br>'
-    . '                                                     Bitte wählen Sie, ob die Studierenden in der Evaluation den Lektor wählen können sollen.<br>'
-    . '                                                     <small>Sie erhalten dadurch zusätzlich zur Gesamtbewertung auch individuelle Bewertungen pro Lektor.</small>';
-$this->phrasen['lvevaluierung/lektorWaehlenTxt'] = 'Ja, Studierende sollen ihren Lektor auswählen und evaluieren können';
+$this->phrasen['lvevaluierung/mehrereLektorenEineLvTxt'] = '<b>Getrennte Gruppen:</b><br>'
+    . '                                                     Falls die LV mit komplett getrennten Gruppen durchgeführt wurde, können Sie zusätzlich den evaluierten Lektor abfragen.<br>'
+    . '                                                     Sie erhalten dadurch zusätzlich zur Gesamtbewertung auch individuelle Bewertungen pro Lektor.';
+$this->phrasen['lvevaluierung/lektorWaehlenTxt'] = 'Evaluierung von getrennten Gruppen aktivieren';
 $this->phrasen['lvevaluierung/lektorDropdown'] = 'Mein Lektor dieser Lehrveranstaltung';
 $this->phrasen['lvevaluierung/lektorWaehlen'] = 'Lektor wählen';
 

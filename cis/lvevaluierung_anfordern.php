@@ -234,7 +234,7 @@ $orgform_kurzbz = filter_input(INPUT_POST,'orgform_kurzbz');
 //var_dump($_POST);
 
 if($studiengang_kz=='' && $oe_kurzbz=='')
-	die($p->t('lvevaluierung/waehleStudiengangoderInstitut'));	
+	die($p->t('lvevaluierung/waehleStudiengangoderInstitut'));
 
 $studiengang = new studiengang();
 $fachbereich_arr = $rechte->getFbKz('addon/lvevaluierung');
