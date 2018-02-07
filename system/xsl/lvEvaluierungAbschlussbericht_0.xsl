@@ -262,13 +262,14 @@
 					<draw:frame draw:style-name="fr1" draw:name="Bild1" text:anchor-type="page" text:anchor-page-number="1" svg:x="14.81cm" svg:y="2.939cm" svg:width="4.2cm" svg:height="2.24cm" draw:z-index="0">
 						<draw:image xlink:href="Pictures/10000201000000FD00000082B4907F4517CEC4AC.png" xlink:type="simple" xlink:show="embed" xlink:actuate="onLoad"/>
 					</draw:frame>
-					<text:p text:style-name="P13">Lehrveranstaltungsevaluierung Studienjahrabschlussbericht</text:p>
+					<text:p text:style-name="P13">Lehrveranstaltungsevaluierung</text:p>
+					<text:p text:style-name="P13">Studienjahr-Abschlussbericht</text:p>
 					<text:p text:style-name="P5"/>
 					<text:p text:style-name="P9"/>
 					<text:p text:style-name="P3"/>
 					<text:p text:style-name="P11"/>
 					<text:p text:style-name="P14"/>
-					<text:p text:style-name="P20">Studienjahrabschlussbericht <xsl:value-of select="studiengang_kurz" /> - <xsl:value-of select="studienjahr" /></text:p>
+					<text:p text:style-name="P20">Studienjahr-Abschlussbericht <xsl:value-of select="studiengang_kurz" /> - <xsl:value-of select="studienjahr" /></text:p>
 					<text:p text:style-name="P12"/>
 					<text:p text:style-name="P2"/>
 					<table:table table:name="Tabelle1" table:style-name="Tabelle1">

@@ -100,18 +100,18 @@ $this->phrasen['lvevaluierung/lvzurEvaluierungAusgewaehlt']='Diese LV wurde für
 <a href="%1$s">Weitere Informationen zur Evaluierung anzeigen</a>';
 
 $this->phrasen['lvevaluierung/selbstevaluierungAbschicken'] = 'Die Eingabefelder werden gesperrt und die Selbstevaluierung abgeschickt.\nWollen Sie fortfahren?';
-$this->phrasen['lvevaluierung/XhatEinenJahresabschlussDurchgefuehrt'] = '%s hat den LV-Evaluierungs - Jahresabschlussbericht für den Studiengang %s abgeschlossen und freigegeben.';
+$this->phrasen['lvevaluierung/XhatEinenJahresabschlussDurchgefuehrt'] = '%s hat den Studienjahr-Abschlussbericht für den Studiengang %s abgeschlossen und freigegeben.';
 $this->phrasen['lvevaluierung/folgenSieDenLinks'] = 'Folgen Sie den links für weiterführende Informationen:';
 $this->phrasen['lvevaluierung/evaluierungenAnfordern'] = 'LV Evaluierungen & Auswertungen einsehen und anfordern';
 $this->phrasen['lvevaluierung/evaluierungenAnfordernTxt'] = 'Hier können Sie die Selbstsevaluierungen der Lektoren und die zugehörigen Auswertungen der Studenten einsehen. <br>
                 Zudem können Sie Selbstevaluierungen als verpflichtend abzugeben markieren.';
-$this->phrasen['lvevaluierung/jahresabschlussberichtErstellen'] = 'LV Evaluierung Jahresabschlussbericht anzeigen, bearbeiten & drucken';
-$this->phrasen['lvevaluierung/jahresabschlussberichtErstellenTxt'] = 'Hier können Sie den Jahresabschlussbericht über die LV Evaluierungen erstellen und an das Rektorat verschicken.<br>
-                Sie können auch vergangene Jahresabschlussberichte einsehen und drucken. ';
+$this->phrasen['lvevaluierung/jahresabschlussberichtErstellen'] = 'Studienjahr-Abschlussbericht anzeigen, bearbeiten & drucken';
+$this->phrasen['lvevaluierung/jahresabschlussberichtErstellenTxt'] = 'Hier können Sie den Studienjahr-Abschlussbericht über die LV Evaluierungen erstellen und an das Rektorat verschicken.<br>
+                Sie können auch vergangene Studienjahr-Abschlussberichte einsehen und drucken. ';
 $this->phrasen['lvevaluierung/evaluierungenPruefen'] = 'LV Evaluierungen prüfen';
 $this->phrasen['lvevaluierung/evaluierungenPruefenTxt'] = 'Hier können Sie alle Lehrveranstaltungsevaluierungen prüfen, bei denen der Vortragende zugleich der Studiengangsleiter war.';
-$this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigen'] = 'Alle LV Evaluierung Jahresabschlussberichte anzeigen';
-$this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigenTxt'] = 'Hier können Sie alle LV Evaluierung Jahresabschlussberichte einsehen und drucken.';
+$this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigen'] = 'Alle Studienjahr-Abschlussberichte anzeigen';
+$this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigenTxt'] = 'Hier können Sie alle Studienjahr-Abschlussberichte einsehen und drucken.';
 $this->phrasen['lvevaluierung/mehrereLektorenEineLvTxt'] = 'Eine Lehrveranstaltung kann von mehreren Lektoren durchgeführt worden sein.<br>'
     . '                                                     Bitte wählen Sie, ob die Studierenden in der Evaluation den Lektor wählen können sollen.<br>'
     . '                                                     <small>Sie erhalten dadurch zusätzlich zur Gesamtbewertung auch individuelle Bewertungen pro Lektor.</small>';
@@ -121,9 +121,9 @@ $this->phrasen['lvevaluierung/lektorWaehlen'] = 'Lektor wählen';
 
 
 //studienabschlussbericht
-$this->phrasen['lvevaluierung/jahresabschlussberichtAlle'] = 'Alle Lehrveranstaltungsevaluierung Studienabschlussberichte';
-$this->phrasen['lvevaluierung/jahresabschlussbericht'] = 'Studienabschlussbericht';
-$this->phrasen['lvevaluierung/lvevaluierungJahresabschlussbericht'] = 'Lehrveranstaltungsevaluierung Studienabschlussbericht';
+$this->phrasen['lvevaluierung/jahresabschlussberichtAlle'] = 'Alle Lehrveranstaltungsevaluierung Studienjahr-Abschlussberichte';
+$this->phrasen['lvevaluierung/jahresabschlussbericht'] = 'Studienjahr-Abschlussbericht';
+$this->phrasen['lvevaluierung/lvevaluierungJahresabschlussbericht'] = 'Lehrveranstaltungsevaluierung Studienjahr-Abschlussbericht';
 $this->phrasen['lvevaluierung/evaluierungAnzahl'] = 'Anzahl der evaluierten Lehrveranstaltungen';
 $this->phrasen['lvevaluierung/evaluierungAnzahlTxt'] = 'Von %d angebotenen Lehrveranstaltungen wurden %d evaluiert.';
 $this->phrasen['lvevaluierung/evaluierungQuote'] = 'Evaluationsquote';
@@ -132,8 +132,8 @@ $this->phrasen['lvevaluierung/evaluierungQuoteTxtNoResult'] = 'In diesem Jahr gi
 $this->phrasen['lvevaluierung/evaluierteLVs'] = 'Evaluierte Lehrveranstaltungen';
 $this->phrasen['lvevaluierung/welcheErgebnisse'] = 'Welche Ergebnisse gibt es?';
 $this->phrasen['lvevaluierung/welcheVerbesserungen'] = 'Welche Verbesserungen wurden gesetzt?';
-$this->phrasen['lvevaluierung/jahresabschlussberichtGesperrt'] = 'Der Studienabschlussbericht ist am %s freigegeben worden und kann daher nicht mehr bearbeitet werden.';
-$this->phrasen['lvevaluierung/jahresabschlussberichtNichtVorhanden'] = 'Es gibt im gewählten Jahr zu diesem Studiengang noch keinen Studienjahrabschlussbericht.';
+$this->phrasen['lvevaluierung/jahresabschlussberichtGesperrt'] = 'Der Studienjahr-Abschlussbericht ist am %s freigegeben worden und kann daher nicht mehr bearbeitet werden.';
+$this->phrasen['lvevaluierung/jahresabschlussberichtNichtVorhanden'] = 'Es gibt im gewählten Jahr zu diesem Studiengang noch keinen Studienjahr-Abschlussbericht.';
 $this->phrasen['lvevaluierung/lektorIstStgl'] = 'Lektor (zugleich Studiengangsleiter)';
 $this->phrasen['lvevaluierung/keineEvaluierteLvs'] = 'In diesem Studienjahr wurden noch keine Lehrveranstaltungen evaluiert.';
 
