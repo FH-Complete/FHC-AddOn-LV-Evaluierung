@@ -53,7 +53,7 @@ $this->phrasen['lvevaluierung/codesAusgegebenAnzahl']='Number of codes used';
 $this->phrasen['lvevaluierung/mehrCodesAusgegebenAlsStudierende']='The number of codes used may not exceed the number of students in the course.';
 $this->phrasen['lvevaluierung/mehrAusgefuelltAlsAusgegeben']='The number of codes used cannot be lower than the number of questionnaires filled out.';
 $this->phrasen['lvevaluierung/codesNichtEingetragen']='Number of codes used not filled out.';
-$this->phrasen['lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung']='Notice: Self-evaluation can only be sent when number of used access codes is saved correctly.';
+$this->phrasen['lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung']='Notice: Self-evaluation can only be further processed and send when number of used access codes is saved correctly.';
 
 $this->phrasen['lvevaluierung/auswertungAnzeigen']='Analysis';
 $this->phrasen['lvevaluierung/auswertungAnzeigenInfotext']='Click here to display the results of the course evaluation.';

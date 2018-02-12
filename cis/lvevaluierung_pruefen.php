@@ -265,10 +265,14 @@ function getRuecklaufquote($lvevaluierung_id, $lehrveranstaltung_id, $ws, $ss)
 					<tr>
 					<td>' . $selbstev['bezeichnung'] . ', ' .$selbstev['orgform_kurzbz'] . '</td>
 					<td>' . $selbstev['lektorIsStgl'] .'</td>
-					<td style="text-align: center;"><a href="selbstevaluierung.php?lvevaluierung_id=' . $selbstev['lvevaluierung_id'] . '"</a>
-						<img src="../../../skin/images/edit-paste.png" height="15px" title="Selbstevaluierung anzeigen"></td>
-					<td style="text-align: center;"><a href="auswertung.php?lvevaluierung_id=' . $selbstev['lvevaluierung_id'] . '"</a>
-					<img src="../../../skin/images/statistic.png" height="15px" title="Auswertung anzeigen">
+					<td style="text-align: center;">
+						<a href="#" onclick="javascript:window.open(\'selbstevaluierung.php?lvevaluierung_id=' . $selbstev['lvevaluierung_id'] . '\',\'Selbstevaluierung\',
+						\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;">
+						<img src="../../../skin/images/edit-paste.png" height="15px" title="Selbstevaluierung anzeigen"></a>
+					</td>
+					<td style="text-align: center;">
+					<a href="#" onclick="javascript:window.open(\'auswertung.php?lvevaluierung_id=' . $selbstev['lvevaluierung_id'] . '\',\'Auswertung\',
+						\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;"><img src="../../../skin/images/statistic.png" height="15px" title="Auswertung anzeigen"></a>					
 					</a>' . getRuecklaufquote($selbstev['lvevaluierung_id'], $selbstev['lehrveranstaltung_id'], $ws, $ss) . '<td>
 					</tr>';
 				}

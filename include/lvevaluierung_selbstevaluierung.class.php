@@ -229,14 +229,14 @@ class lvevaluierung_selbstevaluierung extends basis_db
 	}
     
     /**
-	 * Laedt Selbstevaluierung zu einem bestimmten Studiengang und Studienjahr
+	 * Laedt Lehrveranstaltungen, die selbstevaluiert wurden, zu einem bestimmten Studiengang und Studienjahr
 	 * @param $studiengang_kz, $ws (wintersemester), $ss (sommersemester)
 	 * @return associative array
 	 */
     public function getLVwhereSelbstevaluierungen($studiengang_kz, $ws, $ss)
     {       
          $qry = '
-            SELECT lv.bezeichnung, lv.orgform_kurzbz
+            SELECT lv.bezeichnung, lv.orgform_kurzbz, lv.lehrveranstaltung_id, lv.semester, lvev.lvevaluierung_id
             FROM lehre.tbl_lehrveranstaltung lv
             JOIN addon.tbl_lvevaluierung lvev USING (lehrveranstaltung_id)
             JOIN addon.tbl_lvevaluierung_selbstevaluierung lvsev USING (lvevaluierung_id)
@@ -252,6 +252,9 @@ class lvevaluierung_selbstevaluierung extends basis_db
             {
                 $selbstev_arr['bezeichnung'][] = $row->bezeichnung;
                 $selbstev_arr['orgform_kurzbz'][] = $row->orgform_kurzbz;
+				$selbstev_arr['lehrveranstaltung_id'][] = $row->lehrveranstaltung_id;
+				$selbstev_arr['semester'][] = $row->semester;
+				$selbstev_arr['lvevaluierung_id'][] = $row->lvevaluierung_id;
             }
             $this->result = $selbstev_arr;
             return true;

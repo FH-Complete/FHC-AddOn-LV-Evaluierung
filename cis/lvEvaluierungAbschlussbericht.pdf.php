@@ -181,7 +181,7 @@ function getEvaluierteLV($studiengang_kz, $ws, $ss)
     $selbstev_cnt = 0;
     
     //get all selbstevaluierungen per studiengang and studienjahr
-    $qry = 'SELECT lv.bezeichnung, lv.orgform_kurzbz
+    $qry = 'SELECT lv.bezeichnung, lv.orgform_kurzbz, lv.semester
             FROM lehre.tbl_lehrveranstaltung lv
             JOIN addon.tbl_lvevaluierung lvev USING (lehrveranstaltung_id)
             JOIN addon.tbl_lvevaluierung_selbstevaluierung lvsev USING (lvevaluierung_id)
@@ -197,6 +197,7 @@ function getEvaluierteLV($studiengang_kz, $ws, $ss)
             {
             $selbstev_arr['bezeichnung'][] = $row->bezeichnung;
             $selbstev_arr['orgform_kurzbz'][] = $row->orgform_kurzbz;
+			$selbstev_arr['semester'][] = $row->semester;
             $selbstev_cnt++;
             }
         }
@@ -214,8 +215,7 @@ function getEvaluierteLV($studiengang_kz, $ws, $ss)
 					for ($i = 0; $i < $selbstev_cnt; $i++){
 						if ($selbstev_arr['orgform_kurzbz'][$i] == $orgform)
 						{	
-							$orgform_container[$orgform][] = array('lv' => $selbstev_arr['bezeichnung'][$i]); 
-
+							$orgform_container[$orgform][] = array('lv' => $selbstev_arr['bezeichnung'][$i], 'semester' => $selbstev_arr['semester'][$i]); 
 						}
 					}
 				}
@@ -242,14 +242,22 @@ $data = array(
 );
 
 if(count($orgform_container) > 0)
-{
+{	
 	foreach($orgform_container as $key => $value)
 	{
+		$ev_lvs_zeile_arr = array();
+		foreach ($value as $val)
+		{
+			$ev_lvs_zeile_arr []= array(
+						'evaluierte_lvs_zeile' => $val
+					);  
+		}
+		
 		$data[]= array(
 			'evaluierte_lehrveranstaltungen' => array(
-			'org_form' => ' - ' . $key,
-			'evaluierte_lvs' => $value      
-			)
+				'org_form' => ' - ' . $key,
+				'evaluierte_lvs' => $ev_lvs_zeile_arr
+				)  	
 		);
 	}
 }

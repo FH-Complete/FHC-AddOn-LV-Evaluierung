@@ -28,6 +28,8 @@ require_once('../../../include/studiensemester.class.php');
 require_once('../../../include/benutzer.class.php');
 require_once('../../../include/datum.class.php');
 require_once('../../../include/mail.class.php');
+require_once('../include/lvevaluierung.class.php');
+require_once('../include/lvevaluierung_code.class.php');
 require_once('../include/lvevaluierung_jahresabschluss.class.php');
 require_once('../include/lvevaluierung_selbstevaluierung.class.php');
 
@@ -297,6 +299,35 @@ function printJahresabschlussbericht($lvevaluierung_jahresabschluss_id)
 		return false;
 }
    
+
+function getRuecklaufquote($lvevaluierung_id, $lehrveranstaltung_id, $ws, $ss)
+{
+	$evaluierung = new lvevaluierung();
+	$codes = new lvevaluierung_code();
+
+	if($evaluierung->getEvaluierung($lehrveranstaltung_id, $ws) || $evaluierung->getEvaluierung($lehrveranstaltung_id, $ss))
+	{
+			$codes->loadCodes($evaluierung->lvevaluierung_id);
+			$anzahl_codes_beendet=0;
+			foreach($codes->result as $row_code)
+			{
+				if($row_code->endezeit!='')
+					$anzahl_codes_beendet++;
+			}
+
+			if($evaluierung->codes_ausgegeben!='')
+				$anzahl_codes_gesamt = $evaluierung->codes_ausgegeben;
+			else
+				$anzahl_codes_gesamt = count($codes->result);
+
+			if($anzahl_codes_gesamt>0)
+				$prozent_abgeschlossen = (100/$anzahl_codes_gesamt*$anzahl_codes_beendet);
+			else
+				$prozent_abgeschlossen = 0;
+	}
+	
+	return '<span>(' . sprintf("%6s", number_format($prozent_abgeschlossen, 2)) . '%)</span>'; 
+}
 ?>
 
 
@@ -357,7 +388,10 @@ function printJahresabschlussbericht($lvevaluierung_jahresabschluss_id)
 					{
 					?>	
 					<tr>
-						<th><b><?php echo $p->t('lvevaluierung/evaluierteLVs') . ' ' . $orgform ?></b></th>
+						<th style="width: 60%;"><b><?php echo $p->t('lvevaluierung/evaluierteLVs') . ' ' . $orgform ?></b></th>
+						<th><b><?php echo $p->t('lvevaluierung/ausbildungssemester') ?></b></th>
+						<th><?php echo $p->t('lvevaluierung/selbstevaluierung') ?></th>
+						<th><?php echo $p->t('lvevaluierung/auswertung') ?><small> (<?php echo $p->t('lvevaluierung/ruecklaufquote') ?> in %)</small></th>
 					</tr>
 					<?php
 						for ($i = 0; $i < $selbstev_cnt; $i++)
@@ -367,8 +401,18 @@ function printJahresabschlussbericht($lvevaluierung_jahresabschluss_id)
 							{
 								echo '
 								<tr>
-								<td>'.$selbstev_arr['bezeichnung'][$i].'</td>
-
+									<td>'.$selbstev_arr['bezeichnung'][$i].'</td>
+									<td style="text-align: center;">'.$selbstev_arr['semester'][$i].'</td>
+									<td style="text-align: center;">
+										<a href="#" onclick="javascript:window.open(\'selbstevaluierung.php?lvevaluierung_id=' . $selbstev_arr['lvevaluierung_id'][$i] . '\',\'Selbstevaluierung\',
+										\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;">
+										<img src="../../../skin/images/edit-paste.png" height="15px" title="Selbstevaluierung anzeigen"></a>
+									</td>
+									<td style="text-align: center;">
+										<a href="#" onclick="javascript:window.open(\'auswertung.php?lvevaluierung_id=' . $selbstev_arr['lvevaluierung_id'][$i] . '\',\'Auswertung\',
+											\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;"><img src="../../../skin/images/statistic.png" height="15px" title="Auswertung anzeigen"></a>					
+										</a>' . getRuecklaufquote($selbstev_arr['lvevaluierung_id'][$i], $selbstev_arr['lehrveranstaltung_id'][$i], $ws, $ss) . '
+									</td>
 								</tr>';
 							}
 						}

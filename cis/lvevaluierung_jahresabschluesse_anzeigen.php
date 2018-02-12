@@ -221,14 +221,14 @@ function getJahresabschlussberichte($studiengang_kz, $studienjahr_kurzbz)
 					<th><b><?php echo $p->t('global/anzeigen') ?></b></th>
 					<th><b><?php echo $p->t('global/pdfExport') ?></b></th>
 				</tr>
-				<?php
+				<?php				
 				foreach($studienabschlussbericht_arr as $studienabschlussbericht)
 				{
 					echo '
 					<tr>
 					<td>'.$studienabschlussbericht['studienbezeichnung'].'</td>
-					<td>'.$studienabschlussbericht['studienjahr_kurzbz'].'</td>
-					<td><a href = "lvevaluierung_jahresabschluesse_erstellen.php?studiengang_kz=' . $studienabschlussbericht['studiengang_kz'] . '&studienjahr_kurzbz=' . urlencode($studienabschlussbericht['studienjahr_kurzbz']) . '">' . $p->t('global/bericht') . ' ' . $studienabschlussbericht['oe_kurzbz'] . ' - ' . $studienabschlussbericht['studienjahr_kurzbz'] . '</a></td>
+					<td>'.$studienabschlussbericht['studienjahr_kurzbz'].'</td>	
+					<td><a href="#" onclick="javascript:window.open(\'lvevaluierung_jahresabschluesse_erstellen.php?studiengang_kz=' . $studienabschlussbericht['studiengang_kz'] . '&studienjahr_kurzbz=' . urlencode($studienabschlussbericht['studienjahr_kurzbz']) . '\',\'_self\');return false;">' . $p->t('global/bericht') . ' ' . $studienabschlussbericht['oe_kurzbz'] . ' - ' . $studienabschlussbericht['studienjahr_kurzbz'] . '</a></td>
 					<td style="text-align: center;"><a href = "lvEvaluierungAbschlussbericht.pdf.php?lvev_jahresabschluss_id=' . $studienabschlussbericht['lvevaluierung_jahresabschluss_id'] . '">
 					<img style="cursor:pointer; height: 16px;" src="../../../skin/images/pdf_icon.png"</a></td>
 					</tr>';

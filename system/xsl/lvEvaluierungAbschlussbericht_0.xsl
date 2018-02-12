@@ -98,33 +98,141 @@
 					<style:table-properties style:width="16.946cm" fo:margin-left="0.081cm" table:align="left"/>
 				</style:style>
 				<style:style style:name="Tabelle2.A" style:family="table-column">
-					<style:table-column-properties style:column-width="16.946cm"/>
+			<style:table-column-properties style:column-width="12.695cm"/>
 				</style:style>
+		<style:style style:name="Tabelle2.B" style:family="table-column">
+			<style:table-column-properties style:column-width="4.251cm"/>
+		</style:style>
 				<style:style style:name="Tabelle2.A1" style:family="table-cell">
+			<style:table-cell-properties fo:background-color="#eeeeee" fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="0.05pt solid #b2b2b2" fo:border-bottom="0.05pt solid #b2b2b2">
+				<style:background-image/>
+			</style:table-cell-properties>
+		</style:style>
+		<style:style style:name="Tabelle2.B1" style:family="table-cell">
 					<style:table-cell-properties fo:background-color="#eeeeee" fo:padding="0.097cm" fo:border="0.05pt solid #b2b2b2">
 						<style:background-image/>
 					</style:table-cell-properties>
 				</style:style>
 				<style:style style:name="Tabelle2.A2" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B2" style:family="table-cell">
 					<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
 				</style:style>
 				<style:style style:name="Tabelle2.A3" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B3" style:family="table-cell">
 					<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
 				</style:style>
 				<style:style style:name="Tabelle2.A4" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B4" style:family="table-cell">
 					<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
 				</style:style>
 				<style:style style:name="Tabelle2.A5" style:family="table-cell">
-					<style:table-cell-properties fo:background-color="#eeeeee" fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2">
-						<style:background-image/>
-					</style:table-cell-properties>
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
 				</style:style>
+		<style:style style:name="Tabelle2.B5" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
 				<style:style style:name="Tabelle2.A6" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B6" style:family="table-cell">
 					<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
 				</style:style>
 				<style:style style:name="Tabelle2.A7" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B7" style:family="table-cell">
 					<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
 				</style:style>
+		<style:style style:name="Tabelle2.A8" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B8" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A9" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B9" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A10" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B10" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A11" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B11" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A12" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B12" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A13" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B13" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A14" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B14" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A15" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B15" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A16" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B16" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A17" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B17" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A18" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B18" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A19" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B19" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A20" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B20" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.A21" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="none" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
+		<style:style style:name="Tabelle2.B21" style:family="table-cell">
+			<style:table-cell-properties fo:padding="0.097cm" fo:border-left="0.05pt solid #b2b2b2" fo:border-right="0.05pt solid #b2b2b2" fo:border-top="none" fo:border-bottom="0.05pt solid #b2b2b2"/>
+		</style:style>
 				<style:style style:name="Tabelle3" style:family="table">
 					<style:table-properties style:width="16.946cm" fo:margin-left="0.081cm" table:align="left"/>
 				</style:style>
@@ -194,43 +302,42 @@
 					<style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
 					<style:text-properties style:font-name="Arial" fo:font-size="16pt" officeooo:rsid="00229b7b" officeooo:paragraph-rsid="002a590f" style:font-size-asian="16pt" style:font-size-complex="16pt"/>
 				</style:style>
-				<style:style style:name="P15" style:family="paragraph" style:parent-style-name="Table_20_Contents">
-					<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="bold" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="0023ed3c" style:font-size-asian="8.75pt" style:font-weight-asian="bold" style:font-size-complex="10pt" style:font-weight-complex="bold"/>
+		<style:style style:name="P15" style:family="paragraph" style:parent-style-name="Standard">
+			<style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
+			<style:text-properties style:font-name="Arial" fo:font-size="16pt" officeooo:rsid="002a590f" officeooo:paragraph-rsid="002a590f" style:font-size-asian="16pt" style:font-size-complex="16pt"/>
 				</style:style>
 				<style:style style:name="P16" style:family="paragraph" style:parent-style-name="Table_20_Contents">
-					<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="normal" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="0023ed3c" style:font-size-asian="8.75pt" style:font-weight-asian="normal" style:font-size-complex="10pt" style:font-weight-complex="normal"/>
+			<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="bold" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="0023ed3c" style:font-size-asian="8.75pt" style:font-weight-asian="bold" style:font-size-complex="10pt" style:font-weight-complex="bold"/>
 				</style:style>
 				<style:style style:name="P17" style:family="paragraph" style:parent-style-name="Table_20_Contents">
-					<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="normal" officeooo:rsid="00254735" officeooo:paragraph-rsid="00254735" style:font-size-asian="8.75pt" style:font-weight-asian="normal" style:font-size-complex="10pt" style:font-weight-complex="normal"/>
+			<style:paragraph-properties fo:text-align="start" style:justify-single-word="false"/>
+			<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="bold" officeooo:rsid="00352700" officeooo:paragraph-rsid="00352700" style:font-size-asian="8.75pt" style:font-weight-asian="bold" style:font-size-complex="10pt" style:font-weight-complex="bold"/>
 				</style:style>
 				<style:style style:name="P18" style:family="paragraph" style:parent-style-name="Table_20_Contents">
-					<style:paragraph-properties fo:margin-left="0.499cm" fo:margin-right="0cm" fo:text-indent="0cm" style:auto-text-indent="false" style:writing-mode="page"/>
-					<style:text-properties style:font-name="Arial" fo:font-size="10pt" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="0023ed3c" style:font-size-asian="8.75pt" style:font-size-complex="10pt"/>
+			<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="normal" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="0023ed3c" style:font-size-asian="8.75pt" style:font-weight-asian="normal" style:font-size-complex="10pt" style:font-weight-complex="normal"/>
 				</style:style>
 				<style:style style:name="P19" style:family="paragraph" style:parent-style-name="Table_20_Contents">
+			<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="normal" officeooo:rsid="00254735" officeooo:paragraph-rsid="00254735" style:font-size-asian="8.75pt" style:font-weight-asian="normal" style:font-size-complex="10pt" style:font-weight-complex="normal"/>
+		</style:style>
+		<style:style style:name="P20" style:family="paragraph" style:parent-style-name="Table_20_Contents">
 					<style:paragraph-properties fo:margin-left="0.499cm" fo:margin-right="0cm" fo:text-indent="0cm" style:auto-text-indent="false" style:writing-mode="page"/>
-					<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="bold" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="0023ed3c" style:font-size-asian="8.75pt" style:font-weight-asian="bold" style:font-size-complex="10pt" style:font-weight-complex="bold"/>
-				</style:style>
-				<style:style style:name="P20" style:family="paragraph" style:parent-style-name="Standard">
-					<style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
-					<style:text-properties style:font-name="Arial" fo:font-size="16pt" officeooo:rsid="002a590f" officeooo:paragraph-rsid="002a590f" style:font-size-asian="16pt" style:font-size-complex="16pt"/>
+			<style:text-properties style:font-name="Arial" fo:font-size="10pt" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="0023ed3c" style:font-size-asian="8.75pt" style:font-size-complex="10pt"/>
 				</style:style>
 				<style:style style:name="P21" style:family="paragraph" style:parent-style-name="Table_20_Contents">
+			<style:paragraph-properties fo:margin-left="0.499cm" fo:margin-right="0cm" fo:text-indent="0cm" style:auto-text-indent="false" style:writing-mode="page"/>
 					<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="bold" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="0023ed3c" style:font-size-asian="8.75pt" style:font-weight-asian="bold" style:font-size-complex="10pt" style:font-weight-complex="bold"/>
 				</style:style>
 				<style:style style:name="P22" style:family="paragraph" style:parent-style-name="Table_20_Contents">
-					<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="bold" officeooo:rsid="00352700" officeooo:paragraph-rsid="00352700" style:font-size-asian="8.75pt" style:font-weight-asian="bold" style:font-size-complex="10pt" style:font-weight-complex="bold"/>
+			<style:paragraph-properties fo:text-align="start" style:justify-single-word="false"/>
+			<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="bold" officeooo:rsid="00351978" officeooo:paragraph-rsid="00351978" style:font-size-asian="8.75pt" style:font-weight-asian="bold" style:font-size-complex="10pt" style:font-weight-complex="bold"/>
 				</style:style>
 				<style:style style:name="P23" style:family="paragraph" style:parent-style-name="Table_20_Contents">
-					<style:paragraph-properties fo:text-align="start" style:justify-single-word="false"/>
-					<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="bold" officeooo:rsid="00352700" officeooo:paragraph-rsid="00352700" style:font-size-asian="8.75pt" style:font-weight-asian="bold" style:font-size-complex="10pt" style:font-weight-complex="bold"/>
+			<style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
+			<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="normal" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="0023ed3c" style:font-size-asian="8.75pt" style:font-weight-asian="normal" style:font-size-complex="10pt" style:font-weight-complex="normal"/>
 				</style:style>
 				<style:style style:name="P24" style:family="paragraph" style:parent-style-name="Table_20_Contents">
-					<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="normal" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="00352700" style:font-size-asian="8.75pt" style:font-weight-asian="normal" style:font-size-complex="10pt" style:font-weight-complex="normal"/>
-				</style:style>
-				<style:style style:name="P25" style:family="paragraph" style:parent-style-name="Table_20_Contents">
-					<style:paragraph-properties fo:margin-left="0.499cm" fo:margin-right="0cm" fo:text-indent="0cm" style:auto-text-indent="false" style:writing-mode="page"/>
-					<style:text-properties style:font-name="Arial" fo:font-size="10pt" officeooo:rsid="0023ed3c" officeooo:paragraph-rsid="0023ed3c" style:font-size-asian="8.75pt" style:font-size-complex="10pt"/>
+			<style:paragraph-properties fo:text-align="center" style:justify-single-word="false"/>
+			<style:text-properties style:font-name="Arial" fo:font-size="10pt" fo:font-weight="normal" officeooo:rsid="00351978" officeooo:paragraph-rsid="00351978" style:font-size-asian="8.75pt" style:font-weight-asian="normal" style:font-size-complex="10pt" style:font-weight-complex="normal"/>
 				</style:style>
 				<style:style style:name="T1" style:family="text">
 					<style:text-properties style:font-name="Arial" fo:font-size="8pt" style:font-size-asian="8pt" style:font-size-complex="8pt"/>
@@ -240,12 +347,6 @@
 				</style:style>
 				<style:style style:name="T3" style:family="text">
 					<style:text-properties officeooo:rsid="0023ed3c"/>
-				</style:style>
-				<style:style style:name="T4" style:family="text">
-					<style:text-properties officeooo:rsid="00254735"/>
-				</style:style>
-				<style:style style:name="T5" style:family="text">
-					<style:text-properties officeooo:rsid="00352700"/>
 				</style:style>
 				<style:style style:name="fr1" style:family="graphic" style:parent-style-name="Graphics">
 					<style:graphic-properties style:vertical-pos="from-top" style:vertical-rel="page" style:horizontal-pos="from-left" style:horizontal-rel="page" style:mirror="none" fo:clip="rect(0cm, 0cm, 0cm, 0cm)" draw:luminance="0%" draw:contrast="0%" draw:red="0%" draw:green="0%" draw:blue="0%" draw:gamma="100%" draw:color-inversion="false" draw:image-opacity="100%" draw:color-mode="standard"/>
@@ -269,7 +370,7 @@
 					<text:p text:style-name="P3"/>
 					<text:p text:style-name="P11"/>
 					<text:p text:style-name="P14"/>
-					<text:p text:style-name="P20">Studienjahr-Abschlussbericht <xsl:value-of select="studiengang_kurz" /> - <xsl:value-of select="studienjahr" /></text:p>
+					<text:p text:style-name="P15">Studienjahr-Abschlussbericht <xsl:value-of select="studiengang_kurz" /> - <xsl:value-of select="studienjahr" /></text:p>
 					<text:p text:style-name="P12"/>
 					<text:p text:style-name="P2"/>
 					<table:table table:name="Tabelle1" table:style-name="Tabelle1">
@@ -277,38 +378,38 @@
 						<table:table-column table:style-name="Tabelle1.B"/>
 						<table:table-row>
 							<table:table-cell table:style-name="Tabelle1.A1" office:value-type="string">
-								<text:p text:style-name="P15">Studiengang</text:p>
+								<text:p text:style-name="P16">Studiengang</text:p>
 							</table:table-cell>
 							<table:table-cell table:style-name="Tabelle1.B1" office:value-type="string">
-								<text:p text:style-name="P19">
+								<text:p text:style-name="P21">
 									<xsl:value-of select="studiengang_lang" />
 								</text:p>
 							</table:table-cell>
 						</table:table-row>
 						<table:table-row>
 							<table:table-cell table:style-name="Tabelle1.A2" office:value-type="string">
-								<text:p text:style-name="P15">Studienjahr</text:p>
+								<text:p text:style-name="P16">Studienjahr</text:p>
 							</table:table-cell>
 							<table:table-cell table:style-name="Tabelle1.B2" office:value-type="string">
-								<text:p text:style-name="P19">
+								<text:p text:style-name="P21">
 									<xsl:value-of select="wintersemester" /> / <xsl:value-of select="sommersemester" />
 								</text:p>
 							</table:table-cell>
 						</table:table-row>
 						<table:table-row>
 							<table:table-cell table:style-name="Tabelle1.A3" office:value-type="string">
-								<text:p text:style-name="P16">Anzahl der evaluierten Lehrveranstaltungen</text:p>
+								<text:p text:style-name="P18">Anzahl der evaluierten Lehrveranstaltungen</text:p>
 							</table:table-cell>
 							<table:table-cell table:style-name="Tabelle1.B2" office:value-type="string">
-								<text:p text:style-name="P18">Von <xsl:value-of select="anzahl_lvs" /> angebotenen Lehrveranstaltungen wurden <xsl:value-of select="anzahl_evaluierte_lvs" /> evauliert.</text:p>
+								<text:p text:style-name="P20">Von <xsl:value-of select="anzahl_lvs" /> angebotenen Lehrveranstaltungen wurden <xsl:value-of select="anzahl_evaluierte_lvs" /> evauliert.</text:p>
 							</table:table-cell>
 						</table:table-row>
 						<table:table-row>
 							<table:table-cell table:style-name="Tabelle1.A4" office:value-type="string">
-								<text:p text:style-name="P16">Evaluationsquote</text:p>
+								<text:p text:style-name="P18">Evaluationsquote</text:p>
 							</table:table-cell>
 							<table:table-cell table:style-name="Tabelle1.B2" office:value-type="string">
-								<text:p text:style-name="P18"><xsl:value-of select="evaluationsquote" /></text:p>
+								<text:p text:style-name="P20"><xsl:value-of select="evaluationsquote" /></text:p>
 							</table:table-cell>
 						</table:table-row>
 					</table:table>
@@ -317,7 +418,10 @@
 					<text:p text:style-name="P7"/>
 					<table:table table:name="Tabelle2" table:style-name="Tabelle2">
 						<table:table-column table:style-name="Tabelle2.A"/>
-						<xsl:apply-templates select="evaluierte_lehrveranstaltungen"/>						
+						<table:table-column table:style-name="Tabelle2.B"/>					
+
+						<xsl:apply-templates select="evaluierte_lehrveranstaltungen"/>
+												
 					</table:table>
 					<text:p text:style-name="P7"/>
 					<text:p text:style-name="P4"/>
@@ -329,12 +433,13 @@
 								<text:p text:style-name="P10">Welche Ergebnisse gibt es?</text:p>
 							</table:table-cell>
 						</table:table-row>
+						<text:soft-page-break/>
 						<table:table-row>
 							<table:table-cell table:style-name="Tabelle3.A2" office:value-type="string">
-								<text:p text:style-name="P17">
+								<text:p text:style-name="P19">
 									<xsl:value-of select="ergebnisse" />
 								</text:p>
-								<text:p text:style-name="P17"/>
+								<text:p text:style-name="P19"/>
 							</table:table-cell>
 						</table:table-row>
 					</table:table>
@@ -350,16 +455,16 @@
 						</table:table-row>
 						<table:table-row>
 							<table:table-cell table:style-name="Tabelle4.A2" office:value-type="string">
-								<text:p text:style-name="P17">
+								<text:p text:style-name="P19">
 									<xsl:value-of select="verbesserungen" />
 								</text:p>
-								<text:p text:style-name="P17"/>
+								<text:p text:style-name="P19"/>
 							</table:table-cell>
 						</table:table-row>
 					</table:table>
 					<text:p text:style-name="P8"/>
 					<text:p text:style-name="P4">
-						<text:soft-page-break/>
+				<text:s/>
 					</text:p>
 					<text:p text:style-name="P4"/>
 				</office:text>
@@ -372,8 +477,11 @@
 		<!--graue überschrift-zeile (pro organisationsform)-->
 		<table:table-row>
 			<table:table-cell table:style-name="Tabelle2.A1" office:value-type="string">
-				<text:p text:style-name="P23">
+				<text:p text:style-name="P17">
 					<text:span text:style-name="T3">Evaluierte Lehrveranstaltungen </text:span>  <xsl:value-of select="org_form" /></text:p>
+			</table:table-cell>
+			<table:table-cell table:style-name="Tabelle2.B1" office:value-type="string">
+						<text:p text:style-name="P22">Ausbildungssemester</text:p>
 			</table:table-cell>
 		</table:table-row>
 		<xsl:if test="evaluierte_lvs != ''"> 
@@ -382,22 +490,28 @@
 		<xsl:if test="evaluierte_lvs = ''"> 
 			<table:table-row>
 				<table:table-cell table:style-name="Tabelle2.A2" office:value-type="string">
-					<text:p text:style-name="P16">Es gibt keine evaluierten Lehrveranstaltungen in diesem Studienjahr.</text:p>
+					<text:p text:style-name="P18">Es gibt keine evaluierten Lehrveranstaltungen in diesem Studienjahr.</text:p>
+				</table:table-cell>
+				<table:table-cell table:style-name="Tabelle2.B2" office:value-type="string">
 				</table:table-cell>
 			</table:table-row>
 		</xsl:if>
 	</xsl:template>
 	
 	<!--zeilen lehrveranstaltungen-->
-	<xsl:template match="evaluierte_lvs">     
-		<xsl:apply-templates select="lv"/>
+	<xsl:template match="evaluierte_lvs">  
+			<xsl:apply-templates select="evaluierte_lvs_zeile"/>
 	</xsl:template>
 	
-	<xsl:template match="lv">  
+	<xsl:template match="evaluierte_lvs_zeile">  
 		<table:table-row>
-				<table:table-cell table:style-name="Tabelle2.A2" office:value-type="string">
-					<text:p text:style-name="P16"><xsl:value-of select="." /></text:p>
-				</table:table-cell>
-		</table:table-row>
-	</xsl:template>
+			<table:table-cell table:style-name="Tabelle2.A2" office:value-type="string">
+				<text:p text:style-name="P18"><xsl:value-of select="lv" /></text:p>
+			</table:table-cell>
+			<table:table-cell table:style-name="Tabelle2.B2" office:value-type="string">
+				<text:p text:style-name="P24"><xsl:value-of select="semester" /></text:p>
+			</table:table-cell>
+		</table:table-row>	
+	</xsl:template>	
+		
 </xsl:stylesheet>

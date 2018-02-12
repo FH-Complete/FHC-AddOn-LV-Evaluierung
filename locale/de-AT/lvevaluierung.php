@@ -55,7 +55,7 @@ $this->phrasen['lvevaluierung/codesAusgegebenAnzahl']='Anzahl der verwendeten Co
 $this->phrasen['lvevaluierung/mehrCodesAusgegebenAlsStudierende']='Die Anzahl der verwendeten Codes kann nicht höher sein als die Anzahl der Studierenden in der LV.';
 $this->phrasen['lvevaluierung/mehrAusgefuelltAlsAusgegeben']='Die Anzahl der verwendeten Codes kann nicht kleiner sein als die Anzahl der ausgefüllten Fragebögen.';
 $this->phrasen['lvevaluierung/codesNichtEingetragen']='Anzahl verwendeter Codes nicht eingetragen.';
-$this->phrasen['lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung']='Hinweis: Selbstevaluierung kann nur bei korrekter gespeicherter Anzahl der verwendeten Zugangscodes abgeschickt werden.';
+$this->phrasen['lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung']='Hinweis: Die Selbstevaluierung kann nur bei korrekter gespeicherter Anzahl der verwendeten Zugangscodes weiterbearbeitet und versendet werden.';
 
 $this->phrasen['lvevaluierung/auswertungAnzeigen']='Auswertung';
 $this->phrasen['lvevaluierung/auswertungAnzeigenInfotext']='Klicken Sie hier, um die Ergebnisse der LV-Evaluierung anzuzeigen.';
@@ -73,7 +73,7 @@ $this->phrasen['lvevaluierung/selbstevaluierungPersoenlich']='2. Persönliche Ei
 $this->phrasen['lvevaluierung/selbstevaluierungGeplanteEntwicklung']='3. Geplante Maßnahmen zur Weiterentwicklung der LV:';
 
 $this->phrasen['lvevaluierung/uebersicht']='Übersicht LV-Evaluierungen';
-$this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. Ergibt sich aus den geplanten Maßnahmen zur Weiterentwicklung der LV ein Bedarf an hochschuldidaktischer Weiterbildung?';
+$this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. Bitte geben Sie an, ob Sie einen Bedarf an hochschuldidaktischer Unterstützung sehen:';
 $this->phrasen['lvevaluierung/selbstevaluierungWeiterbildungArt']='5. Für welche Art der hochschuldidaktischen Weiterbildung besteht Bedarf?';
 
 $this->phrasen['lvevaluierung/infotextAllgemein']='Eine detaillierte Prozessbeschreibung finden Sie im <a href="https://signavio.technikum-wien.at/p/portal#/model/5c5c159b5eb74c9dbb358e252b034457" target="_blank">Prozessportal Signavio</a>';
@@ -112,9 +112,7 @@ $this->phrasen['lvevaluierung/evaluierungenPruefen'] = 'LV Evaluierungen prüfen
 $this->phrasen['lvevaluierung/evaluierungenPruefenTxt'] = 'Hier können Sie alle Lehrveranstaltungsevaluierungen prüfen, bei denen der Vortragende zugleich der Studiengangsleiter war.';
 $this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigen'] = 'Alle Studienjahr-Abschlussberichte anzeigen';
 $this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigenTxt'] = 'Hier können Sie alle Studienjahr-Abschlussberichte einsehen und drucken.';
-$this->phrasen['lvevaluierung/mehrereLektorenEineLvTxt'] = '<b>Getrennte Gruppen:</b><br>'
-    . '                                                     Falls die LV mit komplett getrennten Gruppen durchgeführt wurde, können Sie zusätzlich den evaluierten Lektor abfragen.<br>'
-    . '                                                     Sie erhalten dadurch zusätzlich zur Gesamtbewertung auch individuelle Bewertungen pro Lektor.';
+$this->phrasen['lvevaluierung/mehrereLektorenEineLvTxt'] = 'Geben Sie an, ob die gesamte Lehrveranstaltung durchgängig in getrennten Studierenden-Gruppen durchgeführt wurde: ';                                               
 $this->phrasen['lvevaluierung/lektorWaehlenTxt'] = 'Evaluierung von getrennten Gruppen aktivieren';
 $this->phrasen['lvevaluierung/lektorDropdown'] = 'Mein Lektor dieser Lehrveranstaltung';
 $this->phrasen['lvevaluierung/lektorWaehlen'] = 'Lektor wählen';

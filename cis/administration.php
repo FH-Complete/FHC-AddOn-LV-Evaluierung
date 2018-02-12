@@ -469,9 +469,12 @@ echo '
 
 
 
-		echo $p->t('lvevaluierung/evaluierunganlegenInfotext').'<br><br>';
-echo '
+		echo $p->t('lvevaluierung/evaluierunganlegenInfotext');
+	echo '
 		<table>
+			<tr>
+				<td><br></td>
+			</tr>
 			<tr>
 				<td>'.$p->t('lvevaluierung/startzeit').'</td>
 				<td>
@@ -489,15 +492,27 @@ echo '
 			<tr>
 				<td data-toggle="tooltip">'.$p->t('lvevaluierung/dauer').' <img src="'.APP_ROOT.'skin/images/information.png" title="'.$p->t('lvevaluierung/dauerInfotext').'" onclick="document.getElementById(\'dauer_infotext\').style.display=\'inline\'"></td>
 				<td><input type="text" name="dauer" value="'.$db->convert_html_chars(mb_substr($evaluierung->dauer,0,5)).'" size="5" data-toggle="tooltip" title="'.$p->t('lvevaluierung/dauerInfotext').'" '.$locked.' /> HH:MM   <span id="dauer_infotext" style="display: none">('.$p->t('lvevaluierung/dauerInfotext').')</span></td>
-			</tr>
-			<tr>';
+			</tr>';
+
+//nur angezeigt wenn LV komplett getrennt durch mehrere Lektoren durchgeführt
 if($hasMehrereLektoren)
 {
-	echo '<tr><td colspan="2"><hr><br>';
-	echo $p->t('lvevaluierung/mehrereLektorenEineLvTxt');
-	echo '<br><br><input type="checkbox" name="lv_aufgeteilt"'; if ($evaluierung->lv_aufgeteilt) echo 'checked '; else echo ''; echo $locked; echo '>' . $p->t('lvevaluierung/lektorWaehlenTxt') . '<hr><br></td></tr>';
+	echo '
+			<tr>
+				<td><br></td>
+			</tr>
+			<tr>
+				<td colspan="2"><small>' . $p->t('lvevaluierung/mehrereLektorenEineLvTxt') . '</small></td>
+				<td><input type="radio" name="lv_aufgeteilt"'; if ($evaluierung->lv_aufgeteilt) echo 'checked '; else echo ''; echo $locked; echo '>' . $p->t('global/ja') . '
+					<input type="radio" name="lv_aufgeteilt"'; if (!$evaluierung->lv_aufgeteilt) echo 'checked '; else echo ''; echo $locked; echo '>' . $p->t('global/nein') . '</td>
+			</tr>
+			<tr>
+				<td><br></td>
+			</tr>';
+	
 }
-echo		'</tr>
+
+echo		'
 			<tr>
 				<td></td>
 				<td><input type="submit" name="saveEvaluierung" value="'.$p->t('global/speichern').'" '.$locked.' /> '.$evaluierung_zeitraum_msg.'</td>
@@ -542,8 +557,8 @@ else
 		<div class="lvepanel-body">'.$p->t('lvevaluierung/evaluierungDruchfuehrenInfotext').'
 		</div>
 	</div>';
-
-
+	
+	
 	// Ausgegebene Codes erfassen
 	echo '
 	<div class="lvepanel '.($disabled?'disabled':'').'" id="divcodes">
@@ -553,7 +568,7 @@ else
 			<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
 			<input type="hidden" name="lvevaluierung_id" value="'.$db->convert_html_chars($evaluierung->lvevaluierung_id).'" />
 			'.$p->t('lvevaluierung/codesAusgegebenAnzahl').'
-			<input type="text" '.($disabled?'disabled':'').' name="codes_ausgegeben" value="'.$db->convert_html_chars(($evaluierung->codes_ausgegeben!=''?$evaluierung->codes_ausgegeben:$anzahl_studierende)).'" size="9">
+			<input type="text" '.($disabled?'disabled':'').' name="codes_ausgegeben" size="9">
 			<input type="submit" name="saveAusgegeben" '.($disabled?'disabled':'').' value="'.$p->t('global/speichern').'" />
 			'.$evaluierung_ausgegeben_msg.'
 			</form>
