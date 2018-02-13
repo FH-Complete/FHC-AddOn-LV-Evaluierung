@@ -63,7 +63,7 @@ $uid = get_uid();
 $rechte = new benutzerberechtigung();
 $rechte->getBerechtigungen($uid);
 
-if(!$rechte->isBerechtigt('addon/lvevaluierung', null, 'suid'))
+if(!$rechte->isBerechtigt('addon/lvevaluierung_admin', null, 'suid'))
 {
 	die($rechte->errormsg);
 }
@@ -82,7 +82,7 @@ switch($action)
 {
 	// Loeschen einer Frage
 	case 'deleteFrage':
-		if(!$rechte->isBerechtigt('addon/lvevaluierung',null,'suid'))
+		if(!$rechte->isBerechtigt('addon/lvevaluierung_admin',null,'suid'))
 			die($rechte->errormsg);
 
 		$id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
@@ -96,7 +96,7 @@ switch($action)
 		break;
 	// Loeschen einer Frage
 	case 'deleteAntwort':
-		if(!$rechte->isBerechtigt('addon/lvevaluierung',null,'suid'))
+		if(!$rechte->isBerechtigt('addon/lvevaluierung_admin',null,'suid'))
 			die($rechte->errormsg);
 
 		$antwort_id = filter_input(INPUT_POST, 'antwort_id', FILTER_VALIDATE_INT);

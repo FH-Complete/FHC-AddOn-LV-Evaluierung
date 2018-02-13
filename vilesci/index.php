@@ -35,7 +35,7 @@ $uid = get_uid();
 $rechte = new benutzerberechtigung();
 $rechte->getBerechtigungen($uid);
 
-if(!$rechte->isBerechtigt('addon/lvevaluierung', null,'suid'))
+if(!$rechte->isBerechtigt('addon/lvevaluierung_admin', null,'suid'))
 {
 	die('Sie haben keine Berechtigung fuer diese Seite'.$rechte->errormsg);
 }
