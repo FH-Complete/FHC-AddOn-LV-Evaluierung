@@ -179,8 +179,12 @@ if(isset($_POST['saveEvaluierung']))
 	$lvevaluierung_id = $_POST['lvevaluierung_id'];
 	$von_datum = $_POST['von_datum'];
 	$bis_datum = $_POST['bis_datum'];
-	$lv_aufgeteilt = (isset($_POST['lv_aufgeteilt'])) ? true : false;
-
+	if (isset($_POST['lv_aufgeteilt']))
+		if ($_POST['lv_aufgeteilt'] == 'true')
+			$lv_aufgeteilt = true;
+		else 
+			$lv_aufgeteilt = false;
+	
 	//Datum auf Gueltigkeit pruefen
 	if (($von_datum=='' || $bis_datum=='') || !$datum_obj->formatDatum($von_datum,'Y-m-d') || !$datum_obj->formatDatum($bis_datum,'Y-m-d'))
 	{
@@ -503,8 +507,8 @@ if($hasMehrereLektoren)
 			</tr>
 			<tr>
 				<td colspan="2"><small>' . $p->t('lvevaluierung/mehrereLektorenEineLvTxt') . '</small></td>
-				<td><input type="radio" name="lv_aufgeteilt"'; if ($evaluierung->lv_aufgeteilt) echo 'checked '; else echo ''; echo $locked; echo '>' . $p->t('global/ja') . '
-					<input type="radio" name="lv_aufgeteilt"'; if (!$evaluierung->lv_aufgeteilt) echo 'checked '; else echo ''; echo $locked; echo '>' . $p->t('global/nein') . '</td>
+				<td><input type="radio" name="lv_aufgeteilt" value="true"'; if ($evaluierung->lv_aufgeteilt) echo 'checked '; else echo ''; echo $locked; echo '>' . $p->t('global/ja') . '
+					<input type="radio" name="lv_aufgeteilt" value="false"'; if (!$evaluierung->lv_aufgeteilt) echo 'checked '; else echo ''; echo $locked; echo '>' . $p->t('global/nein') . '</td>
 			</tr>
 			<tr>
 				<td><br></td>
@@ -568,7 +572,7 @@ else
 			<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
 			<input type="hidden" name="lvevaluierung_id" value="'.$db->convert_html_chars($evaluierung->lvevaluierung_id).'" />
 			'.$p->t('lvevaluierung/codesAusgegebenAnzahl').'
-			<input type="text" '.($disabled?'disabled':'').' name="codes_ausgegeben" size="9">
+			<input type="text" '.($disabled?'disabled':'').' name="codes_ausgegeben" size="9" value="' . $evaluierung->codes_ausgegeben . '">
 			<input type="submit" name="saveAusgegeben" '.($disabled?'disabled':'').' value="'.$p->t('global/speichern').'" />
 			'.$evaluierung_ausgegeben_msg.'
 			</form>
