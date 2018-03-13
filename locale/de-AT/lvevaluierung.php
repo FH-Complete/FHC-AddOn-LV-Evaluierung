@@ -39,7 +39,7 @@ $this->phrasen['lvevaluierung/endeGroesserStart']='Das Ende der Evaluierung darf
 $this->phrasen['lvevaluierung/bitteGueltigesDatumEingeben']='Das Start- oder Endedatum darf nicht leer sein und muss im Format TT.MM.YYYY vorliegen';
 
 $this->phrasen['lvevaluierung/evaluierunganlegen']='Evaluierungskriterien festlegen';
-$this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Bitte legen Sie hier den Zeitraum fest, in dem die LV-Evaluierung durchgeführt wird. Der Zugriff auf die Evaluierung ist für Studierende nur in diesem Zeitfenster möglich. Sie können den Zeitraum jederzeit korrigieren, solange die Evaluierung noch nicht durchgeführt wurde.';
+$this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Bitte legen Sie hier den Zeitraum fest, in dem die LV-Evaluierung durchgeführt wird. Der Zugriff auf die Evaluierung ist für Studierende nur in diesem Zeitfenster möglich. Sie können den Zeitraum jederzeit korrigieren, solange die Evaluierung noch nicht abgeschlossen wurde.';
 $this->phrasen['lvevaluierung/dauerInfotext']='Die Bearbeitungszeit definiert, wie lange Studierende nach dem Start der Evaluierung Zeit haben, diese auszufüllen. Wir empfehlen, die voreingestellten 10 Minuten beizubehalten. Sie können den Wert aber auch adaptieren.';
 
 $this->phrasen['lvevaluierung/codesErstellen']='Liste der Zugangscodes drucken';

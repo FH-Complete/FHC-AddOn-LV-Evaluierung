@@ -37,7 +37,7 @@ $this->phrasen['lvevaluierung/bitteGueltigesDatumEingeben']='The date for the st
 $this->phrasen['lvevaluierung/auswertungWaehlen']='English Bitte wählen Sie Ihre gewünschte Auswertung';
 
 $this->phrasen['lvevaluierung/evaluierunganlegen']='Specify evaluation criteria';
-$this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Please specify here the period in which the course evaluation is to take place. Access to the evaluation is only available to students in this period. You may correct the period at any time, as long as the evaluation has not yet been carried out.';
+$this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Please specify here the period in which the course evaluation is to take place. Access to the evaluation is only available to students in this period. You may correct the period at any time, as long as the evaluation has not been finished.';
 $this->phrasen['lvevaluierung/dauerInfotext']='The processing time defines how much time the students have to complete the evaluation after it has been started. We recommend that you keep to the preset 10 minutes. However, the length of time can be adapted.';
 
 $this->phrasen['lvevaluierung/codesErstellen']='Print the list of the access codes';
