@@ -82,8 +82,8 @@ if(isset($_POST['action']) && $_POST['action']=='changestatus')
 		// und diese bereits eine Startzeit hat, dann aendern
 		if($evaluierung->startzeit!='' || $verpflichtend==true)
 		{
-            $evaluierung->updateamum = date('Y-m-d H:i:s');
-            $evaluierung->updatevon = $uid;
+			$evaluierung->updateamum = date('Y-m-d H:i:s');
+			$evaluierung->updatevon = $uid;
 			$evaluierung->verpflichtend = $verpflichtend;
 			if($evaluierung->save())
 			{
@@ -225,7 +225,7 @@ if(!$rechte->isBerechtigt('addon/lvevaluierung'))
 }
 
 if (!isset ($_POST['studiengang_kz']))
-    header('Location: uebersicht.php');
+	header('Location: uebersicht.php');
 
 $studiengang_kz = filter_input(INPUT_POST,'studiengang_kz');
 $semester = filter_input(INPUT_POST,'semester');
@@ -237,8 +237,8 @@ if($studiengang_kz=='' && $oe_kurzbz=='')
 	die($p->t('lvevaluierung/waehleStudiengangoderInstitut'));
 
 $studiengang = new studiengang();
-$fachbereich_arr = $rechte->getFbKz('addon/lvevaluierung');
-if(count($fachbereich_arr)>0)
+$oe_arr = $rechte->getOEkurzbz('addon/lvevaluierung');
+if(count($oe_arr)>0)
 {
 	$studiengang->getAll('typ, kurzbz',true);
 }
@@ -310,17 +310,23 @@ foreach ($orgform->result as $row_orgform)
 echo '
 </select>
 <select name="oe_kurzbz">
-<option value="">-- '.$p->t('global/institut').' --</option>';
-$fachbereich = new fachbereich();
-$fachbereich->loadArray($fachbereich_arr, 'bezeichnung');
-foreach($fachbereich->result as $row_fb)
+<option value="">-- '.$p->t('global/organisationseinheit').' --</option>';
+
+$oe_obj = new organisationseinheit();
+$oe_obj->getLehrfachOEs();
+
+foreach($oe_obj->result as $row_oe)
 {
-	if($oe_kurzbz==$row_fb->oe_kurzbz)
+	// Wenn keine Berechtigung vorhanden ist wird es uebersprungen
+	if(!in_array($row_oe->oe_kurzbz, $oe_arr))
+		continue;
+
+	if($oe_kurzbz == $row_oe->oe_kurzbz)
 		$selected = 'selected="selected"';
 	else
 		$selected='';
 
-	echo '<option value="'.$row_fb->oe_kurzbz.'" '.$selected.'>'.$db->convert_html_chars($row_fb->bezeichnung).'</option>';
+	echo '<option value="'.$row_oe->oe_kurzbz.'" '.$selected.'>'.$db->convert_html_chars($row_oe->organisationseinheittyp_kurzbz.' '.$row_oe->bezeichnung).'</option>';
 }
 echo '
 </select>
