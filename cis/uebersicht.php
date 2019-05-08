@@ -25,7 +25,7 @@ require_once('../../../include/studiengang.class.php');
 require_once('../../../include/studienjahr.class.php');
 require_once('../../../include/organisationsform.class.php');
 
-$uid = get_uid(); 
+$uid = get_uid();
 $rechte = new benutzerberechtigung();
 $rechte->getBerechtigungen($uid);
 
@@ -50,7 +50,7 @@ $display = ($isStgl && !$isRektor) ? 'style = "display: none;"' : '';
 //dropdown studiengang
 function printOptions_stg()
 {
-	global $rechte, $p; 
+	global $rechte, $p;
 	$studiengang_kz = (isset($_POST['studiengang_kz'])) ? $_POST['studiengang_kz'] : '';
 	if (!empty($_POST['studiengang_kz']) && !is_numeric($_POST['studiengang_kz']))
 		die ($p->t('global/fehlerBeiDerParameteruebergabe'));
@@ -60,7 +60,7 @@ function printOptions_stg()
 	$studiengang->loadArray($stg_arr,'typ, kurzbz');
 
 	$types = new studiengang();
-	$types->getAllTypes(); 
+	$types->getAllTypes();
 	$typ = '';
 
 	foreach($studiengang->result as $row)
@@ -76,20 +76,26 @@ function printOptions_stg()
 		$typ = $row->typ;
 	}
 }
-//dropdown fachbereich (=institut)
-function printOptions_fb()
+//dropdown organisationseinheiten
+function printOptions_oe()
 {
 	global $rechte, $p;
+	$db = new basis_db();
 	$oe_kurzbz = (isset($_POST['oe_kurzbz'])) ? $_POST['oe_kurzbz'] : '';
 
-	$fachbereich_arr = $rechte->getFbKz('addon/lvevaluierung');
-	$fachbereich = new fachbereich();
-	$fachbereich->loadArray($fachbereich_arr, 'bezeichnung');
-	
-	foreach($fachbereich->result as $row)
+	$oe_arr = $rechte->getOEkurzbz('addon/lvevaluierung');
+
+	$oe_obj = new organisationseinheit();
+	$oe_obj->getLehrfachOEs();
+
+	foreach($oe_obj->result as $row)
 	{
+		// Wenn keine Berechtigung vorhanden ist wird es uebersprungen
+		if(!in_array($row->oe_kurzbz, $oe_arr))
+			continue;
+
 		$selected = ($oe_kurzbz == $row->oe_kurzbz) ? "selected" : '';
-		echo '<option value="'.$row->oe_kurzbz.'"'. $selected .'>'.$row->bezeichnung.'</option>';
+		echo '<option value="'.$row->oe_kurzbz.'"'. $selected .'>'.$db->convert_html_chars($row->organisationseinheittyp_kurzbz.' '.$row->bezeichnung).'</option>';
 	}
 }
 //dropdown semester
@@ -104,7 +110,7 @@ function printOptions_sem()
 	{
 		$selected = ($semester == $i) ? "selected" : '';
 		echo '<option value="'. $i .'" '.$selected.'>'. $i .'</option>';
-	} 
+	}
 }
 //dropdown organisationsform
 function printOptions_orgForm()
@@ -171,7 +177,7 @@ $("form :submit").click(function(event){
 	var or_cnt = 0;
 
 	//remove warning message
-	$("small").remove(); 
+	$("small").remove();
 
 	$(this).parent().find('select').each(function()
 	{
@@ -184,16 +190,16 @@ $("form :submit").click(function(event){
 
 	for (var i = 0; i < required_arr.length; i++)
 	{
-		switch (required_arr[i]) 
+		switch (required_arr[i])
 		{
-			case 'required': 
+			case 'required':
 				if(!val_arr[i])
 				{
 					event.preventDefault();
 					msg = '<?php echo $p->t('global/bitteWaehlen')?>: ' + dd_name_arr[i];
 				}
 				break;
-			case 'required-and': 
+			case 'required-and':
 				and = true;
 				and_name_arr.push(dd_name_arr[i]);
 				if(!val_arr[i])
@@ -214,17 +220,17 @@ $("form :submit").click(function(event){
 		}
 	}
 
-//if xor fields required 
+//if xor fields required
 if (xor)
 {
-	if (xor_selected_arr.length === 0 || xor_selected_arr.length > 1)  
+	if (xor_selected_arr.length === 0 || xor_selected_arr.length > 1)
 	{
 		event.preventDefault();
 		msg = '<?php echo $p->t('global/bitteWaehlen')?>: ' + xor_name_arr.join(' <?php echo strtoupper($p->t('global/oder'))?> ');
 	}
 	else if (xor_selected_arr.length == 1)
 		return;
-}  
+}
 if (or && or_cnt == 0)
 {
 	event.preventDefault();
@@ -257,12 +263,12 @@ if(and && and_empty_cnt > 0)
 			<form action="lvevaluierung_anfordern.php" method="POST">
 				<select class="required-or" name="studiengang_kz" style="width: 20%;">
 				<option value=""><?php echo '--' . $p->t('global/studiengang') . '--' ?></option>
-				<?php printOptions_stg(); ?>   
+				<?php printOptions_stg(); ?>
 				</select><span>&emsp;und/oder&emsp;</span>
 
 				<select class="required-or" name="oe_kurzbz" style="width: 20%;">
-				<option value=""><?php echo '--' . $p->t('global/institut') . '--' ?></option>
-				<?php printOptions_fb(); ?>
+				<option value=""><?php echo '--' . $p->t('global/organisationseinheit') . '--' ?></option>
+				<?php printOptions_oe(); ?>
 				</select></p>
 
 				<select name="semester" style="width: 20%;">
@@ -273,7 +279,7 @@ if(and && and_empty_cnt > 0)
 				<select name="orgform_kurzbz" style="width: 20%;">
 				<option value=""><?php echo '--' . $p->t('global/organisationsform') . '--' ?></option>
 				<?php
-				printOptions_orgForm(); 
+				printOptions_orgForm();
 				echo '</select></p>';
 				echo '<input type="submit" value="'.$p->t('global/anzeigen').'">';
 				?>
@@ -294,11 +300,11 @@ if(and && and_empty_cnt > 0)
 				<select class="required-and" name="studienjahr_kurzbz" style="width: 20%;">
 				<option value=""><?php echo '--' . $p->t('global/studienjahr') . '--' ?></option>
 				<?php
-				printOptions_stj(); 
-				echo '</select></p>'; 
+				printOptions_stj();
+				echo '</select></p>';
 
-				echo '<input type="submit" value="'.$p->t('global/anzeigen'). ' / ' 
-													.$p->t('global/bearbeiten'). ' / ' 
+				echo '<input type="submit" value="'.$p->t('global/anzeigen'). ' / '
+													.$p->t('global/bearbeiten'). ' / '
 													.$p->t('global/drucken').'">';
 				?>
 				</form>
@@ -309,12 +315,12 @@ if(and && and_empty_cnt > 0)
 		<div class="lvepanel" <?php echo $display ?> >
 			<div class="lvepanel-head"><?php echo $p->t('lvevaluierung/evaluierungenPruefen') ?></div>
 			<div class="lvepanel-body"><?php echo $p->t('lvevaluierung/evaluierungenPruefenTxt') ?></p>
-			<form novalidate action="lvevaluierung_pruefen.php" method="POST"> 
+			<form novalidate action="lvevaluierung_pruefen.php" method="POST">
 				<select name="studienjahr_kurzbz" style="width: 20%;">
 				<option value=""><?php echo '--' . $p->t('global/studienjahr') . '--' ?></option>
 				<?php
-				printOptions_stj(); 
-				echo '</select></p>';   
+				printOptions_stj();
+				echo '</select></p>';
 				echo '<input type="submit" value="'.$p->t('global/anzeigen').'">';
 				?>
 			</form>
