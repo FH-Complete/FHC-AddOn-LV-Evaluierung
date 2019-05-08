@@ -54,16 +54,19 @@ $studienjahr_kurzbz = (isset($_POST['studienjahr_kurzbz'])) ?  $_POST['studienja
 if (!empty($_POST['studiengang_kz']) && !is_numeric($_POST['studiengang_kz']))
 	die ($p->t('global/fehlerBeiDerParameteruebergabe'));
 
+//get Oes for which user is berechtigt
+$oes_berechtigt = $rechte->getOEkurzbz('addon/lvevaluierung_rektorat');
+
 //get Studienjahresabschlussberichte
 $studienabschlussbericht_arr = getJahresabschlussberichte($studiengang_kz, $studienjahr_kurzbz);
-$display_whenFilterNoResult = (count($studienabschlussbericht_arr) > 0) ? 'style = "display: none;"' : ''; 
+$display_whenFilterNoResult = (count($studienabschlussbericht_arr) > 0) ? 'style = "display: none;"' : '';
 
 // ***************************************     FUNCTIONS  -->
 
 //dropdown studiengang
 function printOptions_stg()
 {
-	global $rechte, $p; 
+	global $rechte, $oes_berechtigt, $p;
 	$studiengang_kz = (isset($_POST['studiengang_kz'])) ? $_POST['studiengang_kz'] : '';
 	if (!empty($_POST['studiengang_kz']) && !is_numeric($_POST['studiengang_kz']))
 		die ($p->t('global/fehlerBeiDerParameteruebergabe'));
@@ -73,20 +76,28 @@ function printOptions_stg()
 	$studiengang->loadArray($stg_arr,'typ, kurzbz');
 
 	$types = new studiengang();
-	$types->getAllTypes(); 
+	$types->getAllTypes();
 	$typ = '';
 
-	foreach($studiengang->result as $row)
+	foreach ($studiengang->result as $row)
 	{
-		if ($typ != $row->typ || $typ == '')
+		foreach ($oes_berechtigt as $oe)
 		{
-			if ($typ != '')
-				echo '</optgroup>';
+			if ($oe === $row->oe_kurzbz)
+			{
+				if ($typ != $row->typ || $typ == '')
+				{
+					if ($typ != '')
+						echo '</optgroup>';
 
-			echo '<optgroup label = "'.($types->studiengang_typ_arr[$row->typ] != '' ? $types->studiengang_typ_arr[$row->typ] : $row->typ).'">';
+					echo '<optgroup label = "'.($types->studiengang_typ_arr[$row->typ] != '' ? $types->studiengang_typ_arr[$row->typ] : $row->typ).'">';
+				}
+				echo '<option value="'.$row->studiengang_kz.'"'.($studiengang_kz == $row->studiengang_kz ? 'selected' : '').'>'.$row->kuerzel." ".$row->oe_kurzbz.' - '.$row->bezeichnung.'</option>';
+				$typ = $row->typ;
+
+				break;
+			}
 		}
-		echo '<option value="'.$row->studiengang_kz.'"'.($studiengang_kz == $row->studiengang_kz ? 'selected' : '').'>'.$row->kuerzel.' - '.$row->bezeichnung.'</option>';
-		$typ = $row->typ;
 	}
 }
 //dropdown studienjahr
@@ -106,75 +117,63 @@ function printOptions_stj()
 //returns all freigegebene jahresabschlussberichte
 function getJahresabschlussberichte($studiengang_kz, $studienjahr_kurzbz)
 {
-	global $db;
 	$jahresabschluss = new lvevaluierung_jahresabschluss();
-	$jahresabschluss_arr = array();
 
 	//dropdown selections
 	if (empty($studiengang_kz) && empty($studienjahr_kurzbz))
 	{
 		$jahresabschluss->getAllJahresabschluesse();
-		foreach ($jahresabschluss->result as $obj)
-		{
-			if($db->db_parse_bool($obj->freigegeben))
-			{
-				$stg = new studiengang();
-				$stg->getStudiengangFromOe($obj->oe_kurzbz);
-
-				$jahresabschluss_arr[] = array(
-											'lvevaluierung_jahresabschluss_id' => $obj->lvevaluierung_jahresabschluss_id,
-											'studiengang_kz' => $stg->studiengang_kz,
-											'studienbezeichnung' => strtoupper($obj->oe_kurzbz) . ' - ' . $stg->bezeichnung,
-											'studienjahr_kurzbz' => $obj->studienjahr_kurzbz,
-											'oe_kurzbz' => strtoupper($obj->oe_kurzbz));
-			}
-		}
-	} 
-	if (empty($studiengang_kz) && !empty($studienjahr_kurzbz))
+	}
+	elseif (empty($studiengang_kz) && !empty($studienjahr_kurzbz))
 	{
 		$jahresabschluss->getByStudienjahr($studienjahr_kurzbz);
-		foreach ($jahresabschluss->result as $obj)
-		{
-			if($db->db_parse_bool($obj->freigegeben))
-			{
-				$stg = new studiengang();
-				$stg->getStudiengangFromOe($obj->oe_kurzbz);
-
-				$jahresabschluss_arr[] = array(
-											'lvevaluierung_jahresabschluss_id' => $obj->lvevaluierung_jahresabschluss_id,
-											'studiengang_kz' => $stg->studiengang_kz,
-											'studienbezeichnung' => strtoupper($obj->oe_kurzbz) . ' - ' . $stg->bezeichnung,
-											'studienjahr_kurzbz' => $obj->studienjahr_kurzbz,
-											'oe_kurzbz' => strtoupper($obj->oe_kurzbz));
-		}
-		}
 	}
-	if (!empty($studiengang_kz) && !empty($studienjahr_kurzbz) || !empty($studiengang_kz) && empty($studienjahr_kurzbz))
+	elseif (!empty($studiengang_kz) && !empty($studienjahr_kurzbz) || !empty($studiengang_kz) && empty($studienjahr_kurzbz))
 	{
 		//Organisationseinheit
 		$stg = new studiengang();
 		$stg->load($studiengang_kz);
-		$oe_kurzbz = $stg->oe_kurzbz; 
+		$oe_kurzbz = $stg->oe_kurzbz;
 
 		$jahresabschluss->getByOeStudienjahr($oe_kurzbz, $studienjahr_kurzbz);
-		foreach ($jahresabschluss->result as $obj)
-		{
-			if($db->db_parse_bool($obj->freigegeben))
-			{
-				$stg = new studiengang();
-				$stg->getStudiengangFromOe($obj->oe_kurzbz);
+	}
 
-				$jahresabschluss_arr[] = array(
-											'lvevaluierung_jahresabschluss_id' => $obj->lvevaluierung_jahresabschluss_id,
-											'studiengang_kz' => $stg->studiengang_kz,
-											'studienbezeichnung' => strtoupper($obj->oe_kurzbz) . ' - ' . $stg->bezeichnung,
-											'studienjahr_kurzbz' => $obj->studienjahr_kurzbz,
-											'oe_kurzbz' => strtoupper($obj->oe_kurzbz));
+	$jahresabschluss_arr = filterJahresabschluesse($jahresabschluss);
+
+	return $jahresabschluss_arr;
+}
+
+//returns an array containing only jahresabschluesse which are freigegeben and having oe for which user is berechtigt
+function filterJahresabschluesse($jahresabschluesse)
+{
+	global $db, $oes_berechtigt;
+
+	$jahresabschluss_arr = array();
+
+	foreach ($jahresabschluesse->result as $obj)
+	{
+		if ($db->db_parse_bool($obj->freigegeben))
+		{
+			foreach ($oes_berechtigt as $oe)
+			{
+				if ($oe === $obj->oe_kurzbz)
+				{
+					$stg = new studiengang();
+					$stg->getStudiengangFromOe($obj->oe_kurzbz);
+
+					$jahresabschluss_arr[] = array(
+						'lvevaluierung_jahresabschluss_id' => $obj->lvevaluierung_jahresabschluss_id,
+						'studiengang_kz' => $stg->studiengang_kz,
+						'studienbezeichnung' => strtoupper($obj->oe_kurzbz).' - '.$stg->bezeichnung,
+						'studienjahr_kurzbz' => $obj->studienjahr_kurzbz,
+						'oe_kurzbz' => strtoupper($obj->oe_kurzbz)
+					);
+					break;
+				}
 			}
 		}
-
 	}
-	
+
 	return $jahresabschluss_arr;
 }
 ?>
@@ -199,16 +198,16 @@ function getJahresabschlussberichte($studiengang_kz, $studienjahr_kurzbz)
 
 		<form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
 
-<!-- ***************************************     dropdowns   -->                     
+<!-- ***************************************     dropdowns   -->
 			<select name="studiengang_kz" style="width: 20%;">
 				<option value=""><?php echo '--' . $p->t('global/studiengang') . '--' ?></option>
-				<?php printOptions_stg(); ?>   
+				<?php printOptions_stg(); ?>
 			</select><span>&emsp;<?php echo $p->t('global/und') . "/" . $p->t('global/oder')?>&emsp;</span>
 
 			<select name="studienjahr_kurzbz" style="width: 20%;">
 				<option value=""><?php echo '--' . $p->t('global/studienjahr') . '--' ?></option>
-				<?php printOptions_stj(); ?>   
-			</select><span>&emsp;&emsp;</span>  
+				<?php printOptions_stj(); ?>
+			</select><span>&emsp;&emsp;</span>
 
 			<input type="submit" value="<?php echo $p->t('global/anzeigen') ?>">
 		</form><p></p>
@@ -221,7 +220,7 @@ function getJahresabschlussberichte($studiengang_kz, $studienjahr_kurzbz)
 					<th><b><?php echo $p->t('global/anzeigen') ?></b></th>
 					<th><b><?php echo $p->t('global/pdfExport') ?></b></th>
 				</tr>
-				<?php				
+				<?php
 				foreach($studienabschlussbericht_arr as $studienabschlussbericht)
 				{
 					echo '
@@ -237,9 +236,9 @@ function getJahresabschlussberichte($studiengang_kz, $studienjahr_kurzbz)
 			</tbody>
 		</table>
 
-<!-- ***************************************     panel info no values found (only if dropdown filter results in no values)  -->        
+<!-- ***************************************     panel info no values found (only if dropdown filter results in no values)  -->
 		<div class="lvepanel lvepanel-body" <?php echo $display_whenFilterNoResult ?>>
-			<?php echo $p->t('global/keineSuchergebnisse') ?> 
+			<?php echo $p->t('global/keineSuchergebnisse') ?>
 		</div>
 
 

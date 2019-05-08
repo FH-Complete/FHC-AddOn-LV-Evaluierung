@@ -53,7 +53,7 @@ $studienjahr_aktuell = date('Y') . '/' . (date('y') + 1) ;
 //Studiengang
 $studiengang_kz = (isset($_POST['studiengang_kz'])) ? $_POST['studiengang_kz'] : '';
 //Studienjahr
-(isset($_REQUEST['studienjahr_kurzbz']) && !empty($_REQUEST['studienjahr_kurzbz'])) 
+(isset($_REQUEST['studienjahr_kurzbz']) && !empty($_REQUEST['studienjahr_kurzbz']))
 	? $studienjahr_kurzbz = $_REQUEST['studienjahr_kurzbz'] : $studienjahr_kurzbz = $studienjahr_aktuell;
 
 if (!empty($_POST['studiengang_kz']) && !is_numeric($_POST['studiengang_kz']))
@@ -61,7 +61,10 @@ if (!empty($_POST['studiengang_kz']) && !is_numeric($_POST['studiengang_kz']))
 //Semester
 $semester = (isset($_POST['semester'])) ? $_POST['semester'] : '';
 if (!empty($_POST['semester']) && !is_numeric($_POST['semester']))
-		die ($p->t('global/fehlerBeiDerParameteruebergabe'));
+	die ($p->t('global/fehlerBeiDerParameteruebergabe'));
+
+//get Oes for which user is berechtigt
+$oes_berechtigt = $rechte->getOEkurzbz('addon/lvevaluierung_rektorat');
 
 //Wintersemester / Sommersemester
 $studiensemester = new studiensemester();
@@ -71,14 +74,14 @@ $studiensemester->getSSFromStudienjahr($studienjahr_kurzbz);
 $ss = $studiensemester->result;
 //all evaluierte lvs where lector is studiengangsleiter
 $selbstev_arr = getEvaluierteLV_whereLectorIsStgl($ws, $ss);
-$display_whenFilterNoResult = (count($selbstev_arr) != 0) ? 'style = "display: none;"' : ''; 
+$display_whenFilterNoResult = (count($selbstev_arr) != 0) ? 'style = "display: none;"' : '';
 
 // ***************************************	 FUNCTIONS  -->
 
 //dropdown studiengang
 function printOptions_stg()
 {
-	global $rechte, $p; 
+	global $rechte, $oes_berechtigt, $p;
 	$studiengang_kz = (isset($_POST['studiengang_kz'])) ? $_POST['studiengang_kz'] : '';
 	if (!empty($_POST['studiengang_kz']) && !is_numeric($_POST['studiengang_kz']))
 		die ($p->t('global/fehlerBeiDerParameteruebergabe'));
@@ -88,20 +91,28 @@ function printOptions_stg()
 	$studiengang->loadArray($stg_arr,'typ, kurzbz');
 
 	$types = new studiengang();
-	$types->getAllTypes(); 
+	$types->getAllTypes();
 	$typ = '';
-  
+
 	foreach($studiengang->result as $row)
 	{
-		if ($typ != $row->typ || $typ == '')
+		foreach ($oes_berechtigt as $oe)
 		{
-			if ($typ != '')
-				echo '</optgroup>';
+			if ($oe === $row->oe_kurzbz)
+			{
+				if ($typ != $row->typ || $typ == '')
+				{
+					if ($typ != '')
+						echo '</optgroup>';
 
-			echo '<optgroup label = "'.($types->studiengang_typ_arr[$row->typ] != '' ? $types->studiengang_typ_arr[$row->typ] : $row->typ).'">';
+					echo '<optgroup label = "'.($types->studiengang_typ_arr[$row->typ] != '' ? $types->studiengang_typ_arr[$row->typ] : $row->typ).'">';
+				}
+				echo '<option value="'.$row->studiengang_kz.'"'.($studiengang_kz == $row->studiengang_kz ? 'selected' : '').'>'.$row->kuerzel.' - '.$row->bezeichnung.'</option>';
+				$typ = $row->typ;
+
+				break;
+			}
 		}
-		echo '<option value="'.$row->studiengang_kz.'"'.($studiengang_kz == $row->studiengang_kz ? 'selected' : '').'>'.$row->kuerzel.' - '.$row->bezeichnung.'</option>';
-		$typ = $row->typ;
 	}
 }
 //dropdown studienjahr
@@ -130,11 +141,11 @@ function printOptions_sem()
 	{
 		$selected = ($semester == $i) ? "selected" : '';
 		echo '<option value="'. $i .'" '.$selected.'>'. $i .'</option>';
-	} 
+	}
 }
 function getEvaluierteLV_whereLectorIsStgl($ws, $ss)
 {
-	global $db;
+	global $db, $oes_berechtigt;
 	$studiengang_kz = (isset($_POST['studiengang_kz'])) ? $_POST['studiengang_kz'] : '';
 	$semester = (isset($_POST['semester'])) ? $_POST['semester'] : '';
 	if (!empty($_POST['semester']) && !is_numeric($_POST['semester']))
@@ -143,42 +154,44 @@ function getEvaluierteLV_whereLectorIsStgl($ws, $ss)
 	$studiengang = new studiengang();
 	$stgl_arr = $studiengang->getLeitung();
 	$person = new person();
-	
+
 	//get all selbstevaluierungen per studiengang and studienjahr
 	$qry = 'SELECT lv.bezeichnung, lv.orgform_kurzbz, lvsev.uid, lvev.lvevaluierung_id, lv.lehrveranstaltung_id
 			FROM lehre.tbl_lehrveranstaltung lv
 			JOIN addon.tbl_lvevaluierung lvev USING (lehrveranstaltung_id)
 			JOIN addon.tbl_lvevaluierung_selbstevaluierung lvsev USING (lvevaluierung_id)
-			WHERE (lvev.studiensemester_kurzbz = ' . $db->db_add_param($ws, FHC_STRING) . ' OR lvev.studiensemester_kurzbz = ' . $db->db_add_param($ss, FHC_STRING) . ')';
-				
+			JOIN public.tbl_studiengang USING (studiengang_kz)
+			WHERE (lvev.studiensemester_kurzbz = ' . $db->db_add_param($ws, FHC_STRING) . ' OR lvev.studiensemester_kurzbz = ' . $db->db_add_param($ss, FHC_STRING) . ')
+			AND tbl_studiengang.oe_kurzbz IN ('.$db->db_implode4SQL($oes_berechtigt).')';
+
 	if (!empty($studiengang_kz))
-			$qry.=' AND lv.studiengang_kz = ' . $db->db_add_param($studiengang_kz, FHC_STRING);
+		$qry.=' AND lv.studiengang_kz = ' . $db->db_add_param($studiengang_kz, FHC_STRING);
 
 	if (!empty($semester))
-			$qry.=' AND lv.semester = ' . $db->db_add_param($semester, FHC_INTEGER);
+		$qry.=' AND lv.semester = ' . $db->db_add_param($semester, FHC_INTEGER);
 
 	$qry.= 'AND lvsev.freigegeben = true
 			ORDER BY lv.bezeichnung';
 
 	//count / set data for all selbstevaluierungen per studiengang and studienjahr
-	if ($result = $db->db_query($qry)) 
+	if ($result = $db->db_query($qry))
 	{
-		while ($row = $db->db_fetch_object($result)) 
+		while ($row = $db->db_fetch_object($result))
 		{
 			//check id lektor is stgl
-			if(in_array($row->uid, $stgl_arr))
+			if (in_array($row->uid, $stgl_arr))
 			{
 				$person->getPersonFromBenutzer($row->uid);
-//				echo 'inside. row->uid: ' . $row->uid . "<br>";
-				 $selbstev_arr[] = array('bezeichnung' => $row->bezeichnung, 
+
+				 $selbstev_arr[] = array('bezeichnung' => $row->bezeichnung,
 										'orgform_kurzbz' => $row->orgform_kurzbz,
 										'lektorIsStgl' => $person->anrede . ' ' . $person->vorname . ' ' . $person->nachname,
 										'lvevaluierung_id' => $row->lvevaluierung_id,
 										'lehrveranstaltung_id' => $row->lehrveranstaltung_id);
 			}
 		}
-	} 
-	return $selbstev_arr; 
+	}
+	return $selbstev_arr;
 }
 function getRuecklaufquote($lvevaluierung_id, $lehrveranstaltung_id, $ws, $ss)
 {
@@ -187,26 +200,26 @@ function getRuecklaufquote($lvevaluierung_id, $lehrveranstaltung_id, $ws, $ss)
 
 	if($evaluierung->getEvaluierung($lehrveranstaltung_id, $ws) || $evaluierung->getEvaluierung($lehrveranstaltung_id, $ss))
 	{
-			$codes->loadCodes($evaluierung->lvevaluierung_id);
-			$anzahl_codes_beendet=0;
-			foreach($codes->result as $row_code)
-			{
-				if($row_code->endezeit!='')
-					$anzahl_codes_beendet++;
-			}
+		$codes->loadCodes($evaluierung->lvevaluierung_id);
+		$anzahl_codes_beendet=0;
+		foreach($codes->result as $row_code)
+		{
+			if($row_code->endezeit!='')
+				$anzahl_codes_beendet++;
+		}
 
-			if($evaluierung->codes_ausgegeben!='')
-				$anzahl_codes_gesamt = $evaluierung->codes_ausgegeben;
-			else
-				$anzahl_codes_gesamt = count($codes->result);
+		if($evaluierung->codes_ausgegeben!='')
+			$anzahl_codes_gesamt = $evaluierung->codes_ausgegeben;
+		else
+			$anzahl_codes_gesamt = count($codes->result);
 
-			if($anzahl_codes_gesamt>0)
-				$prozent_abgeschlossen = (100/$anzahl_codes_gesamt*$anzahl_codes_beendet);
-			else
-				$prozent_abgeschlossen = 0;
+		if($anzahl_codes_gesamt>0)
+			$prozent_abgeschlossen = (100/$anzahl_codes_gesamt*$anzahl_codes_beendet);
+		else
+			$prozent_abgeschlossen = 0;
 	}
-	
-	return '<span>(' . sprintf("%6s", number_format($prozent_abgeschlossen, 2)) . '%)</span>'; 
+
+	return '<span>(' . sprintf("%6s", number_format($prozent_abgeschlossen, 2)) . '%)</span>';
 }
 ?>
 
@@ -223,9 +236,9 @@ function getRuecklaufquote($lvevaluierung_id, $lehrveranstaltung_id, $ws, $ss)
 		<script type="text/javascript" src="../../../vendor/christianbach/tablesorter/jquery.tablesorter.min.js"></script>
 		<script type="text/javascript" src="../../../vendor/components/jqueryui/jquery-ui.min.js"></script>
 	</head>
-	
+
 	<body class="main">
-		
+
 		<h1><?php echo $p->t('lvevaluierung/evaluierungenPruefen') ?></h1>
 
 		<form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
@@ -233,13 +246,13 @@ function getRuecklaufquote($lvevaluierung_id, $lehrveranstaltung_id, $ws, $ss)
 <!-- ***************************************	dropdowns   -->
 			<select name="studiengang_kz" style="width: 20%;">
 				<option value=""><?php echo '--' . $p->t('global/studiengang') . '--' ?></option>
-				<?php printOptions_stg(); ?>   
+				<?php printOptions_stg(); ?>
 			</select><span>&emsp;&emsp;&emsp;</span>
 
 			<select name="studienjahr_kurzbz" style="width: 20%;">
 				<option value=""><?php echo '--' . $p->t('global/studienjahr') . '--' ?></option>
-				<?php printOptions_stj(); ?>   
-			</select><span>&emsp;&emsp;&emsp;</span> 
+				<?php printOptions_stj(); ?>
+			</select><span>&emsp;&emsp;&emsp;</span>
 
 			<select name="semester" style="width: 20%;">
 				<option value=""><?php echo '--' . $p->t('global/semester') . '--' ?></option>
@@ -283,11 +296,9 @@ function getRuecklaufquote($lvevaluierung_id, $lehrveranstaltung_id, $ws, $ss)
 
 <!-- ***************************************	panel info no values found (only if dropdown filter results in no values)  -->
 		<div class="lvepanel lvepanel-body" <?php echo $display_whenFilterNoResult ?>>
-			<?php echo $p->t('global/keineSuchergebnisse') ?> 
+			<?php echo $p->t('global/keineSuchergebnisse') ?>
 		</div>
 
 
 	</body>
 </html>
-
-
