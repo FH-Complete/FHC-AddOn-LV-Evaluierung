@@ -96,16 +96,19 @@ $isLektor_lv_aufgeteilt = false;
 $isStgl = false;
 $isInstitutsleiter = false;
 
+$rechte = new benutzerberechtigung();
+$rechte->getBerechtigungen($uid);
+
+$lva = new lehrveranstaltung();
+$lva->load($lvevaluierung->lehrveranstaltung_id);
+$oes = $lva->getAllOe();
+$oes[] = $lva->oe_kurzbz; // Institut
+$oes[] = $stg->oe_kurzbz; // OE des Studiengangs der Lehrveranstaltung
+
+// User ist nicht Lektor dieser LV
 if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz, $uid))
 {
-	$rechte = new benutzerberechtigung();
-	$rechte->getBerechtigungen($uid);
-
-	$lva = new lehrveranstaltung();
-	$lva->load($lvevaluierung->lehrveranstaltung_id);
-	$oes = $lva->getAllOe(); 
-	$oes[] = $lva->oe_kurzbz; // Institut
-	$oes[] = $stg->oe_kurzbz; // OE des Studiengangs der Lehrveranstaltung 
+    // Check, ob User Leitungsfunktion hat
 	if (!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung', $oes, 's'))
 	{
 		die($p->t('global/keineBerechtigungFuerDieseSeite'));
@@ -116,10 +119,10 @@ if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studie
 		$isInstitutsleiter = true;
 	}
 } 
-//User ist der LV + dem Studiensemester zugeordent
+// User ist Lektor dieser LV
 else
 {
-	//wenn Evaulierung für verschiedene Lektoren gewählt worden ist, check ob aktuelle uid einer von diesen ist
+	// Check, ob Lektor einer aufgeteilten LV ist
 	if($lvevaluierung->lv_aufgeteilt)
 	{
 		foreach($lem->result as $lektor)  
@@ -131,8 +134,15 @@ else
 			}
 		}
 	}
+
+	// Check, ob Lektor zusätzlich auch Leitungsfunktion hat
+    if ($rechte->isBerechtigtMultipleOe('addon/lvevaluierung', $oes, 's'))
+    {
+        $isStgl = true;
+        $isInstitutsleiter = true;
+    }
+
 }
- 
 $studiengang_bezeichnung = $stg->bezeichnung_arr[$sprache];
 $studiensemester = $studiensemester_kurzbz;
 
@@ -174,9 +184,10 @@ else
 
 $auswertung = (isset($_POST['auswertung']) ? $_POST['auswertung'] : '');
 
-//dropdown nur für lektoren, die persönliche Auswertung erhalten haben
-//wahl: gesamtauswertung + persönliche auswertung
-if($isLektor_lv_aufgeteilt)
+// Dropdown nur für Lektoren, die persönliche Auswertung erhalten haben.
+// Falls Lektor zugleich Leitungsfunktion innehat, diesen Dropdown ausschließen, da Leitung eigenen Dropdown hat.
+// Wahl: gesamtauswertung + persönliche auswertung
+if($isLektor_lv_aufgeteilt && (!$isStgl || !$isInstitutsleiter))
 {
 	echo '<form method="POST" action="">';
 	echo '<span>'. $p->t('lvevaluierung/auswertungWaehlen') . ': </span>';
