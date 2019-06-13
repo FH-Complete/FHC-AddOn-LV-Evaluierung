@@ -23,18 +23,18 @@ $this->phrasen['lvevaluierung/evaluierungAnlegen']='Create evaluation';
 $this->phrasen['lvevaluierung/zeitinfo']='The course evaluation will take place from %s to %s.';
 $this->phrasen['lvevaluierung/restzeit']='Time remaining:';
 $this->phrasen['lvevaluierung/auswertung']='Analysis';
-$this->phrasen['lvevaluierung/ruecklaufquote']='ENGLISH Rücklaufquote';
+$this->phrasen['lvevaluierung/ruecklaufquote']='Response rate';
 $this->phrasen['lvevaluierung/keineEvaluierungAngelegt']='At this time no evaluation for this course has been created. Please complete the following form to create an evaluation';
 $this->phrasen['lvevaluierung/CodeListeErstellen']='Create code list';
 $this->phrasen['lvevaluierung/Auswertung']='Display analysis';
 $this->phrasen['lvevaluierung/gesamtauswertung']='Total Analysis';
-$this->phrasen['lvevaluierung/persoenlicheAuswertung']='ENG Persönliche Auswertung anzeigen';
+$this->phrasen['lvevaluierung/persoenlicheAuswertung']='Show personal evaluation';
 $this->phrasen['lvevaluierung/abgeschlossen']='Completed';
 $this->phrasen['lvevaluierung/durchschnittszeit']='Average duration';
 $this->phrasen['lvevaluierung/anzahlausgegeben']='Codes issued: ';
 $this->phrasen['lvevaluierung/endeGroesserStart']='The end of the evaluation may not be before the start';
 $this->phrasen['lvevaluierung/bitteGueltigesDatumEingeben']='The date for the start and end may not be left blank and must be entered in the DD.MM.YYYY format';
-$this->phrasen['lvevaluierung/auswertungWaehlen']='English Bitte wählen Sie Ihre gewünschte Auswertung';
+$this->phrasen['lvevaluierung/auswertungWaehlen']='Please select evaluation you wish to see';
 
 $this->phrasen['lvevaluierung/evaluierunganlegen']='Specify evaluation criteria';
 $this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Please specify here the period in which the course evaluation is to take place. Access to the evaluation is only available to students in this period. You may correct the period at any time, as long as the evaluation has not been finished.';
@@ -42,7 +42,7 @@ $this->phrasen['lvevaluierung/dauerInfotext']='The processing time defines how m
 
 $this->phrasen['lvevaluierung/codesErstellen']='Print the list of the access codes';
 $this->phrasen['lvevaluierung/codesErstellenInfotext']='Click on the link to download a PDF with codes. This can take a few seconds with a large group. Then print the document one-sided*.
-	 <br><small>ENGLISH *Da die QR-Codes ausgeschnitten werden, sollten Sie pro Blatt nur einseitig ausdrucken. Achten Sie dafür auf Ihre Druckereinstellungen.</small>';
+	 <br><small>*Because the QR codes are cut out, you should print only one-sided per sheet. Check your printer settings.</small>';
 
 $this->phrasen['lvevaluierung/evaluierungDruchfuehren']='Carry out the evaluation';
 $this->phrasen['lvevaluierung/evaluierungDruchfuehrenInfotext']='Carry out the course evaluation within the specified time period.';
@@ -78,59 +78,56 @@ $this->phrasen['lvevaluierung/infotextAllgemein']='A detailed process descriptio
 $this->phrasen['lvevaluierung/pdfExport']='PDF Export';
 $this->phrasen['lvevaluierung/einzelAuswertung']='Single analysis';
 $this->phrasen['lvevaluierung/alleAnzeigen']='Show all';
-$this->phrasen['lvevaluierung/anklickenFuerEinzelauswertung']='Sie können einzelne Textantworten anklicken, um die dazugehörende Punktevergabe zu sehen';
-$this->phrasen['lvevaluierung/anklickenFuerGesamtauswertung']='Klicken Sie eine Antwort an, um wieder die Gesamtauswertung zu sehen';
+$this->phrasen['lvevaluierung/anklickenFuerEinzelauswertung']='You can click on individual text responses to see the corresponding scores';
+$this->phrasen['lvevaluierung/anklickenFuerGesamtauswertung']='Click on a reply to see the overall evaluation again';
 $this->phrasen['lvevaluierung/keineAuswahl']='no selection';
 $this->phrasen['lvevaluierung/durchschnittsbewertung']='Average value';
 $this->phrasen['lvevaluierung/empfaengerDerSelbstevaluierung']='Recipient of Self-evaluation';
-$this->phrasen['lvevaluierung/verpflichtendeEvaluierungen']='verpflichtende Evaluierungen';
+$this->phrasen['lvevaluierung/verpflichtendeEvaluierungen']='mandatory evaluations';
 $this->phrasen['lvevaluierung/legende']='Legend';
-$this->phrasen['lvevaluierung/legendeAngebot']='LV wird in diesem Semester angeboten';
-$this->phrasen['lvevaluierung/legendeverpflichtend']='Evaluierung ist verpflichtend durchzuführen';
-$this->phrasen['lvevaluierung/legendenichtverpflichtend']='Evaluierung ist freiwillig durchzuführen';
-$this->phrasen['lvevaluierung/verpflichtend']='verpflichtend';
-$this->phrasen['lvevaluierung/freiwillig']='freiwillig';
-$this->phrasen['lvevaluierung/verpflichtendInfotext']='Diese Lehrveranstaltung wurde zur verpflichtenden Evaluierung ausgewählt.';
+$this->phrasen['lvevaluierung/legendeAngebot']='Course will be offered this semester';
+$this->phrasen['lvevaluierung/legendeverpflichtend']='Evaluation is mandatory';
+$this->phrasen['lvevaluierung/legendenichtverpflichtend']='Evaluation is voluntary';
+$this->phrasen['lvevaluierung/verpflichtend']='mandatory';
+$this->phrasen['lvevaluierung/freiwillig']='voluntary';
+$this->phrasen['lvevaluierung/verpflichtendInfotext']='This course has been selected for mandatory evaluation.';
 $this->phrasen['lvevaluierung/waehleStudiengangoderInstitut']='Please choose a Degree Programm or Department';
 
 $this->phrasen['lvevaluierung/selbstevaluierungAnzeigen']='Show self-evaluation';
 $this->phrasen['lvevaluierung/ruecklaufquoteDetailauswertung']='Return rate - click for details';
 
-$this->phrasen['lvevaluierung/selbstevaluierungAbschicken'] = 'English Die Eingabefelder werden gesperrt und die Selbstevaluierung abgeschickt.\nWollen Sie fortfahren?';
-$this->phrasen['lvevaluierung/XhatEinenJahresabschlussDurchgefuehrt'] = 'English %1\s hat den Studienjahr-Abschlussbericht für den Studiengang %2\s abgeschlossen und freigegeben.';
-$this->phrasen['lvevaluierung/folgenSieDenLinks'] = 'English Folgen Sie den links für weiterführende Informationen.';
-$this->phrasen['lvevaluierung/evaluierungenAnfordern'] = 'English LV Evaluierungen & Auswertungen einsehen und anfordern';
-$this->phrasen['lvevaluierung/evaluierungenAnfordernTxt'] = 'English Hier können Sie die Selbstsevaluierungen der Lektoren und die zugehörigen Auswertungen der Studenten einsehen. <br>
-                Zudem können Sie Selbstevaluierungen als verpflichtend abzugeben markieren.';
+$this->phrasen['lvevaluierung/selbstevaluierungAbschicken'] = 'The input fields are locked and the self-evaluation has been sent.\nWould you like to continue?';
+$this->phrasen['lvevaluierung/XhatEinenJahresabschlussDurchgefuehrt'] = '%1\s has completed and approved the academic year final report for degree program %2\s.';
+$this->phrasen['lvevaluierung/folgenSieDenLinks'] = 'Follow the links for more information.';
+$this->phrasen['lvevaluierung/evaluierungenAnfordern'] = 'View and request course evaluations & appraisals';
+$this->phrasen['lvevaluierung/evaluierungenAnfordernTxt'] = 'Here you can view the self-evaluations of the teachers and the corresponding appraisals of the students.<br>You can also mark self-evaluations as mandatory.';
 $this->phrasen['lvevaluierung/jahresabschlussberichtErstellen'] = 'Create, show & print course evaluations';
-$this->phrasen['lvevaluierung/jahresabschlussberichtErstellenTxt'] = 'English Hier können Sie den Studienjahr-Abschlussbericht erstellen und an das Rektorat verschicken.<br>
-                Sie können auch vergangene Studienjahr-Abschlussberichte einsehen und drucken. ';
+$this->phrasen['lvevaluierung/jahresabschlussberichtErstellenTxt'] = 'Here you can create the academic year final report and send it to the Rector’s Office.<br>You can also view and print past academic year final reports.';
 $this->phrasen['lvevaluierung/evaluierungenPruefen'] = 'Check course evaluations';
-$this->phrasen['lvevaluierung/evaluierungenPruefenTxt'] = 'English Hier können Sie alle Lehrveranstaltungsevaluierungen prüfen, bei denen der Vortragende zugleich der Studiengangsleiter war.';
+$this->phrasen['lvevaluierung/evaluierungenPruefenTxt'] = 'Here you can check all course evaluations in which the lecturer was also the program director.';
 $this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigen'] = 'Show all anunual reports for course evaluations';
-$this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigenTxt'] = 'English Hier können Sie alle Studienjahr-Abschlussberichte einsehen und drucken.';
-$this->phrasen['lvevaluierung/mehrereLektorenEineLvTxt'] = 'ENG Eine Lehrveranstaltung kann von mehreren Lektoren durchgeführt worden sein.<br>'
-    . '                                                     Bitte wählen Sie, ob die Studierenden in der Evaluation den Lektor wählen können.<br>'
-    . '                                                     <small>Sie erhalten dadurch zusätzlich zur Gesamtbewertung auch individuelle Bewertungen pro Lektor.</small>';
-$this->phrasen['lvevaluierung/lektorWaehlenTxt'] = 'ENG Ja, Studierende sollen ihren Lektor auswählen und evaluieren können';
-$this->phrasen['lvevaluierung/lektorDropdown'] = 'ENG Mein Lektor dieser Lehrveranstaltung';
-$this->phrasen['lvevaluierung/lektorWaehlen'] = 'ENG Lektor wählen';
+$this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigenTxt'] = 'Here you can view and print all academic year final reports.';
+$this->phrasen['lvevaluierung/mehrereLektorenEineLvTxt'] = 'Indicate whether the entire course has been consistently conducted in separate student groups:';
+$this->phrasen['lvevaluierung/lektorWaehlenTxt'] = 'Enable evaluation of separate groups';
+$this->phrasen['lvevaluierung/lektorDropdown'] = 'My teacher for this course';
+$this->phrasen['lvevaluierung/lektorWaehlen'] = 'Select teacher';
 
-$this->phrasen['lvevaluierung/jahresabschlussberichtAlle'] = 'ENG Alle Studienjahr-Abschlussberichte';
+//studienabschlussbericht
+$this->phrasen['lvevaluierung/jahresabschlussberichtAlle'] = 'All academic year final reports';
 $this->phrasen['lvevaluierung/jahresabschlussbericht'] = 'Annual report';
 $this->phrasen['lvevaluierung/lvevaluierungJahresabschlussbericht'] = 'Annual Report of Course Evaluations';
 $this->phrasen['lvevaluierung/evaluierungAnzahl'] = 'Amount of courses evaluated';
-$this->phrasen['lvevaluierung/evaluierungAnzahlTxt'] = 'English Von %d angebotenen Lehrveranstaltungen wurden %d evaluiert.';
+$this->phrasen['lvevaluierung/evaluierungAnzahlTxt'] = 'Of the courses offered by %d, %d were evaluated.';
 $this->phrasen['lvevaluierung/evaluierungQuote'] = 'Evaluation quota';
-$this->phrasen['lvevaluierung/evaluierungQuoteTxtResult'] = 'English Die Evaluationsquote beträgt %s.';
-$this->phrasen['lvevaluierung/evaluierungQuoteTxtNoResult'] = 'English In diesem Jahr gibt es noch keine LV-Evaluationen.';
+$this->phrasen['lvevaluierung/evaluierungQuoteTxtResult'] = 'The evaluation rate is %s.';
+$this->phrasen['lvevaluierung/evaluierungQuoteTxtNoResult'] = 'There are no course evaluations this year.';
 $this->phrasen['lvevaluierung/evaluierteLVs'] = 'Courses evaluated';
-$this->phrasen['lvevaluierung/welcheErgebnisse'] = 'English Welche Ergebnisse gibt es?';
-$this->phrasen['lvevaluierung/welcheVerbesserungen'] = 'English Welche Verbesserungen wurden gesetzt?';
-$this->phrasen['lvevaluierung/jahresabschlussberichtGesperrt'] = 'English Der Studienjahr-Abschlussbericht ist am %s freigegeben worden und kann daher nicht mehr bearbeitet werden.';
-$this->phrasen['lvevaluierung/evaluierungAnfordern']='English Evaluierung anfordern';
-$this->phrasen['lvevaluierung/jahresabschlussberichtNichtVorhanden'] = 'English Es gibt im gewählten Jahr zu diesem Studiengang noch keinen Studienjahr-Abschlussbericht.';
-$this->phrasen['lvevaluierung/lektorIstStgl'] = 'Lector (course manager at the same time)';
+$this->phrasen['lvevaluierung/welcheErgebnisse'] = 'What results are there?';
+$this->phrasen['lvevaluierung/welcheVerbesserungen'] = 'What improvements have been made?';
+$this->phrasen['lvevaluierung/jahresabschlussberichtGesperrt'] = 'The academic year final report was approved on %s and can therefore no longer be edited.';
+$this->phrasen['lvevaluierung/evaluierungAnfordern']='Request evaluation';
+$this->phrasen['lvevaluierung/jahresabschlussberichtNichtVorhanden'] = 'There is no final academic year report for this degree program in the year selected.';
+$this->phrasen['lvevaluierung/lektorIstStgl'] = 'Teacher (course manager at the same time)';
 $this->phrasen['lvevaluierung/keineEvaluierteLvs'] = 'No courses were evaluated in this academic year.';
 
 ?>
