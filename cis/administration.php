@@ -182,9 +182,9 @@ if(isset($_POST['saveEvaluierung']))
 	if (isset($_POST['lv_aufgeteilt']))
 		if ($_POST['lv_aufgeteilt'] == 'true')
 			$lv_aufgeteilt = true;
-		else 
+		else
 			$lv_aufgeteilt = false;
-	
+
 	//Datum auf Gueltigkeit pruefen
 	if (($von_datum=='' || $bis_datum=='') || !$datum_obj->formatDatum($von_datum,'Y-m-d') || !$datum_obj->formatDatum($bis_datum,'Y-m-d'))
 	{
@@ -513,7 +513,7 @@ if($hasMehrereLektoren)
 			<tr>
 				<td><br></td>
 			</tr>';
-	
+
 }
 
 echo		'
@@ -561,8 +561,8 @@ else
 		<div class="lvepanel-body">'.$p->t('lvevaluierung/evaluierungDruchfuehrenInfotext').'
 		</div>
 	</div>';
-	
-	
+
+
 	// Ausgegebene Codes erfassen
 	echo '
 	<div class="lvepanel '.($disabled?'disabled':'').'" id="divcodes">
@@ -873,8 +873,9 @@ function anzahlCodesValidieren($evaluierung, $lvid, $studiensemester_kurzbz, $p)
 
 	if (empty($codes_ausgegeben) || $codes_ausgegeben < 0)
 		return array("result" => false, "error" => $p->t('lvevaluierung/codesNichtEingetragen'));
-	else if ($codes_ausgegeben>$anzahl_studierende)
+	/*else if ($codes_ausgegeben>$anzahl_studierende)
 		return array("result" => false, "error" => $p->t('lvevaluierung/mehrCodesAusgegebenAlsStudierende'));
+	*/
 	else if ($anzahl_codes_beendet>$codes_ausgegeben)
 		return array("result" => false, "error" => $p->t('lvevaluierung/mehrAusgefuelltAlsAusgegeben'));
 	return array("result" => true);
