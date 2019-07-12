@@ -266,11 +266,10 @@ function mailJahresabschlussbericht($studiengang_kz, $studienjahr_kurzbz, $stg)
 	$stgoe = $stg->oe_kurzbz;
 
 	$organisationseinheit = new organisationseinheit();
-	$stgfakultaetoe = null;
 
 	if ($rechte->getBenutzerFromBerechtigung('addon/lvevaluierung_rektorat', false, null))
 	{
-		if ($stgoeparents = $organisationseinheit->getParents_withOEType($stgoe))
+		if ($stgoeparents = $organisationseinheit->getParents($stgoe))
 		{
 			if (isset($rechte->result) && is_array($rechte->result))
 			{
@@ -284,7 +283,7 @@ function mailJahresabschlussbericht($studiengang_kz, $studienjahr_kurzbz, $stg)
 					{
 						foreach ($stgoeparents as $stgoeparent)
 						{
-							if ($row->oe_kurzbz === $stgoeparent->oe_kurzbz)
+							if ($row->oe_kurzbz === $stgoeparent)
 							{
 								$receivemailberechtigt = true;
 								break;
