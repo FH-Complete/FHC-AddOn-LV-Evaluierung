@@ -22,6 +22,7 @@ require_once('../../../config/cis.config.inc.php');
 require_once('../../../include/functions.inc.php');
 require_once('../../../include/phrasen.class.php');
 require_once('../../../include/benutzerberechtigung.class.php');
+require_once('../../../include/organisationseinheit.class.php');
 require_once('../../../include/lehrveranstaltung.class.php');
 require_once('../../../include/studiengang.class.php');
 require_once('../../../include/studiensemester.class.php');
@@ -111,7 +112,7 @@ list (
 	getMainInfo($studiengang_kz, $ws, $ss, $selbstev_cnt);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
-	{
+{
 	//Studienabschlussbericht-Ergebnisse
 	(isset($_POST['ergebnisse'])) ? $ergebnisse = $_POST['ergebnisse'] : '';
 	//Studienabschlussbericht-Verbesserungen
@@ -167,17 +168,17 @@ function checkStudienabschlussbericht($oe_kurzbz, $studienjahr_kurzbz)
 	$jahresabschluss = new lvevaluierung_jahresabschluss();
 
 	if ($jahresabschluss->exists($oe_kurzbz, $studienjahr_kurzbz))
-		{
-			$isNew = false;
-			$jahresabschluss->getByOeStudienjahr($oe_kurzbz, $studienjahr_kurzbz);
-			$lvevaluierung_jahresabschluss_id = $jahresabschluss->result[0]->lvevaluierung_jahresabschluss_id;
-			$ergebnisse = $jahresabschluss->result[0]->ergebnisse;
-			$verbesserungen = $jahresabschluss->result[0]->verbesserungen;
-			$isFreigegeben = $db->db_parse_bool($jahresabschluss->result[0]->freigegeben);
-		}
-		$date_whenFreigegeben = ($isFreigegeben) ? $date_whenFreigegeben->convertISODate ($jahresabschluss->result[0]->updateamum) : '';
+	{
+		$isNew = false;
+		$jahresabschluss->getByOeStudienjahr($oe_kurzbz, $studienjahr_kurzbz);
+		$lvevaluierung_jahresabschluss_id = $jahresabschluss->result[0]->lvevaluierung_jahresabschluss_id;
+		$ergebnisse = $jahresabschluss->result[0]->ergebnisse;
+		$verbesserungen = $jahresabschluss->result[0]->verbesserungen;
+		$isFreigegeben = $db->db_parse_bool($jahresabschluss->result[0]->freigegeben);
+	}
+	$date_whenFreigegeben = ($isFreigegeben) ? $date_whenFreigegeben->convertISODate ($jahresabschluss->result[0]->updateamum) : '';
 
-		return array($isNew, $isFreigegeben, $lvevaluierung_jahresabschluss_id, $ergebnisse, $verbesserungen, $date_whenFreigegeben);
+	return array($isNew, $isFreigegeben, $lvevaluierung_jahresabschluss_id, $ergebnisse, $verbesserungen, $date_whenFreigegeben);
 }
 //get data for table with main data
 function getMainInfo($studiengang_kz, $ws, $ss, $selbstev_cnt)
@@ -224,7 +225,7 @@ function getEvaluierteLV($studiengang_kz, $ws, $ss)
 
 
 	return array($selbstev_arr, $selbstev_cnt);
-	}
+}
 //saves new / updated jahresabschlussbericht
 function saveJahresabschlussbericht($isNew, $lvevaluierung_jahresabschluss_id, $oe_kurzbz, $studienjahr_kurzbz, $ergebnisse, $verbesserungen)
 {
@@ -262,14 +263,37 @@ function mailJahresabschlussbericht($studiengang_kz, $studienjahr_kurzbz, $stg)
 	$receiver_arr = array();
 	$rechte = new benutzerberechtigung();
 
-	if($rechte->getBenutzerFromBerechtigung('addon/lvevaluierung_rektorat', false, null))
+	$stgoe = $stg->oe_kurzbz;
+
+	$organisationseinheit = new organisationseinheit();
+
+	if ($rechte->getBenutzerFromBerechtigung('addon/lvevaluierung_rektorat', false, null))
 	{
-		if(isset($rechte->result) && is_array($rechte->result))
+		if ($stgoeparents = $organisationseinheit->getParents($stgoe))
 		{
-			foreach($rechte->result as $row)
+			if (isset($rechte->result) && is_array($rechte->result))
 			{
-				if (($row->ende == NULL || $row->ende > date('Y-m-d')) && ($row->start == NULL || $row->start < date('Y-m-d')))
-					$receiver_arr[] = $row->uid . '@' . DOMAIN;
+				foreach ($rechte->result as $row)
+				{
+					$receivemailberechtigt = false;
+
+					if ($row->oe_kurzbz == null)
+						$receivemailberechtigt = true;
+					else
+					{
+						foreach ($stgoeparents as $stgoeparent)
+						{
+							if ($row->oe_kurzbz === $stgoeparent)
+							{
+								$receivemailberechtigt = true;
+								break;
+							}
+						}
+					}
+
+					if ($receivemailberechtigt && (($row->ende == NULL || $row->ende > date('Y-m-d')) && ($row->start == NULL || $row->start < date('Y-m-d'))))
+						$receiver_arr[] = $row->uid.'@'.DOMAIN;
+				}
 			}
 		}
 	}
@@ -312,23 +336,23 @@ function getRuecklaufquote($lvevaluierung_id, $lehrveranstaltung_id, $ws, $ss)
 
 	if($evaluierung->getEvaluierung($lehrveranstaltung_id, $ws) || $evaluierung->getEvaluierung($lehrveranstaltung_id, $ss))
 	{
-			$codes->loadCodes($evaluierung->lvevaluierung_id);
-			$anzahl_codes_beendet=0;
-			foreach($codes->result as $row_code)
-			{
-				if($row_code->endezeit!='')
-					$anzahl_codes_beendet++;
-			}
+		$codes->loadCodes($evaluierung->lvevaluierung_id);
+		$anzahl_codes_beendet=0;
+		foreach($codes->result as $row_code)
+		{
+			if($row_code->endezeit!='')
+				$anzahl_codes_beendet++;
+		}
 
-			if($evaluierung->codes_ausgegeben!='')
-				$anzahl_codes_gesamt = $evaluierung->codes_ausgegeben;
-			else
-				$anzahl_codes_gesamt = count($codes->result);
+		if($evaluierung->codes_ausgegeben!='')
+			$anzahl_codes_gesamt = $evaluierung->codes_ausgegeben;
+		else
+			$anzahl_codes_gesamt = count($codes->result);
 
-			if($anzahl_codes_gesamt>0)
-				$prozent_abgeschlossen = (100/$anzahl_codes_gesamt*$anzahl_codes_beendet);
-			else
-				$prozent_abgeschlossen = 0;
+		if($anzahl_codes_gesamt>0)
+			$prozent_abgeschlossen = (100/$anzahl_codes_gesamt*$anzahl_codes_beendet);
+		else
+			$prozent_abgeschlossen = 0;
 	}
 
 	return '<span>(' . sprintf("%6s", number_format($prozent_abgeschlossen, 2)) . '%)</span>';
