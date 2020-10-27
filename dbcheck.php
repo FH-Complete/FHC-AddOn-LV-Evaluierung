@@ -442,6 +442,19 @@ if(!@$db->db_query("SELECT lektor_uid FROM addon.tbl_lvevaluierung_code LIMIT 1"
         echo 'Neue Spalte lektor_uid in addon.tbl_lvevaluierung_code hinzugefuegt<br>';
 }
 
+// Spalte codes_gemailt in addon.tbl_lvevaluierung hinzufügen
+if(!@$db->db_query("SELECT codes_gemailt FROM addon.tbl_nation LIMIT 1"))
+{
+	$qry = "ALTER table addon.tbl_lvevaluierung ADD COLUMN codes_gemailt boolean NOT NULL DEFAULT false;
+			COMMENT ON COLUMN addon.tbl_lvevaluierung.codes_gemailt IS 'Boolean if codes were sent to students';";
+	
+	if(!$db->db_query($qry))
+		echo '<strong>tbl_lvevaluierung.codes_gemailt: '.$db->db_last_error().'</strong><br>';
+	else
+		echo '<br>Neue Spalte codes_gemailt in addon.tbl_lvevaluierung hinzugefuegt<br>';
+}
+
+
 
 echo '<br>Aktualisierung abgeschlossen<br><br>';
 echo '<h2>Gegenprüfung</h2>';
@@ -449,7 +462,7 @@ echo '<h2>Gegenprüfung</h2>';
 
 // Liste der verwendeten Tabellen / Spalten des Addons
 $tabellen=array(
-	"addon.tbl_lvevaluierung"  => array("lvevaluierung_id","lehrveranstaltung_id","studiensemester_kurzbz","startzeit","endezeit","dauer","codes_ausgegeben","insertamum","insertvon","updateamum","updatevon","verpflichtend","lv_aufgeteilt"),
+	"addon.tbl_lvevaluierung"  => array("lvevaluierung_id","lehrveranstaltung_id","studiensemester_kurzbz","startzeit","endezeit","dauer","codes_ausgegeben","insertamum","insertvon","updateamum","updatevon","verpflichtend","lv_aufgeteilt", "codes_gemailt"),
 	"addon.tbl_lvevaluierung_code"  => array("lvevaluierung_code_id","code","startzeit","endezeit","lvevaluierung_id"),
 	"addon.tbl_lvevaluierung_frage"  => array("lvevaluierung_frage_id","typ","bezeichnung","aktiv","sort"),
 	"addon.tbl_lvevaluierung_frage_antwort"  => array("lvevaluierung_frage_antwort_id","lvevaluierung_frage_id","bezeichnung","sort","wert"),
