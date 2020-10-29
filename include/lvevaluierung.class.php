@@ -21,7 +21,7 @@ require_once(dirname(__FILE__).'/../../../include/basis_db.class.php');
 
 class lvevaluierung extends basis_db
 {
-	private $new=true;
+	public $new=true;
 	public $result = array();
 
 	public $lvevaluierung_id;
