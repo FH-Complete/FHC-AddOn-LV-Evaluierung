@@ -329,7 +329,7 @@ if(isset($_POST['saveSelbstevaluierung']) || isset($_POST['saveandsendSelbsteval
 	//serverseitige Prüfung, dass Bedarf an Weiterbildung eingegeben ist
 	if(isset($_POST['saveandsendSelbstevaluierung']) && !isset($sev->weiterbildung_bedarf))
 		$evaluierung_selbsteval_msg= '<span class="error">'.$p->t('lvevaluierung/selbstevaluierungWeiterbFehlt').'</span>';
-	else if(!$validationresult["result"])
+	else if(!$validationresult["result"] && $evaluierung->codes_gemailt == false) // wenn codes gemailt wurden, ist die Codeanzahl nicht relevant
 		$evaluierung_selbsteval_msg= '<span class="error">'.$validationresult["error"].'</span>';
 	else
 	{
@@ -538,6 +538,16 @@ else
 
 	$teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
 	$anzahl_studierende=count($teilnehmer);
+	
+	$codes_ausgegeben_msg  = '';
+	if ($evaluierung->codes_ausgegeben)
+	{
+		$codes_ausgegeben_msg = $p->t('lvevaluierung/direktDurchgefuehrt');
+	}
+	elseif($evaluierung->codes_gemailt)
+	{
+		$codes_ausgegeben_msg = $p->t('lvevaluierung/perMailDurchgefuehrt');
+	}
 
 	// Erstellen der Codes
 	echo '
@@ -546,9 +556,31 @@ else
 		<div class="lvepanel-body">' .
 			$p->t('lvevaluierung/codesErstellenInfotext').'<br><br>';
 			if(!$disabled)
-				echo '<a href="qrcode.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" onclick="showSpinner(\''.$anzahl_studierende.'\')">'.$p->t('lvevaluierung/CodeListeErstellen').'</a> <img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif">';
+			{
+				echo '<form action="qrcode.php" method="GET">';
+				echo '<input type="hidden" name="lvevaluierung_id" value="'. $evaluierung->lvevaluierung_id. '">';
+				echo '<table>';
+				echo '<tr>';
+				echo '<td><input type="radio" name="codes_verteilung" value="print"'; echo (!$evaluierung->codes_gemailt || !is_null($evaluierung->codes_ausgegeben)) ? 'checked ' : ''; echo ($evaluierung->codes_gemailt) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeErstellen'). '</td>';
+				echo '<td><input type="radio" name="codes_verteilung" value="mail"'; echo ($evaluierung->codes_gemailt) ? 'checked disabled' : ''; echo (!is_null($evaluierung->codes_ausgegeben)) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
+				echo '<td width="100" align="center"><input type="submit" value="'. $p->t('global/durchfuehren'). '"';  echo ($evaluierung->codes_gemailt) ? 'disabled ' : ''; echo $locked; echo ' onclick="showSpinner(\''.$anzahl_studierende.'\')"  /></td>';
+				echo '<td><img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif"></td>';
+				echo '<td><span style="color: green"><b>'. $codes_ausgegeben_msg. '</b></span></td>';
+				echo '</tr>';
+				echo '</table>';
+				echo '</form>';
+			}
 			else
+			{
 				echo $p->t('lvevaluierung/CodeListeErstellen');
+				echo '<table>';
+				echo '<tr>';
+				echo '<td><input type="radio">'. $p->t('lvevaluierung/CodeListeErstellen'). '</td>';
+				echo '<td><input type="radio">' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
+				echo '<td width="100" align="center"><input type="submit" disabled/></td>';
+				echo '</tr>';
+				echo '</table>';
+			}
 	echo '
 			<br><br>
 		</div>
@@ -556,7 +588,7 @@ else
 
 	// Durchfuehrung der Evaluierung
 	echo '
-	<div class="lvepanel '.($disabled?'disabled':'').'">
+	<div class="lvepanel '.($disabled || $evaluierung->codes_gemailt ?'disabled':'').'">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/evaluierungDruchfuehren').'</div>
 		<div class="lvepanel-body">'.$p->t('lvevaluierung/evaluierungDruchfuehrenInfotext').'
 		</div>
@@ -565,15 +597,15 @@ else
 
 	// Ausgegebene Codes erfassen
 	echo '
-	<div class="lvepanel '.($disabled?'disabled':'').'" id="divcodes">
+	<div class="lvepanel '.($disabled || $evaluierung->codes_gemailt ?'disabled ':''). '" id="divcodes">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/codesAusgegeben').'</div>
 		<div class="lvepanel-body">
 			'.$p->t('lvevaluierung/codesAusgegebenInfotext').'<br><br>
 			<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
 			<input type="hidden" name="lvevaluierung_id" value="'.$db->convert_html_chars($evaluierung->lvevaluierung_id).'" />
 			'.$p->t('lvevaluierung/codesAusgegebenAnzahl').'
-			<input type="text" '.($disabled?'disabled':'').' name="codes_ausgegeben" size="9" value="' . $evaluierung->codes_ausgegeben . '">
-			<input type="submit" name="saveAusgegeben" '.($disabled?'disabled':'').' value="'.$p->t('global/speichern').'" />
+			<input type="text" '.($disabled || $evaluierung->codes_gemailt ?'disabled':'').' name="codes_ausgegeben" size="9" value="' . $evaluierung->codes_ausgegeben . '">
+			<input type="submit" name="saveAusgegeben" '.($disabled || $evaluierung->codes_gemailt ?'disabled':'').' value="'.$p->t('global/speichern').'" />
 			'.$evaluierung_ausgegeben_msg.'
 			</form>
 		</div>
@@ -597,10 +629,12 @@ echo '
 </div>';
 
 // Selbstevaluierung
-if(!$disabled)
+if (!$disabled)
 {
-	//Selbstevaluierung ist deaktiviert wenn codesausgegeben noch nicht valide gespeichert ist
-	if(!anzahlCodesValidieren($evaluierung, $lehrveranstaltung_id, $studiensemester_kurzbz, $p)["result"] && !$sev->freigegeben)
+	//Selbstevaluierung ist deaktiviert wenn codesausgegeben noch nicht valide gespeichert ist bzw. solange die Codes noch nicht per mail versendet worden sind
+	if ((!anzahlCodesValidieren($evaluierung, $lehrveranstaltung_id, $studiensemester_kurzbz, $p)["result"]
+		&& $evaluierung->codes_gemailt == false)
+		&& !$sev->freigegeben)
 		$disabled = true;
 }
 
