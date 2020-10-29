@@ -24,6 +24,7 @@ require_once('../../../include/functions.inc.php');
 require_once('../../../include/benutzerberechtigung.class.php');
 require_once('../../../include/lehreinheitmitarbeiter.class.php');
 require_once('../../../include/benutzer.class.php');
+require_once('../../../include/mail.class.php');
 require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_code.class.php');
 require_once('../vendor/kairos/phpqrcode/qrlib.php');
@@ -70,7 +71,6 @@ $codes_obj = new lvevaluierung_code();
 if(!$codes_obj->loadCodes($lvevaluierung_id))
 	die($codes_obj->errormsg);
 
-$doc = new dokument_export('LVEvalCode');
 
 $url = APP_ROOT.'lve/';
 $url_detail = APP_ROOT.'addons/lvevaluierung/cis/index.php';
@@ -112,31 +112,121 @@ $data = array(
 	'lvevaluierung_id'=>$lvevaluierung->lvevaluierung_id
 );
 
-$files=array();
-
-foreach($codes_obj->result as $code)
+// If codes should be printed
+if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'print')
 {
-	$filename='/tmp/fhc_lveval_code'.$code->lvevaluierung_code_id.'.png';
-	$files[]=$filename;
-
-	// QRCode ertellen und speichern
-	QRcode::png($url_detail.'?code='.$code->code, $filename);
-
-	// QRCode zu Dokument hinzufuegen
-	$doc->addImage($filename, $code->lvevaluierung_code_id.'.png', 'image/png');
-	$data[]=array('code'=>array('lvevaluierung_code_id'=>$code->lvevaluierung_code_id,'code'=>$code->code));
-
-
+	$doc = new dokument_export('LVEvalCode');
+	$files=array();
+	
+	foreach($codes_obj->result as $code)
+	{
+		$filename='/tmp/fhc_lveval_code'.$code->lvevaluierung_code_id.'.png';
+		$files[]=$filename;
+	
+		// QRCode ertellen und speichern
+		QRcode::png($url_detail.'?code='.$code->code, $filename);
+	
+		// QRCode zu Dokument hinzufuegen
+		$doc->addImage($filename, $code->lvevaluierung_code_id.'.png', 'image/png');
+		$data[]=array('code'=>array('lvevaluierung_code_id'=>$code->lvevaluierung_code_id,'code'=>$code->code));
+	}
+	
+	$doc->addDataArray($data,'lvevaluierung');
+	if(!$doc->create($output))
+	{
+		die($doc->errormsg);
+	}
+	
+	$doc->output();
+	$doc->close();
 }
 
-$doc->addDataArray($data,'lvevaluierung');
-if(!$doc->create($output))
-	die($doc->errormsg);
-$doc->output();
-$doc->close();
+// If codes should be mailed
+if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
+{
+	$files=array();
+	$code_arr = $codes_obj->result;
+	$from = 'no-reply@' . DOMAIN;
+	$subject = 'Evaluierungscode zur LV ' . $lv->bezeichnung;
+	
+	// Exit if codes were already mailed once
+	if ($lvevaluierung->codes_gemailt == true)
+	{
+		die('Codes wurden bereits gemailt. Das Versenden von emails per mail ist pro LV nur einmalig möglich.');
+	}
+	
+	// Check, if enough codes for each participant
+	if(count($code_arr) < count($teilnehmer))
+	{
+		die('Nicht ausreichend codes für alle Teilnehmer vorhanden');
+	}
+	
+	// For each LV participant
+	foreach ($teilnehmer as $uid)
+	{
+		// Get randomised code
+		$random_key = array_rand($codes_obj->result);
+		$code = $codes_obj->result[$random_key];
+		
+		$filename='/tmp/fhc_lveval_code'.$code->lvevaluierung_code_id.'.png';
+		$files[]=$filename;
+		
+		// QRCode ertellen und speichern
+		QRcode::png($url_detail.'?code='.$code->code, $filename);
+		
+		// Mail the QRCode
+		$to = $uid. '@'. DOMAIN;
+		$mail_content = getHTMLContent($data);
+		
+		$mail = new Mail($to, $from, $subject, 'test');
+		$mail->setHTMLContent($mail_content);
+		$mail->addEmbeddedImage($filename, 'image/png', 'LV-Evaluierungscode', 'qrcode');
+		
+		if(!$mail->send())
+		{
+			die('Fehler beim Emailversand.');
+		}
+		
+		// Unset used random code
+		unset($codes_obj->result[$random_key]);
+	}
+	
+	// Update codes_gemailt to true
+	$lvevaluierung->new = false;
+	$lvevaluierung->codes_gemailt = true;
+	if (!$lvevaluierung->save())
+	{
+		die($lvevaluierung->errormsg);
+	}
+	else
+	{
+		header('Location: administration.php?lehrveranstaltung_id='. $lvevaluierung->lehrveranstaltung_id. '&studiensemester_kurzbz='. $lvevaluierung->studiensemester_kurzbz);
+	}
+}
 
 // QR Codes aus Temp Ordner entfernen
 foreach($files as $file)
 	unlink($file);
 
+// Get mail content with embedded QR code
+function getHTMLContent($data)
+{
+	$content = '<body align="center">';
+	$content.= '<h3>Lehrveranstaltungsevaluierung</h3>';
+	$content.= '<p>Bitte scannen Sie den QR-Code und geben Sie Feedback zur Lehrveranstaltung.</p>';
+	$content.= '<p>Ihre Angaben werden anonym verarbeitet.</p>';
+	$content.= '<table cellpadding="10" cellspacing="0" width="640" align="center" border="1">';
+	$content.= '<tr><td>LV-Bezeichnung</td><td>'. $data['bezeichnung']. '</td></tr>';
+	$content.= '<tr><td>LV-LeiterIn</td><td>'. $data['lvleitung']. '</td></tr>';
+	$content.= '<tr><td>Studiengang</td><td>'. $data['studiengang']. '</td></tr>';
+	$content.= '<tr><td>LV Typ</td><td>'. $data['typ']. '</td></tr>';
+	$content.= '<tr><td>ECTS</td><td>'. $data['ects']. '</td></tr>';
+	$content.= '<tr><td>Studiensemester</td><td>'. $data['studiensemester']. '</td></tr>';
+	$content.= '<tr><td>Ausbildungssemester</td><td>'. $data['semester']. '</td></tr>';
+	$content.= '</table>';
+	$content.= '<img src="cid:qrcode">';
+	$content.= '</body>';
+	
+	return $content;
+}
 ?>
