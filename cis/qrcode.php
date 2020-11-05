@@ -139,12 +139,15 @@ if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'print')
 	
 	$doc->output();
 	$doc->close();
+	
+	// QR Codes aus Temp Ordner entfernen
+	foreach($files as $file)
+		unlink($file);
 }
 
 // If codes should be mailed
 if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
 {
-	$files=array();
 	$code_arr = $codes_obj->result;
 	$from = 'no-reply@' . DOMAIN;
 	$subject = 'Evaluierungscode zur LV ' . $lv->bezeichnung;
@@ -168,19 +171,12 @@ if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
 		$random_key = array_rand($codes_obj->result);
 		$code = $codes_obj->result[$random_key];
 		
-		$filename='/tmp/fhc_lveval_code'.$code->lvevaluierung_code_id.'.png';
-		$files[]=$filename;
-		
-		// QRCode ertellen und speichern
-		QRcode::png($url_detail.'?code='.$code->code, $filename);
-		
 		// Mail the QRCode
 		$to = $uid. '@'. DOMAIN;
-		$mail_content = getHTMLContent($data);
+		$mail_content = getHTMLContent($data, $code->code);
 		
 		$mail = new Mail($to, $from, $subject, 'test');
 		$mail->setHTMLContent($mail_content);
-		$mail->addEmbeddedImage($filename, 'image/png', 'LV-Evaluierungscode', 'qrcode');
 		
 		if(!$mail->send())
 		{
@@ -204,16 +200,12 @@ if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
 	}
 }
 
-// QR Codes aus Temp Ordner entfernen
-foreach($files as $file)
-	unlink($file);
-
-// Get mail content with embedded QR code
-function getHTMLContent($data)
+// Get mail content with link to evaluation
+function getHTMLContent($data, $code)
 {
 	$content = '<body align="center">';
 	$content.= '<h3>Lehrveranstaltungsevaluierung</h3>';
-	$content.= '<p>Bitte scannen Sie den QR-Code und geben Sie Feedback zur Lehrveranstaltung.</p>';
+	$content.= '<p>Bitte folgen Sie dem unten angeführten link und geben Sie Feedback zur Lehrveranstaltung.</p>';
 	$content.= '<p>Ihre Angaben werden anonym verarbeitet.</p>';
 	$content.= '<table cellpadding="10" cellspacing="0" width="640" align="center" border="1">';
 	$content.= '<tr><td>LV-Bezeichnung</td><td>'. $data['bezeichnung']. '</td></tr>';
@@ -223,8 +215,8 @@ function getHTMLContent($data)
 	$content.= '<tr><td>ECTS</td><td>'. $data['ects']. '</td></tr>';
 	$content.= '<tr><td>Studiensemester</td><td>'. $data['studiensemester']. '</td></tr>';
 	$content.= '<tr><td>Ausbildungssemester</td><td>'. $data['semester']. '</td></tr>';
+	$content.= '<tr><td>LV-Evaluierung</td><td><a href="'. $data['url_detail'].'?code='.$code. '"><b>Link zur LV-Evaluierung</b></a></td></tr>';
 	$content.= '</table>';
-	$content.= '<img src="cid:qrcode">';
 	$content.= '</body>';
 	
 	return $content;
