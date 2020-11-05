@@ -91,6 +91,21 @@ echo '<!DOCTYPE html>
 			if(document.getElementById("bis_datum").value=="")
 				document.getElementById("bis_datum").value=datum;
 		}
+		
+		function styleOnSubmit(form, anzahl_studierende)
+		{
+		    // Spinner anzeigen
+		    showSpinner(anzahl_studierende);
+
+	        // Nur wenn codes per mail gesendet werden, button sofort deaktivieren.
+			// Verhindert mehrfaches Klicken und Versenden von codes an gleiche Teilnehmer.
+			if (form.codes_verteilung.value == "mail")
+			    {
+			        form.submitCodesBtn.disabled = true;
+			    }
+			
+    		return true;
+		}
 
 		function showSpinner(anz)
 		{
@@ -557,13 +572,13 @@ else
 			$p->t('lvevaluierung/codesErstellenInfotext').'<br><br>';
 			if(!$disabled)
 			{
-				echo '<form action="qrcode.php" method="GET">';
+				echo '<form action="qrcode.php" method="GET" onsubmit="return styleOnSubmit(this, '. $anzahl_studierende. ');">';
 				echo '<input type="hidden" name="lvevaluierung_id" value="'. $evaluierung->lvevaluierung_id. '">';
 				echo '<table>';
 				echo '<tr>';
 				echo '<td><input type="radio" name="codes_verteilung" value="print"'; echo (!$evaluierung->codes_gemailt || !is_null($evaluierung->codes_ausgegeben)) ? 'checked ' : ''; echo ($evaluierung->codes_gemailt) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeErstellen'). '</td>';
 				echo '<td><input type="radio" name="codes_verteilung" value="mail"'; echo ($evaluierung->codes_gemailt) ? 'checked disabled' : ''; echo (!is_null($evaluierung->codes_ausgegeben)) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
-				echo '<td width="100" align="center"><input type="submit" value="'. $p->t('global/durchfuehren'). '"';  echo ($evaluierung->codes_gemailt) ? 'disabled ' : ''; echo $locked; echo ' onclick="showSpinner(\''.$anzahl_studierende.'\')"  /></td>';
+				echo '<td width="100" align="center"><input type="submit" name="submitCodesBtn" value="'. $p->t('global/durchfuehren'). '"';  echo ($evaluierung->codes_gemailt) ? 'disabled ' : ''; echo $locked; echo ' /></td>';
 				echo '<td><img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif"></td>';
 				echo '<td><span style="color: green"><b>'. $codes_ausgegeben_msg. '</b></span></td>';
 				echo '</tr>';
