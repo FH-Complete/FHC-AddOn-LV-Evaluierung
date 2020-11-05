@@ -156,6 +156,7 @@ $codes->loadCodes($lvevaluierung_id);
 $anzahl_codes_gesamt = 0;
 $anzahl_codes_gestartet = 0;
 $anzahl_codes_beendet = 0;
+$anzahl_codes_ausgegeben = $lvevaluierung->codes_gemailt ? $anzahl_studierende : $lvevaluierung->codes_ausgegeben;
 
 $gesamtsekunden = 0;
 foreach ($codes->result as $code)
@@ -272,7 +273,7 @@ echo '
 	</tr>
 	<tr>
 		<td>'.$p->t('lvevaluierung/anzahlstudierende').'</td>
-		<td>'.$db->convert_html_chars($anzahl_studierende).' ( '.$p->t('lvevaluierung/anzahlausgegeben').' '.$lvevaluierung->codes_ausgegeben.' )</td>
+		<td>'.$db->convert_html_chars($anzahl_studierende).' ( '.$p->t('lvevaluierung/anzahlausgegeben').' '. $anzahl_codes_ausgegeben. ' )</td>
 	</tr>
 	<tr>
 		<td>'.$p->t('lvevaluierung/abgeschlossen').'</td>
