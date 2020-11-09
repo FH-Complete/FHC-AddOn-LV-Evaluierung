@@ -159,7 +159,7 @@ if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
 	}
 	
 	// Check, if enough codes for each participant
-	if(count($code_arr) < count($teilnehmer))
+	if(count($code_arr) < $anzahl_studierende)
 	{
 		die('Nicht ausreichend codes für alle Teilnehmer vorhanden');
 	}
@@ -187,9 +187,11 @@ if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
 		unset($codes_obj->result[$random_key]);
 	}
 	
-	// Update codes_gemailt to true
+	// Update codes_gemailt to true and set amount of mailed codes
 	$lvevaluierung->new = false;
 	$lvevaluierung->codes_gemailt = true;
+	$lvevaluierung->codes_ausgegeben = $anzahl_studierende;
+	
 	if (!$lvevaluierung->save())
 	{
 		die($lvevaluierung->errormsg);

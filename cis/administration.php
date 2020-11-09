@@ -555,7 +555,7 @@ else
 	$anzahl_studierende=count($teilnehmer);
 	
 	$codes_ausgegeben_msg  = '';
-	if ($evaluierung->codes_ausgegeben)
+	if (!$evaluierung->codes_gemailt && $evaluierung->codes_ausgegeben)
 	{
 		$codes_ausgegeben_msg = $p->t('lvevaluierung/direktDurchgefuehrt');
 	}
@@ -576,8 +576,8 @@ else
 				echo '<input type="hidden" name="lvevaluierung_id" value="'. $evaluierung->lvevaluierung_id. '">';
 				echo '<table>';
 				echo '<tr>';
-				echo '<td><input type="radio" name="codes_verteilung" value="print"'; echo (!$evaluierung->codes_gemailt || !is_null($evaluierung->codes_ausgegeben)) ? 'checked ' : ''; echo ($evaluierung->codes_gemailt) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeErstellen'). '</td>';
-				echo '<td><input type="radio" name="codes_verteilung" value="mail"'; echo ($evaluierung->codes_gemailt) ? 'checked disabled' : ''; echo (!is_null($evaluierung->codes_ausgegeben)) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
+				echo '<td><input type="radio" name="codes_verteilung" value="print"'; echo (!$evaluierung->codes_gemailt) ? 'checked ' : ''; echo (!$evaluierung->codes_gemailt && $evaluierung->codes_ausgegeben) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeErstellen'). '</td>';
+				echo '<td><input type="radio" name="codes_verteilung" value="mail"'; echo ($evaluierung->codes_gemailt) ? 'checked ' : ''; echo ($evaluierung->codes_ausgegeben) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
 				echo '<td width="100" align="center"><input type="submit" name="submitCodesBtn" value="'. $p->t('global/durchfuehren'). '"';  echo ($evaluierung->codes_gemailt) ? 'disabled ' : ''; echo $locked; echo ' /></td>';
 				echo '<td><img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif"></td>';
 				echo '<td><span style="color: green"><b>'. $codes_ausgegeben_msg. '</b></span></td>';
@@ -611,7 +611,7 @@ else
 
 
 	// Ausgegebene Codes erfassen
-	$anzahl_codes_ausgegeben = $evaluierung->codes_gemailt ? $anzahl_studierende : $evaluierung->codes_ausgegeben;
+//	$anzahl_codes_ausgegeben = $evaluierung->codes_gemailt ? $anzahl_studierende : $evaluierung->codes_ausgegeben;
 	echo '
 	<div class="lvepanel '.($disabled || $evaluierung->codes_gemailt ?'disabled ':''). '" id="divcodes">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/codesAusgegeben').'</div>
@@ -620,7 +620,7 @@ else
 			<form action="administration.php?lehrveranstaltung_id='.urlencode($evaluierung->lehrveranstaltung_id).'&studiensemester_kurzbz='.urlencode($evaluierung->studiensemester_kurzbz).'" method="POST">
 			<input type="hidden" name="lvevaluierung_id" value="'.$db->convert_html_chars($evaluierung->lvevaluierung_id).'" />
 			'.$p->t('lvevaluierung/codesAusgegebenAnzahl').'
-			<input type="text" '.($disabled || $evaluierung->codes_gemailt ?'disabled':'').' name="codes_ausgegeben" size="9" value="' . $anzahl_codes_ausgegeben . '">
+			<input type="text" '.($disabled || $evaluierung->codes_gemailt ?'disabled':'').' name="codes_ausgegeben" size="9" value="' . $evaluierung->codes_ausgegeben . '">
 			<input type="submit" name="saveAusgegeben" '.($disabled || $evaluierung->codes_gemailt ?'disabled':'').' value="'.$p->t('global/speichern').'" />
 			'.$evaluierung_ausgegeben_msg.'
 			</form>
