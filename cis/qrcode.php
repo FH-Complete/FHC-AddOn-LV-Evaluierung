@@ -109,7 +109,10 @@ $data = array(
 	'anzahl'=>$anzahl_studierende,
 	'orgform'=>$lv->orgform_kurzbz,
 	'lehrform'=>$lehrform,
-	'lvevaluierung_id'=>$lvevaluierung->lvevaluierung_id
+	'lvevaluierung_id'=>$lvevaluierung->lvevaluierung_id,
+	'lvevaluierung_startzeit' => (new DateTime($lvevaluierung->startzeit))->format('d.m.Y, H:i'),
+	'lvevaluierung_endezeit' => (new DateTime($lvevaluierung->endezeit))->format('d.m.Y, H:i'),
+	'lvevaluierung_dauer' => (new DateTime($lvevaluierung->dauer))->format('H:i')
 );
 
 // If codes should be printed
@@ -208,6 +211,7 @@ function getHTMLContent($data, $code)
 	$content = '<body align="center">';
 	$content.= '<h3>Lehrveranstaltungsevaluierung</h3>';
 	$content.= '<p>Bitte folgen Sie dem unten angeführten link und geben Sie Feedback zur Lehrveranstaltung.</p>';
+	$content.= '<p><b>Beachten Sie, dass die Evaluierung nur im angegebenen Zeitfenster und für die angegebene Bearbeitungszeit möglich ist.</b></p>';
 	$content.= '<p>Ihre Angaben werden anonym verarbeitet.</p>';
 	$content.= '<table cellpadding="10" cellspacing="0" width="640" align="center" border="1">';
 	$content.= '<tr><td>LV-Bezeichnung</td><td>'. $data['bezeichnung']. '</td></tr>';
@@ -217,6 +221,8 @@ function getHTMLContent($data, $code)
 	$content.= '<tr><td>ECTS</td><td>'. $data['ects']. '</td></tr>';
 	$content.= '<tr><td>Studiensemester</td><td>'. $data['studiensemester']. '</td></tr>';
 	$content.= '<tr><td>Ausbildungssemester</td><td>'. $data['semester']. '</td></tr>';
+	$content.= '<tr><td>LV-Evaluierung Zeitfenster</td><td><b>'. $data['lvevaluierung_startzeit']. ' - '. $data['lvevaluierung_endezeit']. '</b></td></tr>';
+	$content.= '<tr><td>LV-Evaluierung Bearbeitungszeit</td><td><b>'. $data['lvevaluierung_dauer']. '</b> (Stunden:Minuten)</td></tr>';
 	$content.= '<tr><td>LV-Evaluierung</td><td><a href="'. $data['url_detail'].'?code='.$code. '"><b>Link zur LV-Evaluierung</b></a></td></tr>';
 	$content.= '</table>';
 	$content.= '</body>';
