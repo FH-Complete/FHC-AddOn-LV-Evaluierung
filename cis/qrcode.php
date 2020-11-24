@@ -120,29 +120,29 @@ if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'print')
 {
 	$doc = new dokument_export('LVEvalCode');
 	$files=array();
-	
+
 	foreach($codes_obj->result as $code)
 	{
 		$filename='/tmp/fhc_lveval_code'.$code->lvevaluierung_code_id.'.png';
 		$files[]=$filename;
-	
+
 		// QRCode ertellen und speichern
 		QRcode::png($url_detail.'?code='.$code->code, $filename);
-	
+
 		// QRCode zu Dokument hinzufuegen
 		$doc->addImage($filename, $code->lvevaluierung_code_id.'.png', 'image/png');
 		$data[]=array('code'=>array('lvevaluierung_code_id'=>$code->lvevaluierung_code_id,'code'=>$code->code));
 	}
-	
+
 	$doc->addDataArray($data,'lvevaluierung');
 	if(!$doc->create($output))
 	{
 		die($doc->errormsg);
 	}
-	
+
 	$doc->output();
 	$doc->close();
-	
+
 	// QR Codes aus Temp Ordner entfernen
 	foreach($files as $file)
 		unlink($file);
@@ -154,47 +154,47 @@ if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
 	$code_arr = $codes_obj->result;
 	$from = 'no-reply@' . DOMAIN;
 	$subject = 'Evaluierungscode zur LV ' . $lv->bezeichnung;
-	
+
 	// Exit if codes were already mailed once
 	if ($lvevaluierung->codes_gemailt == true)
 	{
 		die('Codes wurden bereits gemailt. Das Versenden von emails per mail ist pro LV nur einmalig möglich.');
 	}
-	
+
 	// Check, if enough codes for each participant
 	if(count($code_arr) < $anzahl_studierende)
 	{
 		die('Nicht ausreichend codes für alle Teilnehmer vorhanden');
 	}
-	
+
 	// For each LV participant
 	foreach ($teilnehmer as $uid)
 	{
 		// Get randomised code
 		$random_key = array_rand($codes_obj->result);
 		$code = $codes_obj->result[$random_key];
-		
+
 		// Mail the QRCode
 		$to = $uid. '@'. DOMAIN;
 		$mail_content = getHTMLContent($data, $code->code);
-		
+
 		$mail = new Mail($to, $from, $subject, 'test');
 		$mail->setHTMLContent($mail_content);
-		
+
 		if(!$mail->send())
 		{
 			die('Fehler beim Emailversand.');
 		}
-		
+
 		// Unset used random code
 		unset($codes_obj->result[$random_key]);
 	}
-	
+
 	// Update codes_gemailt to true and set amount of mailed codes
 	$lvevaluierung->new = false;
 	$lvevaluierung->codes_gemailt = true;
 	$lvevaluierung->codes_ausgegeben = $anzahl_studierende;
-	
+
 	if (!$lvevaluierung->save())
 	{
 		die($lvevaluierung->errormsg);
@@ -210,7 +210,7 @@ function getHTMLContent($data, $code)
 {
 	$content = '<body align="center">';
 	$content.= '<h3>Lehrveranstaltungsevaluierung</h3>';
-	$content.= '<p>Bitte folgen Sie dem unten angeführten link und geben Sie Feedback zur Lehrveranstaltung.</p>';
+	$content.= '<p>Bitte folgen Sie dem unten angeführten Link und geben Sie Feedback zur Lehrveranstaltung.</p>';
 	$content.= '<p><b>Beachten Sie, dass die Evaluierung nur im angegebenen Zeitfenster und für die angegebene Bearbeitungszeit möglich ist.</b></p>';
 	$content.= '<p>Ihre Angaben werden anonym verarbeitet.</p>';
 	$content.= '<table cellpadding="10" cellspacing="0" width="640" align="center" border="1">';
@@ -226,7 +226,7 @@ function getHTMLContent($data, $code)
 	$content.= '<tr><td>LV-Evaluierung</td><td><a href="'. $data['url_detail'].'?code='.$code. '"><b>Link zur LV-Evaluierung</b></a></td></tr>';
 	$content.= '</table>';
 	$content.= '</body>';
-	
+
 	return $content;
 }
 ?>

@@ -443,11 +443,11 @@ if(!@$db->db_query("SELECT lektor_uid FROM addon.tbl_lvevaluierung_code LIMIT 1"
 }
 
 // Spalte codes_gemailt in addon.tbl_lvevaluierung hinzufügen
-if(!@$db->db_query("SELECT codes_gemailt FROM addon.tbl_nation LIMIT 1"))
+if(!@$db->db_query("SELECT codes_gemailt FROM addon.tbl_lvevaluierung LIMIT 1"))
 {
 	$qry = "ALTER table addon.tbl_lvevaluierung ADD COLUMN codes_gemailt boolean NOT NULL DEFAULT false;
 			COMMENT ON COLUMN addon.tbl_lvevaluierung.codes_gemailt IS 'Boolean if codes were sent to students';";
-	
+
 	if(!$db->db_query($qry))
 		echo '<strong>tbl_lvevaluierung.codes_gemailt: '.$db->db_last_error().'</strong><br>';
 	else
