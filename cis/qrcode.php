@@ -24,6 +24,7 @@ require_once('../../../include/functions.inc.php');
 require_once('../../../include/benutzerberechtigung.class.php');
 require_once('../../../include/lehreinheitmitarbeiter.class.php');
 require_once('../../../include/benutzer.class.php');
+require_once('../../../include/mail.class.php');
 require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_code.class.php');
 require_once('../vendor/kairos/phpqrcode/qrlib.php');
@@ -70,7 +71,6 @@ $codes_obj = new lvevaluierung_code();
 if(!$codes_obj->loadCodes($lvevaluierung_id))
 	die($codes_obj->errormsg);
 
-$doc = new dokument_export('LVEvalCode');
 
 $url = APP_ROOT.'lve/';
 $url_detail = APP_ROOT.'addons/lvevaluierung/cis/index.php';
@@ -109,34 +109,124 @@ $data = array(
 	'anzahl'=>$anzahl_studierende,
 	'orgform'=>$lv->orgform_kurzbz,
 	'lehrform'=>$lehrform,
-	'lvevaluierung_id'=>$lvevaluierung->lvevaluierung_id
+	'lvevaluierung_id'=>$lvevaluierung->lvevaluierung_id,
+	'lvevaluierung_startzeit' => (new DateTime($lvevaluierung->startzeit))->format('d.m.Y, H:i'),
+	'lvevaluierung_endezeit' => (new DateTime($lvevaluierung->endezeit))->format('d.m.Y, H:i'),
+	'lvevaluierung_dauer' => (new DateTime($lvevaluierung->dauer))->format('H:i')
 );
 
-$files=array();
-
-foreach($codes_obj->result as $code)
+// If codes should be printed
+if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'print')
 {
-	$filename='/tmp/fhc_lveval_code'.$code->lvevaluierung_code_id.'.png';
-	$files[]=$filename;
+	$doc = new dokument_export('LVEvalCode');
+	$files=array();
 
-	// QRCode ertellen und speichern
-	QRcode::png($url_detail.'?code='.$code->code, $filename);
+	foreach($codes_obj->result as $code)
+	{
+		$filename='/tmp/fhc_lveval_code'.$code->lvevaluierung_code_id.'.png';
+		$files[]=$filename;
 
-	// QRCode zu Dokument hinzufuegen
-	$doc->addImage($filename, $code->lvevaluierung_code_id.'.png', 'image/png');
-	$data[]=array('code'=>array('lvevaluierung_code_id'=>$code->lvevaluierung_code_id,'code'=>$code->code));
+		// QRCode ertellen und speichern
+		QRcode::png($url_detail.'?code='.$code->code, $filename);
 
+		// QRCode zu Dokument hinzufuegen
+		$doc->addImage($filename, $code->lvevaluierung_code_id.'.png', 'image/png');
+		$data[]=array('code'=>array('lvevaluierung_code_id'=>$code->lvevaluierung_code_id,'code'=>$code->code));
+	}
 
+	$doc->addDataArray($data,'lvevaluierung');
+	if(!$doc->create($output))
+	{
+		die($doc->errormsg);
+	}
+
+	$doc->output();
+	$doc->close();
+
+	// QR Codes aus Temp Ordner entfernen
+	foreach($files as $file)
+		unlink($file);
 }
 
-$doc->addDataArray($data,'lvevaluierung');
-if(!$doc->create($output))
-	die($doc->errormsg);
-$doc->output();
-$doc->close();
+// If codes should be mailed
+if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
+{
+	$code_arr = $codes_obj->result;
+	$from = 'no-reply@' . DOMAIN;
+	$subject = 'Evaluierungscode zur LV ' . $lv->bezeichnung;
 
-// QR Codes aus Temp Ordner entfernen
-foreach($files as $file)
-	unlink($file);
+	// Exit if codes were already mailed once
+	if ($lvevaluierung->codes_gemailt == true)
+	{
+		die('Codes wurden bereits gemailt. Das Versenden von emails per mail ist pro LV nur einmalig möglich.');
+	}
 
+	// Check, if enough codes for each participant
+	if(count($code_arr) < $anzahl_studierende)
+	{
+		die('Nicht ausreichend codes für alle Teilnehmer vorhanden');
+	}
+
+	// For each LV participant
+	foreach ($teilnehmer as $uid)
+	{
+		// Get randomised code
+		$random_key = array_rand($codes_obj->result);
+		$code = $codes_obj->result[$random_key];
+
+		// Mail the QRCode
+		$to = $uid. '@'. DOMAIN;
+		$mail_content = getHTMLContent($data, $code->code);
+
+		$mail = new Mail($to, $from, $subject, 'test');
+		$mail->setHTMLContent($mail_content);
+
+		if(!$mail->send())
+		{
+			die('Fehler beim Emailversand.');
+		}
+
+		// Unset used random code
+		unset($codes_obj->result[$random_key]);
+	}
+
+	// Update codes_gemailt to true and set amount of mailed codes
+	$lvevaluierung->new = false;
+	$lvevaluierung->codes_gemailt = true;
+	$lvevaluierung->codes_ausgegeben = $anzahl_studierende;
+
+	if (!$lvevaluierung->save())
+	{
+		die($lvevaluierung->errormsg);
+	}
+	else
+	{
+		header('Location: administration.php?lehrveranstaltung_id='. $lvevaluierung->lehrveranstaltung_id. '&studiensemester_kurzbz='. $lvevaluierung->studiensemester_kurzbz);
+	}
+}
+
+// Get mail content with link to evaluation
+function getHTMLContent($data, $code)
+{
+	$content = '<body align="center">';
+	$content.= '<h3>Lehrveranstaltungsevaluierung</h3>';
+	$content.= '<p>Bitte folgen Sie dem unten angeführten Link und geben Sie Feedback zur Lehrveranstaltung.</p>';
+	$content.= '<p><b>Beachten Sie, dass die Evaluierung nur im angegebenen Zeitfenster und für die angegebene Bearbeitungszeit möglich ist.</b></p>';
+	$content.= '<p>Ihre Angaben werden anonym verarbeitet.</p>';
+	$content.= '<table cellpadding="10" cellspacing="0" width="640" align="center" border="1">';
+	$content.= '<tr><td>LV-Bezeichnung</td><td>'. $data['bezeichnung']. '</td></tr>';
+	$content.= '<tr><td>LV-LeiterIn</td><td>'. $data['lvleitung']. '</td></tr>';
+	$content.= '<tr><td>Studiengang</td><td>'. $data['studiengang']. '</td></tr>';
+	$content.= '<tr><td>LV Typ</td><td>'. $data['typ']. '</td></tr>';
+	$content.= '<tr><td>ECTS</td><td>'. $data['ects']. '</td></tr>';
+	$content.= '<tr><td>Studiensemester</td><td>'. $data['studiensemester']. '</td></tr>';
+	$content.= '<tr><td>Ausbildungssemester</td><td>'. $data['semester']. '</td></tr>';
+	$content.= '<tr><td>LV-Evaluierung Zeitfenster</td><td><b>'. $data['lvevaluierung_startzeit']. ' - '. $data['lvevaluierung_endezeit']. '</b></td></tr>';
+	$content.= '<tr><td>LV-Evaluierung Bearbeitungszeit</td><td><b>'. $data['lvevaluierung_dauer']. '</b> (Stunden:Minuten)</td></tr>';
+	$content.= '<tr><td>LV-Evaluierung</td><td><a href="'. $data['url_detail'].'?code='.$code. '"><b>Link zur LV-Evaluierung</b></a></td></tr>';
+	$content.= '</table>';
+	$content.= '</body>';
+
+	return $content;
+}
 ?>

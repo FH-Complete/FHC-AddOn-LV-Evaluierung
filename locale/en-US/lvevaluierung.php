@@ -25,7 +25,10 @@ $this->phrasen['lvevaluierung/restzeit']='Time remaining:';
 $this->phrasen['lvevaluierung/auswertung']='Analysis';
 $this->phrasen['lvevaluierung/ruecklaufquote']='Response rate';
 $this->phrasen['lvevaluierung/keineEvaluierungAngelegt']='At this time no evaluation for this course has been created. Please complete the following form to create an evaluation';
-$this->phrasen['lvevaluierung/CodeListeErstellen']='Create code list';
+$this->phrasen['lvevaluierung/CodeListeErstellen']='Download code list';
+$this->phrasen['lvevaluierung/CodeListeMailen']='Send codes per mail';
+$this->phrasen['lvevaluierung/direktDurchgefuehrt']='Codes were given to participants directly.';
+$this->phrasen['lvevaluierung/perMailDurchgefuehrt']='Codes had been sent to all %s participants by mail.';
 $this->phrasen['lvevaluierung/Auswertung']='Display analysis';
 $this->phrasen['lvevaluierung/gesamtauswertung']='Total Analysis';
 $this->phrasen['lvevaluierung/persoenlicheAuswertung']='Show personal evaluation';
@@ -40,9 +43,20 @@ $this->phrasen['lvevaluierung/evaluierunganlegen']='Specify evaluation criteria'
 $this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Please specify here the period in which the course evaluation is to take place. Access to the evaluation is only available to students in this period. You may correct the period at any time, as long as the evaluation has not been finished.';
 $this->phrasen['lvevaluierung/dauerInfotext']='The processing time defines how much time the students have to complete the evaluation after it has been started. We recommend that you keep to the preset 10 minutes. However, the length of time can be adapted.';
 
-$this->phrasen['lvevaluierung/codesErstellen']='Print the list of the access codes';
+$this->phrasen['lvevaluierung/codesErstellen']='Generate Codes';
 $this->phrasen['lvevaluierung/codesErstellenInfotext']='Click on the link to download a PDF with codes. This can take a few seconds with a large group. Then print the document one-sided*.
 	 <br><small>*Because the QR codes are cut out, you should print only one-sided per sheet. Check your printer settings.</small>';
+
+'<b>Select if you wish to download and print the codes <u>OR</u> to send the codes by email.</b><br>This can take a few seconds with a large group.<br><br>
+<fieldset>
+<legend>Download list with codes:</legend>Print the document one-sided. Because the QR codes are cut out, you should print only one-sided per sheet. Check your printer settings.<br>
+The option \'send codes by email\' is disabled as soon the number of codes are saved. (see below)<br>
+</fieldset>
+<br><br>
+<fieldset>
+<legend>Send codes by email:</legend>This can be done <u>only once</u>. Each participant will receive a QR code by mail.<br>
+Both options are disabled as soon as the mails were successfully sent.<br>
+</fieldset>';
 
 $this->phrasen['lvevaluierung/evaluierungDruchfuehren']='Carry out the evaluation';
 $this->phrasen['lvevaluierung/evaluierungDruchfuehrenInfotext']='Carry out the course evaluation within the specified time period.';
@@ -53,7 +67,7 @@ $this->phrasen['lvevaluierung/codesAusgegebenAnzahl']='Number of codes used';
 $this->phrasen['lvevaluierung/mehrCodesAusgegebenAlsStudierende']='The number of codes used may not exceed the number of students in the course.';
 $this->phrasen['lvevaluierung/mehrAusgefuelltAlsAusgegeben']='The number of codes used cannot be lower than the number of questionnaires filled out.';
 $this->phrasen['lvevaluierung/codesNichtEingetragen']='Number of codes used not filled out.';
-$this->phrasen['lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung']='Notice: Self-evaluation can only be further processed and send when number of used access codes is saved correctly.';
+$this->phrasen['lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung']='Notice: Self-evaluation can only be further processed and send when number of used access codes is saved correctly OR as soon the access codes had been sent by mail.';
 
 $this->phrasen['lvevaluierung/auswertungAnzeigen']='Analysis';
 $this->phrasen['lvevaluierung/auswertungAnzeigenInfotext']='Click here to display the results of the course evaluation.';

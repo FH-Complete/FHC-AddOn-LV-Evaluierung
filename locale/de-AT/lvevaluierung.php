@@ -28,7 +28,10 @@ $this->phrasen['lvevaluierung/gesamtauswertung']='Gesamtauswertung';
 $this->phrasen['lvevaluierung/ruecklaufquote']='Rücklaufquote';
 
 $this->phrasen['lvevaluierung/keineEvaluierungAngelegt']='Derzeit ist noch keine Evaluierung für diese Lehrveranstaltung angelegt. Füllen Sie das folgende Formular aus um eine Evaluierung anzulegen';
-$this->phrasen['lvevaluierung/CodeListeErstellen']='Code Liste erstellen';
+$this->phrasen['lvevaluierung/CodeListeErstellen']='Liste mit Codes herunterladen';
+$this->phrasen['lvevaluierung/CodeListeMailen']='Codes per eMail versenden';
+$this->phrasen['lvevaluierung/direktDurchgefuehrt']='Evaluierung wurde durch direkte Ausgabe der Zugangscodes durchgeführt.';
+$this->phrasen['lvevaluierung/perMailDurchgefuehrt']='Zugangscodes wurden an alle %s Teilnehmer per eMail versendet.';
 $this->phrasen['lvevaluierung/Auswertung']='Auswertung anzeigen';
 $this->phrasen['lvevaluierung/auswertungWaehlen']='Bitte wählen Sie Ihre gewünschte Auswertung';
 $this->phrasen['lvevaluierung/persoenlicheAuswertung']='Persönliche Auswertung anzeigen';
@@ -42,9 +45,17 @@ $this->phrasen['lvevaluierung/evaluierunganlegen']='Evaluierungskriterien festle
 $this->phrasen['lvevaluierung/evaluierunganlegenInfotext']='Bitte legen Sie hier den Zeitraum fest, in dem die LV-Evaluierung durchgeführt wird. Der Zugriff auf die Evaluierung ist für Studierende nur in diesem Zeitfenster möglich. Sie können den Zeitraum jederzeit korrigieren, solange die Evaluierung noch nicht abgeschlossen wurde.';
 $this->phrasen['lvevaluierung/dauerInfotext']='Die Bearbeitungszeit definiert, wie lange Studierende nach dem Start der Evaluierung Zeit haben, diese auszufüllen. Wir empfehlen, die voreingestellten 10 Minuten beizubehalten. Sie können den Wert aber auch adaptieren.';
 
-$this->phrasen['lvevaluierung/codesErstellen']='Liste der Zugangscodes drucken';
-$this->phrasen['lvevaluierung/codesErstellenInfotext']='Klicken Sie auf den Link um ein PDF mit Codes herunterzuladen. Dies kann bei großen Gruppen ein paar Sekunden dauern.<br>Drucken Sie das Dokument anschließend einseitig* aus.
-														<br><small>*Da die QR-Codes ausgeschnitten werden, sollten Sie pro Blatt nur einseitig ausdrucken. Achten Sie dafür auf Ihre Druckereinstellungen.</small>';
+$this->phrasen['lvevaluierung/codesErstellen']='Zugangscodes erstellen';
+$this->phrasen['lvevaluierung/codesErstellenInfotext']='<b>Wählen Sie, ob Sie die Zugangscodes herunterladen <u>ODER</u> als eMail an die Teilnehmer versenden möchten.</b><br>Dies kann bei großen Gruppen ein paar Sekunden dauern.<br><br>
+<fieldset>
+<legend>Liste mit Codes herunterladen:</legend>Drucken Sie das Dokument einseitig aus. Da die QR-Codes ausgeschnitten werden, sollten Sie pro Blatt nur einseitig ausdrucken. Achten Sie dafür auf Ihre Druckereinstellungen.<br>
+Die Option für den Mailversand ist gesperrt, sobald Sie weiter unten die ausgegebenen Zugangscodes abspeichern und damit die Präsenzevaluierung bestätigen.<br>
+</fieldset>
+<br><br>
+<fieldset>
+<legend>Codes per Mail versenden:</legend>Das ist nur <u>einmalig möglich</u>. Jeder Teilnehmer erhält einen anonymen Zugangscode per Mail zugesendet.<br>
+Beide Optionen sind nach dem erfolgreichen Mailversand sofort gesperrt.<br>
+</fieldset>';
 
 $this->phrasen['lvevaluierung/evaluierungDruchfuehren']='Evaluierung durchführen';
 $this->phrasen['lvevaluierung/evaluierungDruchfuehrenInfotext']='Führen Sie die LV-Evaluierung im festgelegten Zeitraum durch.';
@@ -55,7 +66,7 @@ $this->phrasen['lvevaluierung/codesAusgegebenAnzahl']='Anzahl der verwendeten Co
 $this->phrasen['lvevaluierung/mehrCodesAusgegebenAlsStudierende']='Die Anzahl der verwendeten Codes kann nicht höher sein als die Anzahl der Studierenden in der LV.';
 $this->phrasen['lvevaluierung/mehrAusgefuelltAlsAusgegeben']='Die Anzahl der verwendeten Codes kann nicht kleiner sein als die Anzahl der ausgefüllten Fragebögen.';
 $this->phrasen['lvevaluierung/codesNichtEingetragen']='Anzahl verwendeter Codes nicht eingetragen.';
-$this->phrasen['lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung']='Hinweis: Die Selbstevaluierung kann nur bei korrekter gespeicherter Anzahl der verwendeten Zugangscodes weiterbearbeitet und versendet werden.';
+$this->phrasen['lvevaluierung/hinweisCodesNichtEingetragenSelbstevaluierung']='Hinweis: Die Selbstevaluierung kann nur bei korrekt gespeicherter Anzahl der verwendeten Zugangscodes weiterbearbeitet werden ODER sobald die Zugangscodes einmalig per mail versendet worden sind.';
 
 $this->phrasen['lvevaluierung/auswertungAnzeigen']='Auswertung';
 $this->phrasen['lvevaluierung/auswertungAnzeigenInfotext']='Klicken Sie hier, um die Ergebnisse der LV-Evaluierung anzuzeigen.';
@@ -112,7 +123,7 @@ $this->phrasen['lvevaluierung/evaluierungenPruefen'] = 'LV Evaluierungen prüfen
 $this->phrasen['lvevaluierung/evaluierungenPruefenTxt'] = 'Hier können Sie alle Lehrveranstaltungsevaluierungen prüfen, bei denen der Vortragende zugleich der Studiengangsleiter war.';
 $this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigen'] = 'Alle Studienjahr-Abschlussberichte anzeigen';
 $this->phrasen['lvevaluierung/alleJahresabschlussberichteAnzeigenTxt'] = 'Hier können Sie alle Studienjahr-Abschlussberichte einsehen und drucken.';
-$this->phrasen['lvevaluierung/mehrereLektorenEineLvTxt'] = 'Geben Sie an, ob die gesamte Lehrveranstaltung durchgängig in getrennten Studierenden-Gruppen durchgeführt wurde: ';                                               
+$this->phrasen['lvevaluierung/mehrereLektorenEineLvTxt'] = 'Geben Sie an, ob die gesamte Lehrveranstaltung durchgängig in getrennten Studierenden-Gruppen durchgeführt wurde: ';
 $this->phrasen['lvevaluierung/lektorWaehlenTxt'] = 'Evaluierung von getrennten Gruppen aktivieren';
 $this->phrasen['lvevaluierung/lektorDropdown'] = 'Mein/e Lektor/in dieser Lehrveranstaltung';
 $this->phrasen['lvevaluierung/lektorWaehlen'] = 'LektorIn wählen';
