@@ -177,8 +177,9 @@ if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
 		// Mail the QRCode
 		$to = $uid. '@'. DOMAIN;
 		$mail_content = getHTMLContent($data, $code->code);
+		$mail_content_text = 'Bitte wechseln Sie in die HTML Ansicht um den Inhalt der Mail zu lesen';
 
-		$mail = new Mail($to, $from, $subject, 'test');
+		$mail = new Mail($to, $from, $subject, $mail_content_text);
 		$mail->setHTMLContent($mail_content);
 
 		if(!$mail->send())
@@ -208,22 +209,44 @@ if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
 // Get mail content with link to evaluation
 function getHTMLContent($data, $code)
 {
+	$link = $data['url_detail'].'?code='.$code;
+
 	$content = '<body align="center">';
+	$content.= "\n";
 	$content.= '<h3>Lehrveranstaltungsevaluierung</h3>';
+	$content.= "\n";
 	$content.= '<p>Bitte folgen Sie dem unten angeführten Link und geben Sie Feedback zur Lehrveranstaltung.</p>';
+	$content.= "\n";
 	$content.= '<p><b>Beachten Sie, dass die Evaluierung nur im angegebenen Zeitfenster und für die angegebene Bearbeitungszeit möglich ist.</b></p>';
+	$content.= "\n";
 	$content.= '<p>Ihre Angaben werden anonym verarbeitet.</p>';
+	$content.= "\n";
 	$content.= '<table cellpadding="10" cellspacing="0" width="640" align="center" border="1">';
+	$content.= "\n";
 	$content.= '<tr><td>LV-Bezeichnung</td><td>'. $data['bezeichnung']. '</td></tr>';
+	$content.= "\n";
 	$content.= '<tr><td>LV-LeiterIn</td><td>'. $data['lvleitung']. '</td></tr>';
+	$content.= "\n";
 	$content.= '<tr><td>Studiengang</td><td>'. $data['studiengang']. '</td></tr>';
+	$content.= "\n";
 	$content.= '<tr><td>LV Typ</td><td>'. $data['typ']. '</td></tr>';
+	$content.= "\n";
 	$content.= '<tr><td>ECTS</td><td>'. $data['ects']. '</td></tr>';
+	$content.= "\n";
 	$content.= '<tr><td>Studiensemester</td><td>'. $data['studiensemester']. '</td></tr>';
+	$content.= "\n";
 	$content.= '<tr><td>Ausbildungssemester</td><td>'. $data['semester']. '</td></tr>';
+	$content.= "\n";
 	$content.= '<tr><td>LV-Evaluierung Zeitfenster</td><td><b>'. $data['lvevaluierung_startzeit']. ' - '. $data['lvevaluierung_endezeit']. '</b></td></tr>';
+	$content.= "\n";
 	$content.= '<tr><td>LV-Evaluierung Bearbeitungszeit</td><td><b>'. $data['lvevaluierung_dauer']. '</b> (Stunden:Minuten)</td></tr>';
-	$content.= '<tr><td>LV-Evaluierung</td><td><a href="'. $data['url_detail'].'?code='.$code. '"><b>Link zur LV-Evaluierung</b></a></td></tr>';
+	$content.= "\n";
+	$content.= '<tr><td>Link zur LV-Evaluierung</td><td>';
+	$content.= "\n";
+	$content.= '<a href="'.$link. '">';
+	$content.= "\n";
+	$content.= $link.'</a></td></tr>';
+	$content.= "\n";
 	$content.= '</table>';
 	$content.= '</body>';
 
