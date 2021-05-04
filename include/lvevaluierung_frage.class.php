@@ -31,6 +31,7 @@ class lvevaluierung_frage extends basis_db
 	public $typ='text';
 	public $sort=1;
 	public $wert=1;
+	public $lehrmodus_kurzbz;
 
     /**
 	 * Konstruktor
@@ -65,6 +66,7 @@ class lvevaluierung_frage extends basis_db
 				$this->sort = $row->sort;
 				$this->bezeichnung = $sprache->parseSprachResult('bezeichnung',$row);
 				$this->new = false;
+				$this->lehrmodus_kurzbz = $row->lehrmodus_kurzbz;
 
 				return true;
 			}
@@ -89,7 +91,7 @@ class lvevaluierung_frage extends basis_db
 	{
 		$sprache = new sprache();
 		$qry = "SELECT
-					lvevaluierung_frage_id, typ, aktiv, sort, ".
+					lvevaluierung_frage_id, typ, aktiv, sort, lehrmodus_kurzbz, ".
 					$sprache->getSprachQuery('bezeichnung')."
 				FROM
 					addon.tbl_lvevaluierung_frage ";
@@ -110,6 +112,7 @@ class lvevaluierung_frage extends basis_db
 				$obj->sort = $row->sort;
 				$obj->bezeichnung = $sprache->parseSprachResult('bezeichnung',$row);
 				$obj->new = false;
+				$obj->lehrmodus_kurzbz = $row->lehrmodus_kurzbz;
 
 				$this->result[] = $obj;
 			}
@@ -153,6 +156,7 @@ class lvevaluierung_frage extends basis_db
 		{
 			$qry = "UPDATE addon.tbl_lvevaluierung_frage SET ".
 					" typ=".$this->db_add_param($this->typ).",".
+					" lehrmodus_kurzbz =".$this->db_add_param($this->lehrmodus_kurzbz, FHC_STRING).",".
 					" aktiv=".$this->db_add_param($this->aktiv, FHC_BOOLEAN).",";
 
 			foreach($this->bezeichnung as $key=>$value)

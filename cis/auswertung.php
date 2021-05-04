@@ -118,14 +118,14 @@ if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studie
 		$isStgl = true;
 		$isInstitutsleiter = true;
 	}
-} 
+}
 // User ist Lektor dieser LV
 else
 {
 	// Check, ob Lektor einer aufgeteilten LV ist
 	if($lvevaluierung->lv_aufgeteilt)
 	{
-		foreach($lem->result as $lektor)  
+		foreach($lem->result as $lektor)
 		{
 			if($uid == $lektor->uid)
 			{
@@ -201,7 +201,7 @@ if($isLektor_lv_aufgeteilt && (!$isStgl || !$isInstitutsleiter))
 	</form></p>';
 }
 
-//dropdown nur für studiengangs- und institutsleiter 
+//dropdown nur für studiengangs- und institutsleiter
 //wahl: gesamtauswertung + individuelle auswertungen der jeweiligen lektoren dieser lv
 if ($lvevaluierung->lv_aufgeteilt && ($isStgl || $isInstitutsleiter))
 {
@@ -210,8 +210,8 @@ if ($lvevaluierung->lv_aufgeteilt && ($isStgl || $isInstitutsleiter))
 	echo '
 	<select name="auswertung">
 		<option value="gesamt"' . (($auswertung == 'gesamt') ? "selected" : "") . '>'. $p->t('lvevaluierung/gesamtauswertung') . '</option>';
-		foreach($lem->result as $row) 
-		{  
+		foreach($lem->result as $row)
+		{
 			echo '<option value="' . $row->uid . '"' . (($auswertung == $row->uid) ? "selected" : "") . '>' . $row->titelpre . ' ' . $row->titelpost . ' ' . $row->vorname . ' ' . $row->nachname . '</option>';
 		}
 	echo '

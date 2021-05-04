@@ -334,6 +334,7 @@ else
 			<thead>
 			<tr>
 				<th>Reihenfolge</th>
+				<th>Lehrmodus</th>
 				<th>Typ</th>
 				<th>Bezeichnung</th>
 				<th>Aktiv</th>
@@ -350,6 +351,7 @@ else
 			$maxsort=$row->sort;
 		echo '<tr>';
 		echo '<td>'.$db->convert_html_chars($row->sort).'</td>';
+		echo '<td>'.$db->convert_html_chars($row->lehrmodus_kurzbz).'</td>';
 		echo '<td>'.$db->convert_html_chars($row->typ).'</td>';
 		echo '<td>'.$db->convert_html_chars($row->bezeichnung[DEFAULT_LANGUAGE]).'</td>';
 		echo '<td>'.($row->aktiv?'Ja':'Nein').'</td>';
@@ -380,6 +382,13 @@ else
 			<input type="hidden" name="action" value="saveFrage" />
 			<input type="hidden" name="lvevaluierung_frage_id" value="'.$frage->lvevaluierung_frage_id.'" />
 			<input type="text" name="sort" size="3" value="'.$frage->sort.'" />
+		</th>
+		<th valign="top">
+			<select name="lehrmodus_kurzbz">
+				<option value="">--keine Auswahl--</option>
+				<option value="regulaer" '.($frage->lehrmodus_kurzbz=='regulaer'?'selected="selected"':'').'>regulär</option>
+				<option value="standardisiert" '.($frage->lehrmodus_kurzbz=='standardisiert'?'selected="selected"':'').'>standardisiert</option>
+			</select>
 		</th>
 		<th valign="top">
 			<select name="typ">
