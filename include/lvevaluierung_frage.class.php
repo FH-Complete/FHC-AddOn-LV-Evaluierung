@@ -142,7 +142,7 @@ class lvevaluierung_frage extends basis_db
 				$qry.=" bezeichnung[$idx],";
 			}
 
-			$qry.=' aktiv, sort) VALUES('.
+			$qry.=' aktiv, sort, lehrmodus_kurzbz) VALUES('.
 					$this->db_add_param($this->typ).',';
 
 			reset($this->bezeichnung);
@@ -150,7 +150,8 @@ class lvevaluierung_frage extends basis_db
 				$qry.=$this->db_add_param($value).',';
 
 			$qry.= $this->db_add_param($this->aktiv, FHC_BOOLEAN).','.
-			$this->db_add_param($this->sort, FHC_INTEGER).');';
+			$this->db_add_param($this->sort, FHC_INTEGER) .','.
+			$this->db_add_param($this->lehrmodus_kurzbz).');';
 		}
 		else
 		{

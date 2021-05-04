@@ -114,7 +114,9 @@ switch($action)
 		$typ = filter_input(INPUT_POST,'typ');
 		$sort = filter_input(INPUT_POST,'sort');
 		$lvevaluierung_frage_id = filter_input(INPUT_POST,'lvevaluierung_frage_id');
+		$lehrmodus_kurzbz = filter_input(INPUT_POST, 'lehrmodus_kurzbz');
 		$bezeichnung=array();
+
 		foreach($sprache->result as $row_sprache)
 		{
 			if(isset($_POST['bezeichnung'.$row_sprache->sprache]))
@@ -131,6 +133,7 @@ switch($action)
 
 		$frage->typ = $typ;
 		$frage->sort = $sort;
+		$frage->lehrmodus_kurzbz = $lehrmodus_kurzbz;
 		$frage->bezeichnung = $bezeichnung;
 		$frage->aktiv = isset($_POST['aktiv']);
 
@@ -261,6 +264,7 @@ if($action=='details' || $action=='editAntwort')
 
 		echo '<tr>';
 		echo '<td>'.$row->sort.'</td>';
+		echo '<td>'.$db->convert_html_chars($row->lehrmodus_kurzbz).'</td>';
 		echo '<td>'.$db->convert_html_chars($row->bezeichnung[DEFAULT_LANGUAGE]).'</td>';
 		echo '<td>'.$row->wert.'</td>';
 		echo '<td>
@@ -344,6 +348,7 @@ else
 			<tbody>';
 
 	$maxsort=0;
+	$maxFrageId = 0;
 
 	foreach($fragen->result as $row)
 	{
@@ -380,13 +385,13 @@ else
 	<tr>
 		<th valign="top">
 			<input type="hidden" name="action" value="saveFrage" />
-			<input type="hidden" name="lvevaluierung_frage_id" value="'.$frage->lvevaluierung_frage_id.'" />
+			<input type="hidden" name="lvevaluierung_frage_id" value="'.$frage->lvevaluierung_frage_id. '" />
 			<input type="text" name="sort" size="3" value="'.$frage->sort.'" />
 		</th>
 		<th valign="top">
 			<select name="lehrmodus_kurzbz">
-				<option value="">--keine Auswahl--</option>
-				<option value="regulaer" '.($frage->lehrmodus_kurzbz=='regulaer'?'selected="selected"':'').'>regulär</option>
+				<option value=""> --keine Auswahl--</option>
+				<option value="regulaer" '.($frage->lehrmodus_kurzbz=='regulaer'?'selected="selected"':'').'>regulaer</option>
 				<option value="standardisiert" '.($frage->lehrmodus_kurzbz=='standardisiert'?'selected="selected"':'').'>standardisiert</option>
 			</select>
 		</th>
