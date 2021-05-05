@@ -94,9 +94,12 @@ class lvevaluierung_frage extends basis_db
 					lvevaluierung_frage_id, typ, aktiv, sort, lehrmodus_kurzbz, ".
 					$sprache->getSprachQuery('bezeichnung')."
 				FROM
-					addon.tbl_lvevaluierung_frage ";
+					addon.tbl_lvevaluierung_frage
+				where
+					lehrmodus_kurzbz = ''";
+
 		if($aktiv===false)
-			$qry.=" WHERE aktiv=false";
+			$qry.=" AND aktiv=false";
 
 		$qry.=" ORDER BY sort";
 

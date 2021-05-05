@@ -271,6 +271,7 @@ else
 		$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 		$anzahl_studierende=count($teilnehmer);
 		$lehrform = $lv->lehrform_kurzbz;
+		$lehrmodus = $lv->lehrmodus_kurzbz;
 
 		$lv_aufgeteilt = $lvevaluierung->lv_aufgeteilt;
 
@@ -301,6 +302,10 @@ else
 			<tr>
 				<td>'.$p->t('lvevaluierung/lvtyp').'</td>
 				<td>'.$db->convert_html_chars($lehrform).'</td>
+			</tr>
+			<tr>
+				<td>Lehrmodus</td>
+				<td>'.$db->convert_html_chars($lehrmodus).'</td>
 			</tr>
 			<tr>
 				<td>'.$p->t('lvevaluierung/ects').'</td>
