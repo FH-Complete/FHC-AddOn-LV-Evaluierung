@@ -91,7 +91,7 @@ echo '<!DOCTYPE html>
 			if(document.getElementById("bis_datum").value=="")
 				document.getElementById("bis_datum").value=datum;
 		}
-		
+
 		function styleOnSubmit(form, anzahl_studierende)
 		{
 		    // Spinner anzeigen
@@ -103,7 +103,7 @@ echo '<!DOCTYPE html>
 			    {
 			        form.submitCodesBtn.disabled = true;
 			    }
-			
+
     		return true;
 		}
 
@@ -553,7 +553,7 @@ else
 
 	$teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
 	$anzahl_studierende=count($teilnehmer);
-	
+
 	$codes_ausgegeben_msg  = '';
 	if (!$evaluierung->codes_gemailt && $evaluierung->codes_ausgegeben)
 	{
@@ -825,6 +825,7 @@ function LVEvaluierungGetInfoBlock($lv, $stg, $studiensemester_kurzbz)
 	$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $studiensemester_kurzbz);
 	$anzahl_studierende=count($teilnehmer);
 	$lehrform = $lv->lehrform_kurzbz;
+	$lehrmodus = $lv->lehrmodus_kurzbz;
 
 	$stg->getAllTypes();
 
@@ -857,6 +858,10 @@ function LVEvaluierungGetInfoBlock($lv, $stg, $studiensemester_kurzbz)
 			<tr>
 				<td>'.$p->t('lvevaluierung/lvtyp').'</td>
 				<td>'.$db->convert_html_chars($lehrform).'</td>
+			</tr>
+			<tr>
+				<td>'.$p->t('lvevaluierung/lvmodus').'</td>
+				<td>'.$db->convert_html_chars($lehrmodus).'</td>
 			</tr>
 			<tr>
 				<td>'.$p->t('lvevaluierung/ects').'</td>

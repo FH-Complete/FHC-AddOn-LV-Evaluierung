@@ -116,6 +116,7 @@ $lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' 
 $teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
 $anzahl_studierende=count($teilnehmer);
 $lehrform = $lv->lehrform_kurzbz;
+$lehrmodus = $lv->lehrmodus_kurzbz;
 
 echo '
 		<table class="tablesorter">
@@ -145,6 +146,10 @@ echo '
 		<tr>
 			<td>'.$p->t('lvevaluierung/lvtyp').'</td>
 			<td>'.$db->convert_html_chars($lehrform).'</td>
+		</tr>
+		<tr>
+			<td>'.$p->t('lvevaluierung/lvmodus').'</td>
+			<td>'.$db->convert_html_chars($lehrmodus).'</td>
 		</tr>
 		<tr>
 			<td>'.$p->t('lvevaluierung/ects').'</td>
