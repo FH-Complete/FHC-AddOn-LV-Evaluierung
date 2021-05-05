@@ -22,15 +22,15 @@ require_once(dirname(__FILE__).'/../../../include/sprache.class.php');
 
 class lvevaluierung_frage extends basis_db
 {
-	private $new=true;
+	private $new = true;
 	public $result = array();
 	public $lvevaluierung_frage_id;
 	public $lvevaluierung_frage_antwort_id;
 	public $bezeichnung = array();
-	public $aktiv=true;
-	public $typ='text';
-	public $sort=1;
-	public $wert=1;
+	public $aktiv = true;
+	public $typ ='text';
+	public $sort = 1;
+	public $wert = 1;
 	public $lehrmodus_kurzbz;
 
     /**
@@ -83,23 +83,28 @@ class lvevaluierung_frage extends basis_db
 		}
 	}
 
+
 	/**
 	 * Laedt die Fragen
-	 * @param $aktiv boolean gibt an ob
+	 * @param $aktiv boolean
+	 * @param $lehrmodus_kurzbz übergibt Lehrmodus
 	 */
-	public function getFragen($aktiv=true)
+	public function getFragen($aktiv = true, $lehrmodus_kurzbz = null)
 	{
 		$sprache = new sprache();
+
 		$qry = "SELECT
 					lvevaluierung_frage_id, typ, aktiv, sort, lehrmodus_kurzbz, ".
 					$sprache->getSprachQuery('bezeichnung')."
 				FROM
 					addon.tbl_lvevaluierung_frage
 				where
-					lehrmodus_kurzbz = ''";
+					lehrmodus_kurzbz is NULL
+				OR
+					lehrmodus_kurzbz=".$this->db_add_param($lehrmodus_kurzbz, FHC_STRING);
 
-		if($aktiv===false)
-			$qry.=" AND aktiv=false";
+		if($aktiv === false)
+			$qry .=" AND aktiv = false";
 
 		$qry.=" ORDER BY sort";
 
@@ -153,7 +158,7 @@ class lvevaluierung_frage extends basis_db
 				$qry.=$this->db_add_param($value).',';
 
 			$qry.= $this->db_add_param($this->aktiv, FHC_BOOLEAN).','.
-			$this->db_add_param($this->sort, FHC_INTEGER) .','.
+			$this->db_add_param($this->sort, FHC_INTEGER).','.
 			$this->db_add_param($this->lehrmodus_kurzbz).');';
 		}
 		else

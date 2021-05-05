@@ -11,6 +11,7 @@ $this->phrasen['lvevaluierung/lvbezeichnung']='Course designation';
 $this->phrasen['lvevaluierung/lvleitung']='Course Head';
 $this->phrasen['lvevaluierung/organisationsform']='Organizational form';
 $this->phrasen['lvevaluierung/lvtyp']='Course type';
+$this->phrasen['lvevaluierung/lvmodus']='Course mode';
 $this->phrasen['lvevaluierung/ects']='ECTS';
 $this->phrasen['lvevaluierung/ausbildungssemester']='Educational semester';
 $this->phrasen['lvevaluierung/anzahlstudierende']='Number of students';

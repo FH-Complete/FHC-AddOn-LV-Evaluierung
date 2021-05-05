@@ -304,7 +304,7 @@ else
 				<td>'.$db->convert_html_chars($lehrform).'</td>
 			</tr>
 			<tr>
-				<td>Lehrmodus</td>
+				<td>'.$p->t('lvevaluierung/lvmodus').'</td>
 				<td>'.$db->convert_html_chars($lehrmodus).'</td>
 			</tr>
 			<tr>
@@ -355,7 +355,7 @@ else
 		}
 
 		$frage = new lvevaluierung_frage();
-		$frage->getFragen($lvevaluierung_id);
+		$frage->getFragen($lvevaluierung_id, $lehrmodus);
 
 		foreach($frage->result as $row_frage)
 		{
