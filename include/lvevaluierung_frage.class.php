@@ -98,15 +98,13 @@ class lvevaluierung_frage extends basis_db
 					$sprache->getSprachQuery('bezeichnung')."
 				FROM
 					addon.tbl_lvevaluierung_frage
-				where
-					lehrmodus_kurzbz is NULL
+				WHERE
+					(lehrmodus_kurzbz is NULL
 				OR
-					lehrmodus_kurzbz=".$this->db_add_param($lehrmodus_kurzbz, FHC_STRING);
+					lehrmodus_kurzbz=".$this->db_add_param($lehrmodus_kurzbz, FHC_STRING). ")";
 
-		if($aktiv === false)
-			$qry .=" AND aktiv = false";
-
-		$qry.=" ORDER BY sort";
+		$qry .= "AND aktiv is true";
+		$qry .= " ORDER BY sort";
 
 		if($result = $this->db_query($qry))
 		{
@@ -118,7 +116,7 @@ class lvevaluierung_frage extends basis_db
 				$obj->typ = $row->typ;
 				$obj->aktiv = $this->db_parse_bool($row->aktiv);
 				$obj->sort = $row->sort;
-				$obj->bezeichnung = $sprache->parseSprachResult('bezeichnung',$row);
+				$obj->bezeichnung = $sprache->parseSprachResult('bezeichnung', $row);
 				$obj->new = false;
 				$obj->lehrmodus_kurzbz = $row->lehrmodus_kurzbz;
 
@@ -133,7 +131,44 @@ class lvevaluierung_frage extends basis_db
 		}
 	}
 
+	/**
+	 * Laedt alle Fragen: für View Vilesci: unabhängig vom Lehrmodus und von $aktiv
+	 */
+	public function getAllFragen()
+	{
+		$sprache = new sprache();
 
+		$qry = "SELECT
+					lvevaluierung_frage_id, typ, aktiv, sort, lehrmodus_kurzbz, ".
+					$sprache->getSprachQuery('bezeichnung')."
+				FROM
+					addon.tbl_lvevaluierung_frage
+				ORDER BY sort";
+
+		if($result = $this->db_query($qry))
+		{
+			while($row = $this->db_fetch_object($result))
+			{
+				$obj = new lvevaluierung_frage();
+
+				$obj->lvevaluierung_frage_id = $row->lvevaluierung_frage_id;
+				$obj->typ = $row->typ;
+				$obj->aktiv = $this->db_parse_bool($row->aktiv);
+				$obj->sort = $row->sort;
+				$obj->bezeichnung = $sprache->parseSprachResult('bezeichnung', $row);
+				$obj->new = false;
+				$obj->lehrmodus_kurzbz = $row->lehrmodus_kurzbz;
+
+				$this->result[] = $obj;
+			}
+			return true;
+		}
+		else
+		{
+			$this->errormsg = 'Fehler beim Laden der Daten';
+			return false;
+		}
+	}
 
 	/**
 	 * Speichert einen Eintrag

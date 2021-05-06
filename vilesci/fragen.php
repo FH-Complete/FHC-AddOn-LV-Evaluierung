@@ -318,7 +318,7 @@ else
 	echo '<h1>Fragen - Übersicht</h1>';
 	// Fragen anzeigen
 	$fragen = new lvevaluierung_frage();
-	if(!$fragen->getFragen())
+	if(!$fragen->getAllFragen())
 		die($fragen->errormsg);
 
 	echo '<script>
