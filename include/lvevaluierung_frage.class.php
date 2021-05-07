@@ -85,7 +85,7 @@ class lvevaluierung_frage extends basis_db
 
 
 	/**
-	 * Laedt die Fragen
+	 * Laedt alle Fragen: View Cis-Evaluierung: abhängig von Lehrmodus und $aktiv
 	 * @param $aktiv boolean
 	 * @param $lehrmodus_kurzbz übergibt Lehrmodus
 	 */
