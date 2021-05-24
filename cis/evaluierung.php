@@ -29,6 +29,8 @@ require_once('../include/lvevaluierung_code.class.php');
 require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_frage.class.php');
 require_once('../include/lvevaluierung_antwort.class.php');
+require_once('../../../include/lehrmodus.class.php');
+
 
 session_cache_limiter('none');
 session_start();
@@ -271,9 +273,16 @@ else
 		$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 		$anzahl_studierende=count($teilnehmer);
 		$lehrform = $lv->lehrform_kurzbz;
+
 		$lehrmodus = $lv->lehrmodus_kurzbz;
+		$lm_beschr = new lehrmodus();
+		$lm_beschr ->load($lehrmodus);
+		$lm_beschr  = $lm_beschr->bezeichnung_mehrsprachig[$sprache];
+
 
 		$lv_aufgeteilt = $lvevaluierung->lv_aufgeteilt;
+
+
 
 		echo '
 		 <div class="table-responsive" >
@@ -305,7 +314,7 @@ else
 			</tr>
 			<tr>
 				<td>'.$p->t('lvevaluierung/lvmodus').'</td>
-				<td>'.$db->convert_html_chars($lehrmodus).'</td>
+				<td>'.$db->convert_html_chars($lm_beschr).'</td>
 			</tr>
 			<tr>
 				<td>'.$p->t('lvevaluierung/ects').'</td>

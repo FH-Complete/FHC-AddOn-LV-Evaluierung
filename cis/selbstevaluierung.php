@@ -27,6 +27,7 @@ require_once('../../../include/benutzer.class.php');
 require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_selbstevaluierung.class.php');
 require_once('../../../include/studiensemester.class.php');
+require_once('../../../include/lehrmodus.class.php');
 $uid = get_uid();
 
 $rechte = new benutzerberechtigung();
@@ -117,6 +118,9 @@ $teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzb
 $anzahl_studierende=count($teilnehmer);
 $lehrform = $lv->lehrform_kurzbz;
 $lehrmodus = $lv->lehrmodus_kurzbz;
+$lm_beschr = new lehrmodus();
+$lm_beschr ->load($lehrmodus);
+$lm_beschr  = $lm_beschr->bezeichnung_mehrsprachig[$sprache];
 
 echo '
 		<table class="tablesorter">
@@ -149,7 +153,7 @@ echo '
 		</tr>
 		<tr>
 			<td>'.$p->t('lvevaluierung/lvmodus').'</td>
-			<td>'.$db->convert_html_chars($lehrmodus).'</td>
+			<td>'.$db->convert_html_chars($lm_beschr).'</td>
 		</tr>
 		<tr>
 			<td>'.$p->t('lvevaluierung/ects').'</td>
