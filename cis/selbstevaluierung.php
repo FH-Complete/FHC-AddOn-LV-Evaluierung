@@ -28,6 +28,8 @@ require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_selbstevaluierung.class.php');
 require_once('../../../include/studiensemester.class.php');
 require_once('../../../include/lehrmodus.class.php');
+require_once('../include/lvguihelper.class.php');
+
 $uid = get_uid();
 
 $rechte = new benutzerberechtigung();
@@ -92,88 +94,19 @@ $stg = new studiengang();
 $stg->getAllTypes();
 $stg->load($lv->studiengang_kz);
 
-$studiengang_bezeichnung=$stg->bezeichnung;
-$studiensemester = $studiensemester_kurzbz;
-
 $rechte = new benutzerberechtigung();
 $rechte->getBerechtigungen($uid);
 
-$lva = new lehrveranstaltung();
-$lva->load($lvevaluierung->lehrveranstaltung_id);
-$oes = $lva->getAllOe();
-$oes[]=$lva->oe_kurzbz; // Institut
+$oes = $lv->getAllOe();
+$oes[]=$lv->oe_kurzbz; // Institut
 $oes[]=$stg->oe_kurzbz; // OE des Studiengangs der Lehrveranstaltung
 if(!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
 {
 	die($p->t('global/keineBerechtigungFuerDieseSeite'));
 }
 
-$leiter_uid = $lv->getLVLeitung($lehrveranstaltung_id, $studiensemester_kurzbz);
-$benutzer = new benutzer();
-$benutzer->load($leiter_uid);
-
-$lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
-
-$teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
-$anzahl_studierende=count($teilnehmer);
-$lehrform = $lv->lehrform_kurzbz;
-$lehrmodus = $lv->lehrmodus_kurzbz;
-$lm_beschr = new lehrmodus();
-$lm_beschr ->load($lehrmodus);
-$lm_beschr  = $lm_beschr->bezeichnung_mehrsprachig[$sprache];
-
-echo '
-		<table class="tablesorter">
-		<thead>
-		</thead>
-		<tbody>
-		<tr>
-			<td>'.$p->t('lvevaluierung/lvbezeichnung').'</td>
-			<td>'.$db->convert_html_chars($lv->bezeichnung.' ('.$lv->lehrveranstaltung_id.')').'</td>
-		</tr>
-		<tr>
-			<td>'.$p->t('lvevaluierung/lvleitung').'</td>
-			<td>'.$db->convert_html_chars($lvleitung).'</td>
-		</tr>
-		<tr>
-			<td>'.$p->t('global/studiengang').'</td>
-			<td>'.$db->convert_html_chars($stg->studiengang_typ_arr[$stg->typ]).' '.$db->convert_html_chars($studiengang_bezeichnung).'</td>
-		</tr>
-		<tr>
-			<td>'.$p->t('lvevaluierung/ausbildungssemester').'</td>
-			<td>'.$db->convert_html_chars($lv->semester).'</td>
-		</tr>
-		<tr>
-			<td>'.$p->t('lvevaluierung/organisationsform').'</td>
-			<td>'.$db->convert_html_chars($lv->orgform_kurzbz).'</td>
-		</tr>
-		<tr>
-			<td>'.$p->t('lvevaluierung/lvtyp').'</td>
-			<td>'.$db->convert_html_chars($lehrform).'</td>
-		</tr>
-		<tr>
-			<td>'.$p->t('lvevaluierung/lvmodus').'</td>
-			<td>'.$db->convert_html_chars($lm_beschr).'</td>
-		</tr>
-		<tr>
-			<td>'.$p->t('lvevaluierung/ects').'</td>
-			<td>'.$db->convert_html_chars($lv->ects).'</td>
-		</tr>
-		<tr>
-			<td>'.$p->t('global/sprache').'</td>
-			<td>'.$db->convert_html_chars($lv->sprache).'</td>
-		</tr>
-		<tr>
-			<td>'.$p->t('global/studiensemester').'</td>
-			<td>'.$db->convert_html_chars($studiensemester).'</td>
-		</tr>
-		<tr>
-			<td>'.$p->t('lvevaluierung/anzahlstudierende').'</td>
-			<td>'.$db->convert_html_chars($anzahl_studierende).'</td>
-		</tr>
-		</tbody>
-		</table>
-	';
+$cssclass = 'tablesorter';
+echo LvGuiHelper::formatAsEvalTable($lv, $stg, $p, $db, $lvevaluierung, $sprache, $cssclass);
 
 echo '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungGruppe').'</b><br /><div class="textantwort">'.nl2br($db->convert_html_chars($sev->gruppe)).'</div>';
 echo '<br><br><b>'.$p->t('lvevaluierung/selbstevaluierungPersoenlich').'</b><br /><div class="textantwort">'.nl2br($db->convert_html_chars($sev->persoenlich)).'</div>';

@@ -30,6 +30,8 @@ require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_frage.class.php');
 require_once('../include/lvevaluierung_antwort.class.php');
 require_once('../../../include/lehrmodus.class.php');
+require_once('../include/lvguihelper.class.php');
+
 
 
 session_cache_limiter('none');
@@ -248,97 +250,17 @@ else
 		$lv = new lehrveranstaltung();
 		$lv->load($lvevaluierung->lehrveranstaltung_id);
 
-		$leiter_uid = $lv->getLVLeitung($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-		$benutzer = new benutzer();
-		$benutzer->load($leiter_uid);
-
-		$lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
-
-		$lem = new lehreinheitmitarbeiter();
-		$lem->getMitarbeiterLV($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-		$anzahl_lem = count($lem->result);
-
-		$lektoren='';
-		foreach($lem->result as $row_lektoren)
-			$lektoren .= $row_lektoren->titelpre.' '.$row_lektoren->vorname.' '.$row_lektoren->nachname.' '.$row_lektoren->titelpost.', ';
-		$lektoren = mb_substr($lektoren, 0, -2);
-
 		$stg = new studiengang();
 		$stg->getAllTypes();
 		$stg->load($lv->studiengang_kz);
-
-		$studiengang_bezeichnung=$stg->bezeichnung;
-		$studiensemester = $lvevaluierung->studiensemester_kurzbz;
-
-		$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-		$anzahl_studierende=count($teilnehmer);
-		$lehrform = $lv->lehrform_kurzbz;
-
-		$lehrmodus = $lv->lehrmodus_kurzbz;
-		$lm_beschr = new lehrmodus();
-		$lm_beschr ->load($lehrmodus);
-		$lm_beschr  = $lm_beschr->bezeichnung_mehrsprachig[$sprache];
-
-
 		$lv_aufgeteilt = $lvevaluierung->lv_aufgeteilt;
 
 
 
-		echo '
-		 <div class="table-responsive" >
-			<table class="table  table-bordered">
-			<tr>
-				<td>'.$p->t('lvevaluierung/lvbezeichnung').'</td>
-				<td>'.$db->convert_html_chars($lv->bezeichnung.' ('.$lv->lehrveranstaltung_id.')').'</td>
-			</tr>
-			<tr>
-				<td>';
-				if ($anzahl_lem == 1)
-					echo $p->t('lvevaluierung/lvleitung');
-				else
-					echo $p->t('global/lektorInnen');
-		echo '</td>
-				<td>'.$db->convert_html_chars($lektoren).'</td>
-			</tr>
-			<tr>
-				<td>'.$p->t('global/studiengang').'</td>
-				<td>'.$db->convert_html_chars($stg->studiengang_typ_arr[$stg->typ]).' '.$db->convert_html_chars($studiengang_bezeichnung).'</td>
-			</tr>
-			<tr>
-				<td>'.$p->t('lvevaluierung/organisationsform').'</td>
-				<td>'.$db->convert_html_chars($lv->orgform_kurzbz).'</td>
-			</tr>
-			<tr>
-				<td>'.$p->t('lvevaluierung/lvtyp').'</td>
-				<td>'.$db->convert_html_chars($lehrform).'</td>
-			</tr>
-			<tr>
-				<td>'.$p->t('lvevaluierung/lvmodus').'</td>
-				<td>'.$db->convert_html_chars($lm_beschr).'</td>
-			</tr>
-			<tr>
-				<td>'.$p->t('lvevaluierung/ects').'</td>
-				<td>'.$db->convert_html_chars($lv->ects).'</td>
-			</tr>
-			<tr>
-				<td>'.$p->t('global/sprache').'</td>
-				<td>'.$db->convert_html_chars($lv->sprache).'</td>
-			</tr>
-			<tr>
-				<td>'.$p->t('global/studiensemester').'</td>
-				<td>'.$db->convert_html_chars($studiensemester).'</td>
-			</tr>
-			<tr>
-				<td>'.$p->t('lvevaluierung/ausbildungssemester').'</td>
-				<td>'.$db->convert_html_chars($lv->semester).'</td>
-			</tr>
-			<tr>
-				<td>'.$p->t('lvevaluierung/anzahlstudierende').'</td>
-				<td>'.$db->convert_html_chars($anzahl_studierende).'</td>
-			</tr>
-
-			</table>
-		</div>';
+		echo '<div class="table-responsive" >';
+		$cssclass = 'table table-bordered';
+		echo LvGuiHelper::formatAsEvalTable($lv, $stg, $p, $db, $lvevaluierung, $sprache, $cssclass);
+		echo '</div>';
 
 		echo $p->t('lvevaluierung/restzeit').' <span id="counter">00:00</span>';
 
@@ -364,7 +286,7 @@ else
 		}
 
 		$frage = new lvevaluierung_frage();
-		$frage->getFragen($lvevaluierung_id, $lehrmodus);
+		$frage->getFragen($lvevaluierung_id, $lv->lehrmodus_kurzbz);
 
 		foreach($frage->result as $row_frage)
 		{

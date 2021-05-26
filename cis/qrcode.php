@@ -27,9 +27,13 @@ require_once('../../../include/benutzer.class.php');
 require_once('../../../include/mail.class.php');
 require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_code.class.php');
+require_once('../../../include/lehrmodus.class.php');
 require_once('../vendor/kairos/phpqrcode/qrlib.php');
+require_once('../../../include/lehrmodus.class.php');
+
 
 $uid = get_uid();
+$sprache = getSprache();
 
 if(!isset($_GET['lvevaluierung_id']))
 	die('lvevaluierung_id muss uebergeben werden');
@@ -91,6 +95,11 @@ $studiensemester = $lvevaluierung->studiensemester_kurzbz;
 $teilnehmer = $lv->getStudentsOfLv($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 $anzahl_studierende=count($teilnehmer);
 $lehrform = $lv->lehrform_kurzbz;
+$lehrmodus = $lv->lehrmodus_kurzbz;
+$lm_beschr = new lehrmodus();
+$lm_beschr ->load($lehrmodus);
+$lm_beschr  = $lm_beschr->bezeichnung_mehrsprachig[$sprache];
+
 
 $stg->getAllTypes();
 
@@ -109,6 +118,7 @@ $data = array(
 	'anzahl'=>$anzahl_studierende,
 	'orgform'=>$lv->orgform_kurzbz,
 	'lehrform'=>$lehrform,
+	'lehrmodus'=> $lm_beschr,
 	'lvevaluierung_id'=>$lvevaluierung->lvevaluierung_id,
 	'lvevaluierung_startzeit' => (new DateTime($lvevaluierung->startzeit))->format('d.m.Y, H:i'),
 	'lvevaluierung_endezeit' => (new DateTime($lvevaluierung->endezeit))->format('d.m.Y, H:i'),
@@ -231,6 +241,11 @@ function getHTMLContent($data, $code)
 	$content.= "\n";
 	$content.= '<tr><td>LV Typ</td><td>'. $data['typ']. '</td></tr>';
 	$content.= "\n";
+	if ($data['lehrmodus'] != '')
+	{
+		$content.= '<tr><td>Lehrmodus</td><td>'. $data['lehrmodus']. '</td></tr>';
+		$content.= "\n";
+	}
 	$content.= '<tr><td>ECTS</td><td>'. $data['ects']. '</td></tr>';
 	$content.= "\n";
 	$content.= '<tr><td>Studiensemester</td><td>'. $data['studiensemester']. '</td></tr>';
