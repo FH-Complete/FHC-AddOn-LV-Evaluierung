@@ -33,14 +33,14 @@ class LvGuiHelper
 {
 /**
  * baut das Array für die Übersichtstabelle Evaluierung
- * @param lv Lehrveranstaltungsobjekt
- * @param stg Studiengangsobjekt
- * @param p Phrasenobjekt
- * @param db Datenbankobjekt
- * @param lvevaluierung Evaluierungsobjekt
- * @param sprache Sprache
- * @param cssclass gewünschte Tabellenformatierung
- * @return Tabelle im Ausgabeformat
+ * @param obj $lv Lehrveranstaltungsobjekt.
+ * @param object $stg Studiengangsobjekt.
+ * @param string $p Phrasenobjekt.
+ * @param object $db Datenbankobjekt.
+ * @param object $lvevaluierung Evaluierungsobjekt.
+ * @param string $sprache Sprache.
+ * @param string $cssclass Gewünschte Tabellenformatierung.
+ * @return table Tabelle im Ausgabeformat
  */
 	public static function formatAsEvalTable($lv, $stg, $p, $db, $lvevaluierung, $sprache, $cssclass)
 	{
@@ -51,14 +51,14 @@ class LvGuiHelper
 
 /**
  * baut das Array für die Übersichtstabelle Auswertung der LV-Evaluierung
- * @param lv Lehrveranstaltungsobjekt
- * @param stg Studiengangsobjekt
- * @param p Phrasenobjekt
- * @param db Datenbankobjekt
- * @param lvevaluierung Evaluierungsobjekt
- * @param sprache Sprache
- * @param cssclass gewünschte Tabellenformatierung
- * @return Tabelle im Ausgabeformat
+ * @param obj $lv Lehrveranstaltungsobjekt.
+ * @param object $stg Studiengangsobjekt.
+ * @param string $p Phrasenobjekt.
+ * @param object $db Datenbankobjekt.
+ * @param object $lvevaluierung Evaluierungsobjekt.
+ * @param string $sprache Sprache.
+ * @param string $cssclass Gewünschte Tabellenformatierung.
+ * @return table Tabelle im Ausgabeformat
  */
 	public static function formatAsAuswertungTable($lv, $stg, $p, $db, $lvevaluierung, $sprache, $cssclass)
 	{
@@ -73,7 +73,8 @@ class LvGuiHelper
 		$anzahl_codes_gesamt = 0;
 		$anzahl_codes_gestartet = 0;
 		$anzahl_codes_beendet = 0;
-		$anzahl_codes_ausgegeben = $lvevaluierung->codes_gemailt ? $anzahl_studierende : $lvevaluierung->codes_ausgegeben;
+		$anzahl_codes_ausgegeben = $lvevaluierung->codes_gemailt ? $anzahl_studierende :
+			$lvevaluierung->codes_ausgegeben;
 
 		$gesamtsekunden = 0;
 		foreach ($codes->result as $code)
@@ -88,7 +89,8 @@ class LvGuiHelper
 				$dtende = new DateTime($code->endezeit);
 				$dtstart = new DateTime($code->startzeit);
 				$dauer = $dtende->diff($dtstart)->format('%H:%I:%S');
-				$dauerinsekunden = (substr($dauer, 0, 2) * 60 * 60) + (substr($dauer, 3, 2) * 60) + (substr($dauer, 6, 2));
+				$dauerinsekunden = (substr($dauer, 0, 2) * 60 * 60) + (substr($dauer, 3, 2) * 60) +
+				(substr($dauer, 6, 2));
 				$gesamtsekunden += $dauerinsekunden;
 			}
 		}
@@ -100,10 +102,13 @@ class LvGuiHelper
 		else
 			$prozent_abgeschlossen = 0;
 
-		$tableArray[$p->t('lvevaluierung/anzahlstudierende')] = $db->convert_html_chars($anzahl_studierende).' ( '
-		.$p->t('lvevaluierung/anzahlausgegeben').' '. $anzahl_codes_ausgegeben. ' )';
-		$tableArray[$p->t('lvevaluierung/abgeschlossen')] = $anzahl_codes_beendet.' / '.$anzahl_codes_gesamt.' ( '.number_format($prozent_abgeschlossen, 2).'% )';
-		$tableArray[$p->t('lvevaluierung/durchschnittszeit')] = (($anzahl_codes_beendet > 0)?((int)(($gesamtsekunden / $anzahl_codes_beendet) / 60).':'.(($gesamtsekunden / $anzahl_codes_beendet) % 60)):'');
+		$tableArray[$p->t('lvevaluierung/anzahlstudierende')] = $db->convert_html_chars($anzahl_studierende).
+		' ( '.$p->t('lvevaluierung/anzahlausgegeben').' '. $anzahl_codes_ausgegeben. ' )';
+		$tableArray[$p->t('lvevaluierung/abgeschlossen')] = $anzahl_codes_beendet.
+		' / '.$anzahl_codes_gesamt.' ( '.number_format($prozent_abgeschlossen, 2).'% )';
+		$tableArray[$p->t('lvevaluierung/durchschnittszeit')] =
+		(($anzahl_codes_beendet > 0)?((int)(($gesamtsekunden / $anzahl_codes_beendet) / 60).
+		':'.(($gesamtsekunden / $anzahl_codes_beendet) % 60)):'');
 
 		$table_lv = self::formatAsTable($tableArray, $cssclass);
 		return $table_lv;
@@ -111,13 +116,13 @@ class LvGuiHelper
 
 /**
  * baut die Basistabelle für die Übersichtstabellen LV-Evaluierung
- * @param lv Lehrveranstaltungsobjekt
- * @param stg Studiengangsobjekt
- * @param p Phrasenobjekt
- * @param db Datenbankobjekt
- * @param lvevaluierung Evaluierungsobjekt
- * @param sprache Sprache
- * @return Tabelle im Ausgabeformat
+ * @param obj $lv Lehrveranstaltungsobjekt.
+ * @param object $stg Studiengangsobjekt.
+ * @param string $p Phrasenobjekt.
+ * @param object $db Datenbankobjekt.
+ * @param object $lvevaluierung Evaluierungsobjekt.
+ * @param string $sprache Sprache.
+ * @return table Tabelle im Ausgabeformat
  */
 	protected static function buildBaseArray($lv, $stg, $p, $db, $lvevaluierung, $sprache)
 	{
@@ -125,22 +130,23 @@ class LvGuiHelper
 		$benutzer = new benutzer();
 		$benutzer->load($leiter_uid);
 
-		$lvleitung=$benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
+		$lvleitung = $benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
 
 		$lem = new lehreinheitmitarbeiter();
 		$lem->getMitarbeiterLV($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 		$anzahl_lem = count($lem->result);
 
-		$lektoren='';
+		$lektoren = '';
 		foreach($lem->result as $row_lektoren)
-			$lektoren .= $row_lektoren->titelpre.' '.$row_lektoren->vorname.' '.$row_lektoren->nachname.' '.$row_lektoren->titelpost.', ';
+			$lektoren .= $row_lektoren->titelpre.' '.$row_lektoren->vorname.' '.$row_lektoren->nachname.
+			' '.$row_lektoren->titelpost.', ';
 		$lektoren = mb_substr($lektoren, 0, -2);
 
-		$studiengang_bezeichnung=$stg->bezeichnung;
+		$studiengang_bezeichnung = $stg->bezeichnung;
 		$studiensemester = $lvevaluierung->studiensemester_kurzbz;
 
 		$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-		$anzahl_studierende=count($teilnehmer);
+		$anzahl_studierende = count($teilnehmer);
 		$lehrform = $lv->lehrform_kurzbz;
 
 		$lehrmodus = $lv->lehrmodus_kurzbz;
@@ -153,9 +159,11 @@ class LvGuiHelper
 				: $p->t('global/lektorInnen');
 
 		$tableArray = array(
-			$p->t('lvevaluierung/lvbezeichnung') => $db->convert_html_chars($sprache == 'English'?$lv->bezeichnung_english:$lv->bezeichnung.' ('.$lv->lehrveranstaltung_id.')'),
+			$p->t('lvevaluierung/lvbezeichnung') => $db->convert_html_chars($sprache == 'English'
+			?$lv->bezeichnung_english:$lv->bezeichnung.' ('.$lv->lehrveranstaltung_id.')'),
 			$lemtyp => $db->convert_html_chars($lektoren),
-			$p->t('global/studiengang') => $db->convert_html_chars($stg->studiengang_typ_arr[$stg->typ]).' '.$db->convert_html_chars($studiengang_bezeichnung),
+			$p->t('global/studiengang') => $db->convert_html_chars($stg->studiengang_typ_arr[$stg->typ]).
+			' '.$db->convert_html_chars($studiengang_bezeichnung),
 			$p->t('lvevaluierung/organisationsform') => $db->convert_html_chars($lv->orgform_kurzbz),
 			$p->t('lvevaluierung/lvtyp') => $db->convert_html_chars($lehrform),
 			$p->t('lvevaluierung/lvmodus') => $db->convert_html_chars($lm_beschr),
@@ -170,8 +178,8 @@ class LvGuiHelper
 
 /**
  * Baut das Array zu einem html-Table-String zusammen und gibt diesen formatiert aus
- * @param tableArray auszugebendes $array
- * @param cssclass gewünschte Tabellenformatierung
+ * @param array $tableArray Auszugebendes Array.
+ * @param string $cssclass Gewünschte Tabellenformatierung.
  * @return Tabelle im Ausgabeformat
  */
 	protected static function formatAsTable($tableArray, $cssclass)
@@ -181,7 +189,8 @@ class LvGuiHelper
 		$table .= '
 			<table class="'.$cssclass.'">
 			';
-		foreach ($tableArray as $key => $value) {
+		foreach ($tableArray as $key => $value)
+		{
 			$table .= '
 			<tr>
 				<td>'.$key.'</td>
@@ -196,6 +205,3 @@ class LvGuiHelper
 		return $table;
 	}
 }
-
-
-?>
