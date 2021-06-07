@@ -88,7 +88,7 @@ $this->phrasen['lvevaluierung/uebersicht']='Overview Course Evaluations';
 $this->phrasen['lvevaluierung/selbstevaluierungWeiterbildung']='4. Is further training in university didactics needed?';
 $this->phrasen['lvevaluierung/selbstevaluierungWeiterbildungArt']='5. What kind of training in university didactics is needed?';
 
-$this->phrasen['lvevaluierung/infotextAllgemein']='A detailed process description can be found on <a href="https://signavio.technikum-wien.at/p/portal#/model/5c5c159b5eb74c9dbb358e252b034457" target="_blank">Signavio</a>';
+$this->phrasen['lvevaluierung/infotextAllgemein']='A detailed process description can be found on <a href="https://editor.signavio.com/p/hub/model/3f36e1fc243444fd82b30f3980f195dc" target="_blank">Signavio</a>';
 $this->phrasen['lvevaluierung/pdfExport']='PDF Export';
 $this->phrasen['lvevaluierung/einzelAuswertung']='Single analysis';
 $this->phrasen['lvevaluierung/alleAnzeigen']='Show all';
