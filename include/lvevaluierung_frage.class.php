@@ -22,15 +22,16 @@ require_once(dirname(__FILE__).'/../../../include/sprache.class.php');
 
 class lvevaluierung_frage extends basis_db
 {
-	private $new=true;
+	private $new = true;
 	public $result = array();
 	public $lvevaluierung_frage_id;
 	public $lvevaluierung_frage_antwort_id;
 	public $bezeichnung = array();
-	public $aktiv=true;
-	public $typ='text';
-	public $sort=1;
-	public $wert=1;
+	public $aktiv = true;
+	public $typ ='text';
+	public $sort = 1;
+	public $wert = 1;
+	public $lehrmodus_kurzbz;
 
     /**
 	 * Konstruktor
@@ -65,6 +66,7 @@ class lvevaluierung_frage extends basis_db
 				$this->sort = $row->sort;
 				$this->bezeichnung = $sprache->parseSprachResult('bezeichnung',$row);
 				$this->new = false;
+				$this->lehrmodus_kurzbz = $row->lehrmodus_kurzbz;
 
 				return true;
 			}
@@ -81,22 +83,28 @@ class lvevaluierung_frage extends basis_db
 		}
 	}
 
+
 	/**
-	 * Laedt die Fragen
-	 * @param $aktiv boolean gibt an ob
+	 * Laedt alle Fragen: View Cis-Evaluierung: abhängig von Lehrmodus und $aktiv
+	 * @param $aktiv boolean
+	 * @param $lehrmodus_kurzbz übergibt Lehrmodus
 	 */
-	public function getFragen($aktiv=true)
+	public function getFragen($aktiv = true, $lehrmodus_kurzbz = null)
 	{
 		$sprache = new sprache();
+
 		$qry = "SELECT
-					lvevaluierung_frage_id, typ, aktiv, sort, ".
+					lvevaluierung_frage_id, typ, aktiv, sort, lehrmodus_kurzbz, ".
 					$sprache->getSprachQuery('bezeichnung')."
 				FROM
-					addon.tbl_lvevaluierung_frage ";
-		if($aktiv===false)
-			$qry.=" WHERE aktiv=false";
+					addon.tbl_lvevaluierung_frage
+				WHERE
+					(lehrmodus_kurzbz is NULL
+				OR
+					lehrmodus_kurzbz=".$this->db_add_param($lehrmodus_kurzbz, FHC_STRING). ")";
 
-		$qry.=" ORDER BY sort";
+		$qry .= "AND aktiv is true";
+		$qry .= " ORDER BY sort";
 
 		if($result = $this->db_query($qry))
 		{
@@ -108,8 +116,9 @@ class lvevaluierung_frage extends basis_db
 				$obj->typ = $row->typ;
 				$obj->aktiv = $this->db_parse_bool($row->aktiv);
 				$obj->sort = $row->sort;
-				$obj->bezeichnung = $sprache->parseSprachResult('bezeichnung',$row);
+				$obj->bezeichnung = $sprache->parseSprachResult('bezeichnung', $row);
 				$obj->new = false;
+				$obj->lehrmodus_kurzbz = $row->lehrmodus_kurzbz;
 
 				$this->result[] = $obj;
 			}
@@ -122,7 +131,44 @@ class lvevaluierung_frage extends basis_db
 		}
 	}
 
+	/**
+	 * Laedt alle Fragen: für View Vilesci: unabhängig vom Lehrmodus und von $aktiv
+	 */
+	public function getAllFragen()
+	{
+		$sprache = new sprache();
 
+		$qry = "SELECT
+					lvevaluierung_frage_id, typ, aktiv, sort, lehrmodus_kurzbz, ".
+					$sprache->getSprachQuery('bezeichnung')."
+				FROM
+					addon.tbl_lvevaluierung_frage
+				ORDER BY sort";
+
+		if($result = $this->db_query($qry))
+		{
+			while($row = $this->db_fetch_object($result))
+			{
+				$obj = new lvevaluierung_frage();
+
+				$obj->lvevaluierung_frage_id = $row->lvevaluierung_frage_id;
+				$obj->typ = $row->typ;
+				$obj->aktiv = $this->db_parse_bool($row->aktiv);
+				$obj->sort = $row->sort;
+				$obj->bezeichnung = $sprache->parseSprachResult('bezeichnung', $row);
+				$obj->new = false;
+				$obj->lehrmodus_kurzbz = $row->lehrmodus_kurzbz;
+
+				$this->result[] = $obj;
+			}
+			return true;
+		}
+		else
+		{
+			$this->errormsg = 'Fehler beim Laden der Daten';
+			return false;
+		}
+	}
 
 	/**
 	 * Speichert einen Eintrag
@@ -139,7 +185,7 @@ class lvevaluierung_frage extends basis_db
 				$qry.=" bezeichnung[$idx],";
 			}
 
-			$qry.=' aktiv, sort) VALUES('.
+			$qry.=' aktiv, sort, lehrmodus_kurzbz) VALUES('.
 					$this->db_add_param($this->typ).',';
 
 			reset($this->bezeichnung);
@@ -147,12 +193,14 @@ class lvevaluierung_frage extends basis_db
 				$qry.=$this->db_add_param($value).',';
 
 			$qry.= $this->db_add_param($this->aktiv, FHC_BOOLEAN).','.
-			$this->db_add_param($this->sort, FHC_INTEGER).');';
+			$this->db_add_param($this->sort, FHC_INTEGER).','.
+			$this->db_add_param($this->lehrmodus_kurzbz).');';
 		}
 		else
 		{
 			$qry = "UPDATE addon.tbl_lvevaluierung_frage SET ".
 					" typ=".$this->db_add_param($this->typ).",".
+					" lehrmodus_kurzbz =".$this->db_add_param($this->lehrmodus_kurzbz, FHC_STRING).",".
 					" aktiv=".$this->db_add_param($this->aktiv, FHC_BOOLEAN).",";
 
 			foreach($this->bezeichnung as $key=>$value)

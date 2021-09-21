@@ -30,6 +30,8 @@ require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_code.class.php');
 require_once('../include/lvevaluierung_antwort.class.php');
 require_once('../include/lvevaluierung_frage.class.php');
+require_once('../../../include/lehrmodus.class.php');
+require_once('../include/lvguihelper.class.php');
 
 $uid = get_uid();
 
@@ -79,15 +81,13 @@ else
 $lv = new lehrveranstaltung();
 $lv->load($lehrveranstaltung_id);
 
-$leiter_uid = $lv->getLVLeitung($lehrveranstaltung_id, $studiensemester_kurzbz);
-$benutzer = new benutzer();
-$benutzer->load($leiter_uid);
-
-$lvleitung = $benutzer->titelpre.' '.$benutzer->vorname.' '.$benutzer->nachname.' '.$benutzer->titelpost;
-
 $stg = new studiengang();
 $stg->getAllTypes();
 $stg->load($lv->studiengang_kz);
+
+$oes = $lv->getAllOe();
+$oes[] = $lv->oe_kurzbz; // Institut
+$oes[] = $stg->oe_kurzbz; // OE des Studiengangs der Lehrveranstaltung
 
 // Berechtigungen pruefen
 $lem = new lehreinheitmitarbeiter();
@@ -98,12 +98,6 @@ $isInstitutsleiter = false;
 
 $rechte = new benutzerberechtigung();
 $rechte->getBerechtigungen($uid);
-
-$lva = new lehrveranstaltung();
-$lva->load($lvevaluierung->lehrveranstaltung_id);
-$oes = $lva->getAllOe();
-$oes[] = $lva->oe_kurzbz; // Institut
-$oes[] = $stg->oe_kurzbz; // OE des Studiengangs der Lehrveranstaltung
 
 // User ist nicht Lektor dieser LV
 if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz, $uid))
@@ -118,14 +112,14 @@ if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studie
 		$isStgl = true;
 		$isInstitutsleiter = true;
 	}
-} 
+}
 // User ist Lektor dieser LV
 else
 {
 	// Check, ob Lektor einer aufgeteilten LV ist
 	if($lvevaluierung->lv_aufgeteilt)
 	{
-		foreach($lem->result as $lektor)  
+		foreach($lem->result as $lektor)
 		{
 			if($uid == $lektor->uid)
 			{
@@ -143,45 +137,6 @@ else
     }
 
 }
-$studiengang_bezeichnung = $stg->bezeichnung_arr[$sprache];
-$studiensemester = $studiensemester_kurzbz;
-
-$teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
-$anzahl_studierende = count($teilnehmer);
-$lehrform = $lv->lehrform_kurzbz;
-
-$codes = new lvevaluierung_code();
-$codes->loadCodes($lvevaluierung_id);
-
-$anzahl_codes_gesamt = 0;
-$anzahl_codes_gestartet = 0;
-$anzahl_codes_beendet = 0;
-$anzahl_codes_ausgegeben = $lvevaluierung->codes_gemailt ? $anzahl_studierende : $lvevaluierung->codes_ausgegeben;
-
-$gesamtsekunden = 0;
-foreach ($codes->result as $code)
-{
-	if ($code->startzeit != '')
-		$anzahl_codes_gestartet++;
-	if ($code->endezeit != '')
-		$anzahl_codes_beendet++;
-	$anzahl_codes_gesamt++;
-	if ($code->endezeit != '')
-	{
-		$dtende = new DateTime($code->endezeit);
-		$dtstart = new DateTime($code->startzeit);
-		$dauer = $dtende->diff($dtstart)->format('%H:%I:%S');
-		$dauerinsekunden = (substr($dauer, 0, 2) * 60 * 60) + (substr($dauer, 3, 2) * 60) + (substr($dauer, 6, 2));
-		$gesamtsekunden += $dauerinsekunden;
-	}
-}
-if ($lvevaluierung->codes_ausgegeben != '')
-	$anzahl_codes_gesamt = $lvevaluierung->codes_ausgegeben;
-
-if ($anzahl_codes_gesamt > 0)
-	$prozent_abgeschlossen = (100 / $anzahl_codes_gesamt * $anzahl_codes_beendet);
-else
-	$prozent_abgeschlossen = 0;
 
 $auswertung = (isset($_POST['auswertung']) ? $_POST['auswertung'] : '');
 
@@ -201,7 +156,7 @@ if($isLektor_lv_aufgeteilt && (!$isStgl || !$isInstitutsleiter))
 	</form></p>';
 }
 
-//dropdown nur für studiengangs- und institutsleiter 
+//dropdown nur für studiengangs- und institutsleiter
 //wahl: gesamtauswertung + individuelle auswertungen der jeweiligen lektoren dieser lv
 if ($lvevaluierung->lv_aufgeteilt && ($isStgl || $isInstitutsleiter))
 {
@@ -210,8 +165,8 @@ if ($lvevaluierung->lv_aufgeteilt && ($isStgl || $isInstitutsleiter))
 	echo '
 	<select name="auswertung">
 		<option value="gesamt"' . (($auswertung == 'gesamt') ? "selected" : "") . '>'. $p->t('lvevaluierung/gesamtauswertung') . '</option>';
-		foreach($lem->result as $row) 
-		{  
+		foreach($lem->result as $row)
+		{
 			echo '<option value="' . $row->uid . '"' . (($auswertung == $row->uid) ? "selected" : "") . '>' . $row->titelpre . ' ' . $row->titelpost . ' ' . $row->vorname . ' ' . $row->nachname . '</option>';
 		}
 	echo '
@@ -230,63 +185,8 @@ elseif ($auswertung != 'gesamt')
 else
 	echo '<a href="auswertung_export.php?lvevaluierung_id='.$lvevaluierung_id.'">'.$p->t('lvevaluierung/pdfExport').'</a>';
 
-echo '
-	<table class="tablesorter">
-	<thead>
-	</thead>
-	<tbody>
-	<tr>
-		<td>'.$p->t('lvevaluierung/lvbezeichnung').'</td>
-		<td>'.$db->convert_html_chars($sprache == 'English'?$lv->bezeichnung_english:$lv->bezeichnung.' ('.$lv->lehrveranstaltung_id.')').'</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('lvevaluierung/lvleitung').'</td>
-		<td>'.$db->convert_html_chars($lvleitung).'</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('global/studiengang').'</td>
-		<td>'.$db->convert_html_chars($stg->studiengang_typ_arr[$stg->typ]).' '.$db->convert_html_chars($studiengang_bezeichnung).'</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('lvevaluierung/ausbildungssemester').'</td>
-		<td>'.$db->convert_html_chars($lv->semester).'</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('lvevaluierung/organisationsform').'</td>
-		<td>'.$db->convert_html_chars($lv->orgform_kurzbz).'</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('lvevaluierung/lvtyp').'</td>
-		<td>'.$db->convert_html_chars($lehrform).'</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('lvevaluierung/ects').'</td>
-		<td>'.$db->convert_html_chars($lv->ects).'</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('global/sprache').'</td>
-		<td>'.$db->convert_html_chars($lv->sprache).'</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('global/studiensemester').'</td>
-		<td>'.$db->convert_html_chars($studiensemester).'</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('lvevaluierung/anzahlstudierende').'</td>
-		<td>'.$db->convert_html_chars($anzahl_studierende).' ( '.$p->t('lvevaluierung/anzahlausgegeben').' '. $anzahl_codes_ausgegeben. ' )</td>
-	</tr>
-	<tr>
-		<td>'.$p->t('lvevaluierung/abgeschlossen').'</td>
-		<td>'.$anzahl_codes_beendet.' / '.$anzahl_codes_gesamt.' ( '.number_format($prozent_abgeschlossen, 2).'% ) </td>
-	</tr>
-	<tr>
-		<td>'.$p->t('lvevaluierung/durchschnittszeit').'</td>
-		<td>'.(($anzahl_codes_beendet > 0)?((int)(($gesamtsekunden / $anzahl_codes_beendet) / 60).':
-			'.(($gesamtsekunden / $anzahl_codes_beendet) % 60)):'').'</td>
-	</tr>
-	</tbody>
-	</table>
-';
+$cssclass = 'tablesorter';
+echo LvGuiHelper::formatAsAuswertungTable($lv, $stg, $p, $db, $lvevaluierung, $sprache, $cssclass);
 
 // Antworten zu dieser Evaluierung laden
 $lvevaluierung_antwort = new lvevaluierung_antwort();

@@ -454,6 +454,19 @@ if(!@$db->db_query("SELECT codes_gemailt FROM addon.tbl_lvevaluierung LIMIT 1"))
 		echo '<br>Neue Spalte codes_gemailt in addon.tbl_lvevaluierung hinzugefuegt<br>';
 }
 
+//Add Column lehrmodus_kurzbz to addon.tbl_lvevaluierung_frage
+if(!@$db->db_query("SELECT lehrmodus_kurzbz FROM addon.tbl_lvevaluierung_frage LIMIT 1"))
+{
+	$qry = "ALTER TABLE addon.tbl_lvevaluierung_frage ADD COLUMN lehrmodus_kurzbz varchar(32);
+			ALTER TABLE addon.tbl_lvevaluierung_frage ADD CONSTRAINT fk_lvevaluierung_lehrmodus
+			FOREIGN KEY (lehrmodus_kurzbz) REFERENCES lehre.tbl_lehrmodus(lehrmodus_kurzbz) ON UPDATE CASCADE ON DELETE RESTRICT;
+			";
+
+	if(!$db->db_query($qry))
+		echo '<strong>addon.tbl_lvevaluierung_frage '.$db->db_last_error().'</strong><br>';
+		else
+			echo '<br>Spalte lehrmodus_kurzbz in addon.tbl_lvevaluierung_frage hinzugefügt';
+}
 
 
 echo '<br>Aktualisierung abgeschlossen<br><br>';
@@ -464,7 +477,7 @@ echo '<h2>Gegenprüfung</h2>';
 $tabellen=array(
 	"addon.tbl_lvevaluierung"  => array("lvevaluierung_id","lehrveranstaltung_id","studiensemester_kurzbz","startzeit","endezeit","dauer","codes_ausgegeben","insertamum","insertvon","updateamum","updatevon","verpflichtend","lv_aufgeteilt", "codes_gemailt"),
 	"addon.tbl_lvevaluierung_code"  => array("lvevaluierung_code_id","code","startzeit","endezeit","lvevaluierung_id"),
-	"addon.tbl_lvevaluierung_frage"  => array("lvevaluierung_frage_id","typ","bezeichnung","aktiv","sort"),
+	"addon.tbl_lvevaluierung_frage"  => array("lvevaluierung_frage_id","typ","bezeichnung","aktiv","sort","lehrmodus_kurzbz"),
 	"addon.tbl_lvevaluierung_frage_antwort"  => array("lvevaluierung_frage_antwort_id","lvevaluierung_frage_id","bezeichnung","sort","wert"),
 	"addon.tbl_lvevaluierung_antwort"  => array("lvevaluierung_antwort_id","lvevaluierung_code_id","lvevaluierung_frage_id","lvevaluierung_frage_antwort_id","antwort"),
 

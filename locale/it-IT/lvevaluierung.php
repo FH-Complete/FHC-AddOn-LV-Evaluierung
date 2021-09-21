@@ -11,6 +11,7 @@ $this->phrasen['lvevaluierung/lvbezeichnung']='Corso';
 $this->phrasen['lvevaluierung/lvleitung']='Docente';
 $this->phrasen['lvevaluierung/organisationsform']='Forma di organizzazione';
 $this->phrasen['lvevaluierung/lvtyp']='Modalità d’insegnamento';
+$this->phrasen['lvevaluierung/lvmodus']='Modalità dei corso';
 $this->phrasen['lvevaluierung/ects']='CFU';
 $this->phrasen['lvevaluierung/ausbildungssemester']='Semestre';
 $this->phrasen['lvevaluierung/anzahlstudierende']='Quantità degli studenti';

@@ -11,6 +11,7 @@ $this->phrasen['lvevaluierung/lvbezeichnung']='LV Bezeichnung';
 $this->phrasen['lvevaluierung/lvleitung']='LV LeiterIn';
 $this->phrasen['lvevaluierung/organisationsform']='Organisationsform';
 $this->phrasen['lvevaluierung/lvtyp']='LV Typ';
+$this->phrasen['lvevaluierung/lvmodus']='Lehrmodus';
 $this->phrasen['lvevaluierung/ects']='ECTS';
 $this->phrasen['lvevaluierung/ausbildungssemester']='Ausbildungssemester';
 $this->phrasen['lvevaluierung/anzahlstudierende']='Anzahl der Studierenden';

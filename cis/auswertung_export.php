@@ -29,6 +29,7 @@ require_once('../include/lvevaluierung.class.php');
 require_once('../include/lvevaluierung_code.class.php');
 require_once('../include/lvevaluierung_antwort.class.php');
 require_once('../include/lvevaluierung_frage.class.php');
+require_once('../../../include/lehrmodus.class.php');
 
 $uid = get_uid();
 
@@ -72,10 +73,10 @@ if (!$lem->existsLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studie
 	//leiter der oe mit entsprechender berechtigung berechtigen
 	if (!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung', $oes, 's'))
 		die($rechte->errormsg);
-} 
+}
 else
 {
-	//wenn Evaulierung für verschiedene Lektoren gewählt worden ist, check ob aktuelle uid einer von diesen ist
+	//wenn Evaluierung für verschiedene Lektoren gewählt worden ist, check ob aktuelle uid einer von diesen ist
 	if($lvevaluierung->lv_aufgeteilt)
 	{
 		$lem->getMitarbeiterLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
@@ -99,6 +100,10 @@ $lv->load($lvevaluierung->lehrveranstaltung_id);
 $teilnehmer = $lv->getStudentsOfLv($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 $anzahl_studierende = count($teilnehmer);
 $lehrform = $lv->lehrform_kurzbz;
+$lehrmodus = $lv->lehrmodus_kurzbz;
+$lm_beschr = new lehrmodus();
+$lm_beschr ->load($lehrmodus);
+$lm_beschr  = $lm_beschr->bezeichnung_mehrsprachig[$sprache];
 
 $codes = new lvevaluierung_code();
 $codes->loadCodes($lvevaluierung_id);
@@ -164,7 +169,9 @@ else
 
 $teilnehmer = $lv->getStudentsOfLv($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 $anzahl_studierende = count($teilnehmer);
-$lehrform = $lv->lehrform_kurzbz;
+// $lehrform = $lv->lehrform_kurzbz;
+// $lehrform = $lv->lehrform_kurzbz;
+// $lehrmodus = $lv->lehrmodus_kurzbz;
 
 $stg->getAllTypes();
 
@@ -173,7 +180,7 @@ if($lektor_uid)
 	$person = new person();
 	$person->getPersonFromBenutzer($lektor_uid);
 	$name = $person->getFullName();
-	
+
 	$lektor_name = ' - ' . $name;
 }
 else
@@ -195,6 +202,7 @@ $data = array(
 	'anzahl' => $anzahl_studierende,
 	'orgform' => $lv->orgform_kurzbz,
 	'lehrform' => $lehrform,
+	'lehrmodus'=> $lm_beschr,
 	'lvevaluierung_id' => $lvevaluierung->lvevaluierung_id,
 	'codes_ausgegeben' => $lvevaluierung->codes_ausgegeben,
 	'codes_beendet' => $anzahl_codes_beendet,
@@ -207,7 +215,7 @@ $lvevaluierung_antwort = new lvevaluierung_antwort();
 if(!empty($lektor_uid))
 
 	$lvevaluierung_antwort->loadAntworten($lvevaluierung_id, "", $lektor_uid);
-else  
+else
 	$lvevaluierung_antwort->loadAntworten($lvevaluierung_id);
 
 $sprache = getSprache();
@@ -247,7 +255,7 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 		case 'singleresponse':
 
 			// Alle moeglichen Antworten zu dieser Frage holen
-			$lv_frage = new lvevaluierung_frage();  
+			$lv_frage = new lvevaluierung_frage();
 			$lv_frage->loadAntworten($lvevaluierung_frage_id);
 			$antworten_array = array();
 			$frage_minwert = null;
@@ -329,7 +337,7 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 }
 
 $doc->addDataArray($data, 'auswertungen');
-//echo $doc->getXML();exit;
+//echo $doc->getXML();exit; //war auskommentiert
 if (!$doc->create($output))
 	die($doc->errormsg);
 $doc->output();

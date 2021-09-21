@@ -36,8 +36,8 @@ class lvevaluierung extends basis_db
 	public $updateamum;
 	public $updatevon;
 	public $verpflichtend=false;
-    public $lv_aufgeteilt=false;
-    public $codes_gemailt = false;
+	public $lv_aufgeteilt=false;
+	public $codes_gemailt = false;
 
 	/**
 	 * Konstruktor
