@@ -254,8 +254,8 @@ else
 		$stg->getAllTypes();
 		$stg->load($lv->studiengang_kz);
 		$lv_aufgeteilt = $lvevaluierung->lv_aufgeteilt;
-
-
+		$lem = new lehreinheitmitarbeiter();
+		$lem->getMitarbeiterLV($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
 
 		echo '<div class="table-responsive" >';
 		$cssclass = 'table table-bordered';
