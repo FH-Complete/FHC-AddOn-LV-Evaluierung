@@ -292,7 +292,13 @@ function mailJahresabschlussbericht($studiengang_kz, $studienjahr_kurzbz, $stg)
 					}
 
 					if ($receivemailberechtigt && (($row->ende == NULL || $row->ende > date('Y-m-d')) && ($row->start == NULL || $row->start < date('Y-m-d'))))
-						$receiver_arr[] = $row->uid.'@'.DOMAIN;
+					{
+						$benutzeraktiv = new benutzer($row->uid);
+						if ($benutzeraktiv->aktiv)
+						{
+							$receiver_arr[] = $row->uid.'@'.DOMAIN;
+						}
+					}
 				}
 			}
 		}
