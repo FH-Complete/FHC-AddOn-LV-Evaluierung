@@ -19,6 +19,7 @@
  * 			Alexei Karpenko <karpenko@technikum-wien.at>,
  *			Cristina Hainberger <cristina.hainberg@technikum-wien.at>
  */
+require_once('../lvevaluierung.config.inc.php');
 require_once('../../../config/cis.config.inc.php');
 require_once('../../../include/functions.inc.php');
 require_once('../../../include/phrasen.class.php');
@@ -629,20 +630,23 @@ else
 </div>';
 
 // Auswertung
-echo '
-<div class="lvepanel '.($disabled?'disabled':'').'">
-	<div class="lvepanel-head">'.$p->t('lvevaluierung/auswertungAnzeigen').'</div>
-	<div class="lvepanel-body">'.$p->t('lvevaluierung/auswertungAnzeigenInfotext').'
-		<br>
-		<br>';
+if (!defined('ADDON_LVEVALUIERUNG_AUSWERTUNG_ANZEIGEN') || ADDON_LVEVALUIERUNG_AUSWERTUNG_ANZEIGEN)
+{
+	echo '
+	<div class="lvepanel '.($disabled?'disabled':'').'">
+		<div class="lvepanel-head">'.$p->t('lvevaluierung/auswertungAnzeigen').'</div>
+		<div class="lvepanel-body">'.$p->t('lvevaluierung/auswertungAnzeigenInfotext').'
+			<br>
+			<br>';
 		if(!$disabled)
 			echo '<a href="auswertung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'">'.$p->t('lvevaluierung/Auswertung').'</a>';
 		else
 			$p->t('lvevaluierung/Auswertung');
-echo '
-		<br><br>
-	</div>
-</div>';
+		echo '
+			<br><br>
+		</div>
+	</div>';
+}
 
 // Selbstevaluierung
 if (!$disabled)
