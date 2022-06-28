@@ -27,7 +27,7 @@ class lvevaluierung extends basis_db
 	public $lvevaluierung_id;
 	public $startzeit;
 	public $endezeit;
-	public $dauer='00:10:00';
+	public $dauer='00:30:00';
 	public $studiensemester_kurzbz;
 	public $lehrveranstaltung_id;
 	public $codes_ausgegeben;
