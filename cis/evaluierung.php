@@ -387,7 +387,7 @@ else
 					</div>
 				</div>
 		</div>
-		<script src="../../../vendor/jquery/jqueryV1/jquery-1.12.4.min.js"></script>
+		<script src="../../../vendor/jquery/jquery1/jquery-1.12.4.min.js"></script>
 		<script src="../../../vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 
