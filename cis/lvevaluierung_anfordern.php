@@ -231,7 +231,6 @@ $studiengang_kz = filter_input(INPUT_POST,'studiengang_kz');
 $semester = filter_input(INPUT_POST,'semester');
 $oe_kurzbz = filter_input(INPUT_POST,'oe_kurzbz');
 $orgform_kurzbz = filter_input(INPUT_POST,'orgform_kurzbz');
-//var_dump($_POST);
 
 if($studiengang_kz=='' && $oe_kurzbz=='')
 	die($p->t('lvevaluierung/waehleStudiengangoderInstitut'));
@@ -339,6 +338,7 @@ if(!$lv->load_lva(	($studiengang_kz != ''?$studiengang_kz:null),
 					null,true,true,null,
 					($oe_kurzbz != ''?$oe_kurzbz:null),
 					null,
+					null,
 					($orgform_kurzbz != ''?$orgform_kurzbz:null)))
 	die($lv->errormsg);
 
@@ -358,10 +358,18 @@ echo '</tr>
 </thead>
 <tbody>';
 
-foreach($lv->lehrveranstaltungen as $row_lv)
-{
-	$tablerow = '';
+$allSemesters = array_column($stsem_rev, 'studiensemester_kurzbz');
 
+$lv_offered = new lehrveranstaltung();
+$lvofferedArr = [];
+if (!empty($lv->lehrveranstaltungen))
+	$lvofferedArr = $lv_offered->getOfferedLVs(array_column($lv->lehrveranstaltungen, 'lehrveranstaltung_id'), $allSemesters);
+
+$neededLVs = array_intersect(array_column($lv->lehrveranstaltungen, 'lehrveranstaltung_id'), array_column($lvofferedArr, 'lehrveranstaltung_id'));
+
+foreach($neededLVs as $key => $lehrveranstaltung_id)
+{
+	$row_lv = $lv->lehrveranstaltungen[$key];
 	$stg = new studiengang();
 	$stg->load($row_lv->studiengang_kz);
 
@@ -376,17 +384,23 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 	if(!$rechte->isBerechtigtMultipleOe('addon/lvevaluierung',$oes,'s'))
 		$allowed_to_show_lv=false;
 
+	$tablerow = '';
+
 	$tablerow.='
 	<tr>
 	<td>'.$db->convert_html_chars($stg->kuerzel.' '.$row_lv->semester.' '.$row_lv->bezeichnung.' '.$row_lv->orgform_kurzbz).'</td>';
-	$lvoffered_gesamt=false;
+
+	$evaluierung = new lvevaluierung();
+	$lvEvaluierungArr = $evaluierung->getEvaluierungen($row_lv->lehrveranstaltung_id, $allSemesters);
+	$lvEvaluierungSemArr = array_column($lvEvaluierungArr, 'studiensemester_kurzbz');
+
+	$lv_offered = new lehrveranstaltung();
+	$lvoffered_gesamt = $lv_offered->getOfferedSemester($row_lv->lehrveranstaltung_id, $allSemesters);
+	$lvSemesters = array_column($lvoffered_gesamt, 'studiensemester_kurzbz');
+
 	foreach($stsem_rev as $row_stsem)
 	{
-		$lv_offered = new lehrveranstaltung();
-		$lvoffered = $lv_offered->isOffered($row_lv->lehrveranstaltung_id,  $row_stsem->studiensemester_kurzbz);
-
-		if($lvoffered)
-			$lvoffered_gesamt=true;
+		$lvoffered = in_array($row_stsem->studiensemester_kurzbz, $lvSemesters);
 
 		if(!isset($arr_lvoffered[$row_stsem->studiensemester_kurzbz]['gesamt']))
 		{
@@ -400,27 +414,32 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 		}
 
 		$tablerow.= '<td class="'.($lvoffered?'offered':'notoffered').'">';
-		$evaluierung = new lvevaluierung();
 
-		if($evaluierung->getEvaluierung($row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz))
+		if(in_array($row_stsem->studiensemester_kurzbz, $lvEvaluierungSemArr))
 		{
-			$tablerow.=printVerpflichtend($evaluierung->verpflichtend, $row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz);
-			if($evaluierung->verpflichtend)
+			$index = array_search($row_stsem->studiensemester_kurzbz, $lvEvaluierungSemArr);
+
+			$verpflichtend = $lvEvaluierungArr[$index]->verpflichtend === 't';
+
+			$tablerow.=printVerpflichtend($verpflichtend, $row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz);
+
+			if($verpflichtend)
 				$arr_lvoffered[$row_stsem->studiensemester_kurzbz]['verpflichtend']++;
+
 			if(!$allowed_to_show_lv)
 			{
 				$tablerow.= 'X';
 				continue;
 			}
 
-			$codes = new lvevaluierung_code();
-
 			// Wenn die Startzeit nicht gesetzt ist, dann ueberspringen da die Evaluierung noch nicht stattgefunden hat
-			if($evaluierung->startzeit=='')
+			if($lvEvaluierungArr[$index]->startzeit=='')
 				continue;
 
+			$codes = new lvevaluierung_code();
+
 			// Ruecklaufqoute ermitteln
-			$codes->loadCodes($evaluierung->lvevaluierung_id);
+			$codes->loadCodes($lvEvaluierungArr[$index]->lvevaluierung_id);
 			$anzahl_codes_beendet=0;
 			foreach($codes->result as $row_code)
 			{
@@ -428,8 +447,8 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 					$anzahl_codes_beendet++;
 			}
 
-			if($evaluierung->codes_ausgegeben!='')
-				$anzahl_codes_gesamt = $evaluierung->codes_ausgegeben;
+			if($lvEvaluierungArr[$index]->codes_ausgegeben!='')
+				$anzahl_codes_gesamt = $lvEvaluierungArr[$index]->codes_ausgegeben;
 			else
 				$anzahl_codes_gesamt = count($codes->result);
 
@@ -438,27 +457,23 @@ foreach($lv->lehrveranstaltungen as $row_lv)
 			else
 				$prozent_abgeschlossen = 0;
 
-			$tablerow.= '&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.open(\'auswertung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'\',\'Auswertung\',\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;">'.number_format($prozent_abgeschlossen,2).'</a>';
-			//$tablerow.= '<a href="auswertung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'" title="'.$p->t('lvevaluierung/ruecklaufquoteDetailauswertung').'">'.number_format($prozent_abgeschlossen,2).'</a>';
+			$tablerow.= '&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.open(\'auswertung.php?lvevaluierung_id='.$lvEvaluierungArr[$index]->lvevaluierung_id.'\',\'Auswertung\',\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;">'.number_format($prozent_abgeschlossen,2).'</a>';
+			//$tablerow.= '<a href="auswertung.php?lvevaluierung_id='.$lvEvaluierungArr[$index]->lvevaluierung_id.'" title="'.$p->t('lvevaluierung/ruecklaufquoteDetailauswertung').'">'.number_format($prozent_abgeschlossen,2).'</a>';
 
 			$sev = new lvevaluierung_selbstevaluierung();
-			if($sev->getSelbstevaluierung($evaluierung->lvevaluierung_id))
-				$tablerow.= '&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.open(\'selbstevaluierung.php?lvevaluierung_id='.$evaluierung->lvevaluierung_id.'\',\'Selbstevaluierung\',\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;"><img src="../../../skin/images/edit-paste.png" height="15px" title="'.$p->t('lvevaluierung/selbstevaluierungAnzeigen').'"/></a>';
+			if($sev->getSelbstevaluierung($lvEvaluierungArr[$index]->lvevaluierung_id))
+				$tablerow.= '&nbsp;&nbsp;&nbsp;<a href="#" onclick="javascript:window.open(\'selbstevaluierung.php?lvevaluierung_id='.$lvEvaluierungArr[$index]->lvevaluierung_id.'\',\'Selbstevaluierung\',\'width=700,height=750,resizable=yes,menuebar=no,toolbar=no,status=yes,scrollbars=yes\');return false;"><img src="../../../skin/images/edit-paste.png" height="15px" title="'.$p->t('lvevaluierung/selbstevaluierungAnzeigen').'"/></a>';
 		}
-		else
+		else if ($lvoffered)
 		{
-			if($lvoffered)
-				$tablerow.=printVerpflichtend(false, $row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz);
+			$tablerow.=printVerpflichtend(false, $row_lv->lehrveranstaltung_id, $row_stsem->studiensemester_kurzbz);
 		}
 		$tablerow.= '</td>';
 
 	}
 	$tablerow.= '</tr>';
 
-	// Wenn die Lehrveranstaltung in keinem der Studiensemester
-	// angeboten wurde, dann wird diese auch nicht angezeigt
-	if($lvoffered_gesamt)
-		echo $tablerow;
+	echo $tablerow;
 }
 echo '</tbody>
 <tfoot>
