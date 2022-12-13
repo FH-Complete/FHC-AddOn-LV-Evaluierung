@@ -93,6 +93,12 @@ echo '<!DOCTYPE html>
 				document.getElementById("bis_datum").value=datum;
 		}
 
+		function checkBisDatum(datum)
+		{
+			if (datum === "" || datum === "00:00")
+				document.getElementById("bis_uhrzeit").value = "23:59";
+		}
+
 		function styleOnSubmit(form, anzahl_studierende)
 		{
 		    // Spinner anzeigen
@@ -209,7 +215,7 @@ if(isset($_POST['saveEvaluierung']))
 	else
 	{
 		$von_uhrzeit = $_POST['von_uhrzeit'];
-		$bis_uhrzeit = $_POST['bis_uhrzeit'];
+		$bis_uhrzeit = ($_POST['bis_uhrzeit'] === '' || $_POST['bis_uhrzeit'] === '00:00') ? '23:59' :  $_POST['bis_uhrzeit'];
 		$startzeit = ($von_datum!=''?$datum_obj->formatDatum($von_datum,'Y-m-d').' '.$von_uhrzeit:'');
 		$endezeit = ($bis_datum!=''?$datum_obj->formatDatum($bis_datum,'Y-m-d').' '.$bis_uhrzeit:'');
 		$dauer = $_POST['dauer'];
@@ -506,7 +512,7 @@ echo '
 				<td>'.$p->t('lvevaluierung/endezeit').'</td>
 				<td>
 				<input type="text" class="datepicker_datum" id="bis_datum" name="bis_datum" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->endezeit,'d.m.Y')).'" size="9" '.$locked.'>
-				<input type="text" class="timepicker" id="bis_uhrzeit" name="bis_uhrzeit" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->endezeit,'H:i')).'" size="4" '.$locked.'>
+				<input type="text" class="timepicker" id="bis_uhrzeit" name="bis_uhrzeit" value="'.$db->convert_html_chars($datum_obj->formatDatum($evaluierung->endezeit,'H:i')).'" size="4" '.$locked.' onchange="checkBisDatum(this.value)">
 				</td>
 			</tr>
 			<tr>
