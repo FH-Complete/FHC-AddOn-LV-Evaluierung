@@ -736,7 +736,9 @@ $selbstevalNames = array("gruppe", "persoenlich", "entwicklung", "weiterbildung"
 foreach($selbstevalNames as $name)
 	${$name} = $db->convert_html_chars((isset($_POST[$name]))?$_POST[$name]:$sev->{$name});
 
-echo '
+if (!defined('ADDON_LVEVALUIERUNG_SELBSTEVALUIERUNG_ANZEIGEN') || ADDON_LVEVALUIERUNG_SELBSTEVALUIERUNG_ANZEIGEN)
+{
+	echo '
 	<div class="lvepanel '.($disabled?'disabled':'').'" id="divselbsteval">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/selbstevaluierung').'</div>
 		<div class="lvepanel-body">'.$p->t('lvevaluierung/selbstevaluierungInfotext').'<br>
@@ -805,6 +807,8 @@ echo '
 		</div>
 	</div>';
 //}
+}
+
 echo $jsjumpinfo;
 echo '</body></html>';
 
