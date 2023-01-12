@@ -569,16 +569,28 @@ else
 	echo '
 	<div class="lvepanel '.($disabled?'disabled':'').'">
 		<div class="lvepanel-head">'.$p->t('lvevaluierung/codesErstellen').'</div>
-		<div class="lvepanel-body">' .
-			$p->t('lvevaluierung/codesErstellenInfotext').'<br><br>';
+		<div class="lvepanel-body">';
+			if (!defined('ADDON_LVEVALUIERUNG_CODES_DRUCKEN') || ADDON_LVEVALUIERUNG_CODES_DRUCKEN)
+				echo $p->t('lvevaluierung/codesErstellenInfotext');
+			else
+				echo $p->t('lvevaluierung/codesErstellenInfotextNurMail');
+
+			echo '<br><br>';
 			if(!$disabled)
 			{
 				echo '<form action="qrcode.php" method="GET" onsubmit="return styleOnSubmit(this, '. $anzahl_studierende. ');">';
 				echo '<input type="hidden" name="lvevaluierung_id" value="'. $evaluierung->lvevaluierung_id. '">';
 				echo '<table>';
 				echo '<tr>';
-				echo '<td><input type="radio" name="codes_verteilung" value="print"'; echo (!$evaluierung->codes_gemailt) ? 'checked ' : ''; echo (!$evaluierung->codes_gemailt && $evaluierung->codes_ausgegeben) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeErstellen'). '</td>';
-				echo '<td><input type="radio" name="codes_verteilung" value="mail"'; echo ($evaluierung->codes_gemailt) ? 'checked ' : ''; echo ($evaluierung->codes_ausgegeben) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
+				if (!defined('ADDON_LVEVALUIERUNG_CODES_DRUCKEN') || ADDON_LVEVALUIERUNG_CODES_DRUCKEN)
+				{
+					echo '<td><input type="radio" name="codes_verteilung" value="print"'; echo (!$evaluierung->codes_gemailt) ? 'checked ' : ''; echo (!$evaluierung->codes_gemailt && $evaluierung->codes_ausgegeben) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeErstellen'). '</td>';
+					echo '<td><input type="radio" name="codes_verteilung" value="mail"'; echo ($evaluierung->codes_gemailt) ? 'checked ' : ''; echo ($evaluierung->codes_ausgegeben) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
+				}
+				else
+				{
+					echo '<td><input type="radio" name="codes_verteilung" value="mail" checked'; echo ($evaluierung->codes_ausgegeben) ? 'disabled ' : ''; echo $locked; echo '>' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
+				}
 				echo '<td width="100" align="center"><input type="submit" name="submitCodesBtn" value="'. $p->t('global/durchfuehren'). '"';  echo ($evaluierung->codes_gemailt) ? 'disabled ' : ''; echo $locked; echo ' /></td>';
 				echo '<td><img id="spinner" style="display: none" src="'.APP_ROOT.'skin/images/spinner.gif"></td>';
 				echo '<td><span style="color: green"><b>'. $codes_ausgegeben_msg. '</b></span></td>';
@@ -588,11 +600,19 @@ else
 			}
 			else
 			{
-				echo $p->t('lvevaluierung/CodeListeErstellen');
+				if (!defined('ADDON_LVEVALUIERUNG_CODES_DRUCKEN') || ADDON_LVEVALUIERUNG_CODES_DRUCKEN)
+					echo $p->t('lvevaluierung/CodeListeErstellen');
 				echo '<table>';
 				echo '<tr>';
-				echo '<td><input type="radio">'. $p->t('lvevaluierung/CodeListeErstellen'). '</td>';
-				echo '<td><input type="radio">' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
+				if (!defined('ADDON_LVEVALUIERUNG_CODES_DRUCKEN') || ADDON_LVEVALUIERUNG_CODES_DRUCKEN)
+				{
+					echo '<td><input type="radio">'. $p->t('lvevaluierung/CodeListeErstellen'). '</td>';
+					echo '<td><input type="radio">' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
+				}
+				else
+				{
+					echo '<td><input type="radio">' . $p->t('lvevaluierung/CodeListeMailen'). '</td>';
+				}
 				echo '<td width="100" align="center"><input type="submit" disabled/></td>';
 				echo '</tr>';
 				echo '</table>';
