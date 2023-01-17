@@ -16,7 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
  *
  */
-require_once('../include/lvevaluierung.class.php');
+require_once(DOC_ROOT . 'addons/lvevaluierung/include/lvevaluierung.class.php');
+require_once(DOC_ROOT . 'addons/lvevaluierung/lvevaluierung.config.inc.php');
 
 /**
  * Hinzufuegen von neuen Menuepunkten bei CIS Lehrveranstaltungen
@@ -25,7 +26,7 @@ require_once('../include/lvevaluierung.class.php');
 if($is_lector)
 {
 	$lveval = new lvevaluierung();
-	if (!defined(ADDON_LVEVALUIERUNG_ALLE_LVS_EVALUIEREN) || ADDON_LVEVALUIERUNG_ALLE_LVS_EVALUIEREN || ($lveval->getEvaluierung($lvid, $angezeigtes_stsem) && $lveval->verpflichtend))
+	if (!defined('ADDON_LVEVALUIERUNG_ALLE_LVS_EVALUIEREN') || ADDON_LVEVALUIERUNG_ALLE_LVS_EVALUIEREN || ($lveval->getEvaluierung($lvid, $angezeigtes_stsem) && $lveval->verpflichtend))
 	{
 		$menu[]=array
 		(
