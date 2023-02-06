@@ -46,9 +46,8 @@ $this->phrasen['lvevaluierung/dauerInfotext']='The processing time defines how m
 
 $this->phrasen['lvevaluierung/codesErstellen']='Generate Codes';
 $this->phrasen['lvevaluierung/codesErstellenInfotext']='Click on the link to download a PDF with codes. This can take a few seconds with a large group. Then print the document one-sided*.
-	 <br><small>*Because the QR codes are cut out, you should print only one-sided per sheet. Check your printer settings.</small>';
-
-'<b>Select if you wish to download and print the codes <u>OR</u> to send the codes by email.</b><br>This can take a few seconds with a large group.<br><br>
+<br><small>*Because the QR codes are cut out, you should print only one-sided per sheet. Check your printer settings.</small><br>
+<b>Select if you wish to download and print the codes <u>OR</u> to send the codes by email.</b><br>This can take a few seconds with a large group.<br><br>
 <fieldset>
 <legend>Download list with codes:</legend>Print the document one-sided. Because the QR codes are cut out, you should print only one-sided per sheet. Check your printer settings.<br>
 The option \'send codes by email\' is disabled as soon the number of codes are saved. (see below)<br>
@@ -57,6 +56,11 @@ The option \'send codes by email\' is disabled as soon the number of codes are s
 <fieldset>
 <legend>Send codes by email:</legend>This can be done <u>only once</u>. Each participant will receive a QR code by mail.<br>
 Both options are disabled as soon as the mails were successfully sent.<br>
+</fieldset>';
+$this->phrasen['lvevaluierung/codesErstellenInfotextNurMail']='<b>Send the codes by email.</b><br>This can take a few seconds with a large group.<br><br>
+<fieldset>
+<legend>Send codes by email:</legend>This can be done <u>only once</u>. Each participant will receive a QR code by mail.<br>
+This option is disabled as soon as the mails were successfully sent.<br>
 </fieldset>';
 
 $this->phrasen['lvevaluierung/evaluierungDruchfuehren']='Carry out the evaluation';

@@ -16,20 +16,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
  *
  */
+require_once(DOC_ROOT . 'addons/lvevaluierung/include/lvevaluierung.class.php');
+require_once(DOC_ROOT . 'addons/lvevaluierung/lvevaluierung.config.inc.php');
+
 /**
  * Hinzufuegen von neuen Menuepunkten bei CIS Lehrveranstaltungen
  */
 
 if($is_lector)
 {
-	$menu[]=array
-	(
-		'id'=>'addon_lvevaluierung_menu_lvevaluierung',
-		'position'=>'130',
-		'name'=>$p->t('lvevaluierung/lvevaluierung'),
-		'icon'=>'../../../addons/lvevaluierung/skin/images/button_lvevaluierung.png',
-		'link'=>'../../../addons/lvevaluierung/cis/administration.php?lehrveranstaltung_id='.urlencode($lvid).'&studiensemester_kurzbz='.urlencode($angezeigtes_stsem),
-		'text'=>''
-	);
+	$lveval = new lvevaluierung();
+	if (!defined('ADDON_LVEVALUIERUNG_ALLE_LVS_EVALUIEREN') || ADDON_LVEVALUIERUNG_ALLE_LVS_EVALUIEREN || ($lveval->getEvaluierung($lvid, $angezeigtes_stsem) && $lveval->verpflichtend))
+	{
+		$menu[]=array
+		(
+			'id'=>'addon_lvevaluierung_menu_lvevaluierung',
+			'position'=>'130',
+			'name'=>$p->t('lvevaluierung/lvevaluierung'),
+			'icon'=>'../../../addons/lvevaluierung/skin/images/button_lvevaluierung.png',
+			'link'=>'../../../addons/lvevaluierung/cis/administration.php?lehrveranstaltung_id='.urlencode($lvid).'&studiensemester_kurzbz='.urlencode($angezeigtes_stsem),
+			'text'=>''
+		);
+	}
 }
 ?>
