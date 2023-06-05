@@ -401,6 +401,7 @@ else
 				<option value="singleresponse" '.($frage->typ=='singleresponse'?'selected="selected"':'').'>SingleResponse</option>
 				<option value="label" '.($frage->typ=='label'?'selected="selected"':'').'>Label Titel</option>
 				<option value="labelsub" '.($frage->typ=='labelsub'?'selected="selected"':'').'>Label Normaltext</option>
+				<option value="comment" '.($frage->typ=='comment'?'selected="selected"':'').'>Kommentar (für Studierende nicht sichtbar)</option>
 			</select>
 		</th>
 		<th valign="top">

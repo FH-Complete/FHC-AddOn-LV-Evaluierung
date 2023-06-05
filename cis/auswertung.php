@@ -210,7 +210,7 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 		echo '<h1>'.$db->convert_html_chars($lvevaluierung_frage->bezeichnung[$sprache]).'</h1>';
 	else if ($lvevaluierung_frage->typ == 'labelsub')
 		echo '<p>'.$db->convert_html_chars($lvevaluierung_frage->bezeichnung[$sprache]).'</p>';
-	else
+	else if ($lvevaluierung_frage->typ != 'comment')
 		echo '<h2>'.$db->convert_html_chars($lvevaluierung_frage->bezeichnung[$sprache]).'</h2>';
 	if ($lvevaluierung_frage->typ == 'text')
 	{
@@ -224,6 +224,7 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 	{
 		case 'label':
 		case 'labelsub':
+        case 'comment':
 			break;
 		case 'text':
 			foreach ($antworten as $antwort)
