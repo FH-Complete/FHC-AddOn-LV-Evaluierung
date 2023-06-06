@@ -231,6 +231,11 @@ foreach ($lvevaluierung_antwort->result as $lvevaluierung_frage_id => $antworten
 
 	switch($lvevaluierung_frage->typ)
 	{
+        case 'comment':
+            $data[]['frage'] = array(	'frage_typ' => 'comment',
+                                        'frage_text' => $lvevaluierung_frage->bezeichnung[$sprache]);
+            break;
+
 		case 'label':
 			$data[]['frage'] = array(	'frage_typ' => 'label',
 										'frage_text' => $lvevaluierung_frage->bezeichnung[$sprache]);
