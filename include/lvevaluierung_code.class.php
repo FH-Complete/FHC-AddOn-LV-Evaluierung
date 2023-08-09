@@ -222,14 +222,14 @@ class lvevaluierung_code extends basis_db
 
 		$lv = new lehrveranstaltung();
 		$teilnehmer = $lv->getStudentsOfLv($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-		$anzahl_studierende=count($teilnehmer);
+		$anzahl_studierende=numberOfElements($teilnehmer);
 
 		$this->loadCodes($lvevaluierung_id);
-		if(count($this->result)>=$anzahl_studierende)
+		if(numberOfElements($this->result)>=$anzahl_studierende)
 			return true;
 		else
 		{
-			$anzahl_codes = $anzahl_studierende-count($this->result);
+			$anzahl_codes = $anzahl_studierende - numberOfElements($this->result);
 
 			for($i=0;$i<$anzahl_codes;$i++)
 			{

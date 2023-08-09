@@ -450,7 +450,7 @@ $stg->load($lv->studiengang_kz);
 $le_mitarbeiter = new Lehreinheitmitarbeiter();
 $le_mitarbeiter->getMitarbeiterLV($lehrveranstaltung_id, $studiensemester_kurzbz);
 $hasMehrereLektoren = false;
-if (isset($le_mitarbeiter->result) && count($le_mitarbeiter->result) > 1)
+if (isset($le_mitarbeiter->result) && numberOfElements($le_mitarbeiter->result) > 1)
 	$hasMehrereLektoren = true;
 
 // Evaluierungszeitraum Form
@@ -547,13 +547,13 @@ echo		'
 // Weitere Informationen werden erst angezeigt wenn Codes vorhanden
 $codes = new lvevaluierung_code();
 $codes->loadCodes($evaluierung->lvevaluierung_id);
-if(count($codes->result) > 0)
+if(numberOfElements($codes->result) > 0)
 	$disabled=false;
 else
 	$disabled=true;
 
 	$teilnehmer = $lv->getStudentsOfLv($lehrveranstaltung_id, $studiensemester_kurzbz);
-	$anzahl_studierende=count($teilnehmer);
+	$anzahl_studierende=numberOfElements($teilnehmer);
 
 	$codes_ausgegeben_msg  = '';
 	if (!$evaluierung->codes_gemailt && $evaluierung->codes_ausgegeben)
@@ -851,7 +851,7 @@ function LVEvaluierungGetInfoBlock($lv, $stg, $studiensemester_kurzbz)
 	$studiensemester = $studiensemester_kurzbz;
 
 	$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $studiensemester_kurzbz);
-	$anzahl_studierende=count($teilnehmer);
+	$anzahl_studierende=numberOfElements($teilnehmer);
 	$lehrform = $lv->lehrform_kurzbz;
 	$lehrmodus = $lv->lehrmodus_kurzbz;
 
@@ -952,7 +952,7 @@ function anzahlCodesValidieren($evaluierung, $lvid, $studiensemester_kurzbz, $p)
 	$lv = new lehrveranstaltung();
 	$lv->load($lvid);
 	$teilnehmer = $lv->getStudentsOfLv($lvid, $studiensemester_kurzbz);
-	$anzahl_studierende=count($teilnehmer);
+	$anzahl_studierende=numberOfElements($teilnehmer);
 
 	if (empty($codes_ausgegeben) || $codes_ausgegeben < 0)
 		return array("result" => false, "error" => $p->t('lvevaluierung/codesNichtEingetragen'));

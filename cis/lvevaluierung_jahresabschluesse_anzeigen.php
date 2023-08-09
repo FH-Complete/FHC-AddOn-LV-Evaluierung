@@ -59,7 +59,7 @@ $oes_berechtigt = $rechte->getOEkurzbz('addon/lvevaluierung_rektorat');
 
 //get Studienjahresabschlussberichte
 $studienabschlussbericht_arr = getJahresabschlussberichte($studiengang_kz, $studienjahr_kurzbz);
-$display_whenFilterNoResult = (count($studienabschlussbericht_arr) > 0) ? 'style = "display: none;"' : '';
+$display_whenFilterNoResult = (numberOfElements($studienabschlussbericht_arr) > 0) ? 'style = "display: none;"' : '';
 
 // ***************************************     FUNCTIONS  -->
 

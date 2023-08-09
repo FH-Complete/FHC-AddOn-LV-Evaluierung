@@ -93,7 +93,7 @@ $studiengang_bezeichnung=$stg->bezeichnung;
 $studiensemester = $lvevaluierung->studiensemester_kurzbz;
 
 $teilnehmer = $lv->getStudentsOfLv($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-$anzahl_studierende=count($teilnehmer);
+$anzahl_studierende=numberOfElements($teilnehmer);
 $lehrform = $lv->lehrform_kurzbz;
 $lehrmodus = $lv->lehrmodus_kurzbz;
 $lm_beschr = new lehrmodus();
@@ -172,7 +172,7 @@ if (isset($_GET['codes_verteilung']) && $_GET['codes_verteilung'] == 'mail')
 	}
 
 	// Check, if enough codes for each participant
-	if(count($code_arr) < $anzahl_studierende)
+	if(numberOfElements($code_arr) < $anzahl_studierende)
 	{
 		die('Nicht ausreichend codes für alle Teilnehmer vorhanden');
 	}

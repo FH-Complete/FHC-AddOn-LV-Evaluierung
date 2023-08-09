@@ -207,7 +207,7 @@ function getEvaluierteLV($studiengang_kz, $ws, $ss)
 		{
 			$orgform_unique_arr = array_unique($selbstev_arr['orgform_kurzbz']);
 
-			if (count($orgform_unique_arr) > 0)
+			if (numberOfElements($orgform_unique_arr) > 0)
 			{
 				sort($orgform_unique_arr);
 
@@ -241,7 +241,7 @@ $data = array(
     'verbesserungen' => $verbesserungen
 );
 
-if(count($orgform_container) > 0)
+if(numberOfElements($orgform_container) > 0)
 {	
 	foreach($orgform_container as $key => $value)
 	{

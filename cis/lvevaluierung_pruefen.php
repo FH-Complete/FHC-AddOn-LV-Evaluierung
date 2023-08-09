@@ -74,7 +74,7 @@ $studiensemester->getSSFromStudienjahr($studienjahr_kurzbz);
 $ss = $studiensemester->result;
 //all evaluierte lvs where lector is studiengangsleiter
 $selbstev_arr = getEvaluierteLV_whereLectorIsStgl($ws, $ss);
-$display_whenFilterNoResult = (count($selbstev_arr) != 0) ? 'style = "display: none;"' : '';
+$display_whenFilterNoResult = (numberOfElements($selbstev_arr) != 0) ? 'style = "display: none;"' : '';
 
 // ***************************************	 FUNCTIONS  -->
 
@@ -211,7 +211,7 @@ function getRuecklaufquote($lvevaluierung_id, $lehrveranstaltung_id, $ws, $ss)
 		if($evaluierung->codes_ausgegeben!='')
 			$anzahl_codes_gesamt = $evaluierung->codes_ausgegeben;
 		else
-			$anzahl_codes_gesamt = count($codes->result);
+			$anzahl_codes_gesamt = numberOfElements($codes->result);
 
 		if($anzahl_codes_gesamt>0)
 			$prozent_abgeschlossen = (100/$anzahl_codes_gesamt*$anzahl_codes_beendet);

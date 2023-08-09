@@ -312,7 +312,7 @@ class lvevaluierung_frage extends basis_db
 	{
 		// Wenn bereits Antworten gegeben wurden, wird das loeschen verhindert
 		$qry = "SELECT
-					count(*) as anzahl
+					COUNT(*) as anzahl
 				FROM
 					addon.tbl_lvevaluierung_antwort
 				WHERE

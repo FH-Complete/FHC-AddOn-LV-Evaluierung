@@ -102,7 +102,7 @@ if (isset($selbstev_arr['orgform_kurzbz']))
 	sort($orgform_unique_arr);
 }
 
-$display_whenFilterNoResult = (count($selbstev_arr) != 0) ? 'style = "display: none;"' : '';
+$display_whenFilterNoResult = (numberOfElements($selbstev_arr) != 0) ? 'style = "display: none;"' : '';
 
 
 list (
@@ -220,8 +220,8 @@ function getEvaluierteLV($studiengang_kz, $ws, $ss)
 	//get all selbstevaluierungen per studiengang and studienjahr
 	$selbstevaluierung->getLVwhereSelbstevaluierungen($studiengang_kz, $ws, $ss);
 	$selbstev_arr = $selbstevaluierung->result;
-	if (count($selbstev_arr) > 0)
-		$selbstev_cnt = count($selbstev_arr['bezeichnung']);
+	if (numberOfElements($selbstev_arr) > 0)
+		$selbstev_cnt = numberOfElements($selbstev_arr['bezeichnung']);
 
 
 	return array($selbstev_arr, $selbstev_cnt);
@@ -306,7 +306,7 @@ function mailJahresabschlussbericht($studiengang_kz, $studienjahr_kurzbz, $stg)
 
 	//set mail attributes & content
 	$from = 'noreply@'.DOMAIN;
-	$to = (count($receiver_arr) > 1) ? implode(', ', $receiver_arr) : $receiver_arr[0];
+	$to = (numberOfElements($receiver_arr) > 1) ? implode(', ', $receiver_arr) : $receiver_arr[0];
 	$subject = 'LV-Evaluierung - Studienabschlussbericht ' . $stg->bezeichnung . ' - ' . $studienjahr_kurzbz;
 	$content = '<p>' . $p->t('lvevaluierung/XhatEinenJahresabschlussDurchgefuehrt',
 		array(
@@ -353,7 +353,7 @@ function getRuecklaufquote($lvevaluierung_id, $lehrveranstaltung_id, $ws, $ss)
 		if($evaluierung->codes_ausgegeben!='')
 			$anzahl_codes_gesamt = $evaluierung->codes_ausgegeben;
 		else
-			$anzahl_codes_gesamt = count($codes->result);
+			$anzahl_codes_gesamt = numberOfElements($codes->result);
 
 		if($anzahl_codes_gesamt>0)
 			$prozent_abgeschlossen = (100/$anzahl_codes_gesamt*$anzahl_codes_beendet);

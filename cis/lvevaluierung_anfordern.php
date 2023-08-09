@@ -237,7 +237,7 @@ if($studiengang_kz=='' && $oe_kurzbz=='')
 
 $studiengang = new studiengang();
 $oe_arr = $rechte->getOEkurzbz('addon/lvevaluierung');
-if(count($oe_arr)>0)
+if(numberOfElements($oe_arr)>0)
 {
 	$studiengang->getAll('typ, kurzbz',true);
 }
@@ -450,7 +450,7 @@ foreach($neededLVs as $key => $lehrveranstaltung_id)
 			if($lvEvaluierungArr[$index]->codes_ausgegeben!='')
 				$anzahl_codes_gesamt = $lvEvaluierungArr[$index]->codes_ausgegeben;
 			else
-				$anzahl_codes_gesamt = count($codes->result);
+				$anzahl_codes_gesamt = numberOfElements($codes->result);
 
 			if($anzahl_codes_gesamt>0)
 				$prozent_abgeschlossen = (100/$anzahl_codes_gesamt*$anzahl_codes_beendet);

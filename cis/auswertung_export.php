@@ -98,7 +98,7 @@ $lv = new lehrveranstaltung();
 $lv->load($lvevaluierung->lehrveranstaltung_id);
 
 $teilnehmer = $lv->getStudentsOfLv($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-$anzahl_studierende = count($teilnehmer);
+$anzahl_studierende = numberOfElements($teilnehmer);
 $lehrform = $lv->lehrform_kurzbz;
 $lehrmodus = $lv->lehrmodus_kurzbz;
 $lm_beschr = new lehrmodus();
@@ -168,7 +168,7 @@ else
 
 
 $teilnehmer = $lv->getStudentsOfLv($lvevaluierung->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-$anzahl_studierende = count($teilnehmer);
+$anzahl_studierende = numberOfElements($teilnehmer);
 // $lehrform = $lv->lehrform_kurzbz;
 // $lehrform = $lv->lehrform_kurzbz;
 // $lehrmodus = $lv->lehrmodus_kurzbz;

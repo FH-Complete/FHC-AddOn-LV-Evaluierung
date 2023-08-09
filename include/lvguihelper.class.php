@@ -68,7 +68,7 @@ class LvGuiHelper
 		$codes->loadCodes($lvevaluierung->lvevaluierung_id);
 
 		$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-		$anzahl_studierende = count($teilnehmer);
+		$anzahl_studierende = numberOfElements($teilnehmer);
 
 		$anzahl_codes_gesamt = 0;
 		$anzahl_codes_gestartet = 0;
@@ -134,7 +134,7 @@ class LvGuiHelper
 
 		$lem = new lehreinheitmitarbeiter();
 		$lem->getMitarbeiterLV($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-		$anzahl_lem = count($lem->result);
+		$anzahl_lem = numberOfElements($lem->result);
 
 		$lektoren = '';
 		foreach($lem->result as $row_lektoren)
@@ -146,7 +146,7 @@ class LvGuiHelper
 		$studiensemester = $lvevaluierung->studiensemester_kurzbz;
 
 		$teilnehmer = $lv->getStudentsOfLv($lv->lehrveranstaltung_id, $lvevaluierung->studiensemester_kurzbz);
-		$anzahl_studierende = count($teilnehmer);
+		$anzahl_studierende = numberOfElements($teilnehmer);
 		$lehrform = $lv->lehrform_kurzbz;
 
 		$lehrmodus = $lv->lehrmodus_kurzbz;
