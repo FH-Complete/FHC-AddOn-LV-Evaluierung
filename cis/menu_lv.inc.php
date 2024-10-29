@@ -37,6 +37,7 @@ if($is_lector)
 			'link'=>'../../../addons/lvevaluierung/cis/administration.php?lehrveranstaltung_id='.urlencode($lvid).'&studiensemester_kurzbz='.urlencode($angezeigtes_stsem),
 			'c4_icon'=>APP_ROOT.'addons/lvevaluierung/skin/images/button_lvevaluierung.png',
 			'c4_link'=>APP_ROOT.'addons/lvevaluierung/cis/administration.php?lehrveranstaltung_id='.urlencode($lvid).'&studiensemester_kurzbz='.urlencode($angezeigtes_stsem),
+			'c4_target'=> '_blank',
 			'text'=>''
 		);
 	}
