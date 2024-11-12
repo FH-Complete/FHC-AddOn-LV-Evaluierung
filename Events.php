@@ -9,7 +9,12 @@ Events::on('lvMenuBuild', function ($menu_reference, $params) {
 	extract($params);
 	$menu =& $menu_reference();
 
-	require_once(dirname(__FILE__).'/cis/menu_lv.inc.php');
-	
-}); 
+	require_once(FHCPATH.'include/phrasen.class.php');
 
+	if(!isset($p))
+	{
+		$p = new phrasen($sprache);
+	}
+
+	require_once(dirname(__FILE__).'/cis/menu_lv.inc.php');
+});
