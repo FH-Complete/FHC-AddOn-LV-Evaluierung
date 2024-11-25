@@ -344,5 +344,38 @@ class lvevaluierung extends basis_db
 			return false;
 		}
 	}
+
+	/**
+	 * Laedt Evaluierungen zu einer Lehrveranstaltung aus einer der angegebenen Sstudiensemester
+	 * @param $lehrveranstaltung_id
+	 * @param $studiensemester_kurzbz
+	 * @return array
+	 */
+	public function getEvaluierungen($lehrveranstaltung_id, $studiensemester_kurzbz)
+	{
+		$qry = "SELECT
+				*
+			FROM
+				addon.tbl_lvevaluierung
+			WHERE
+				lehrveranstaltung_id=".$this->db_add_param($lehrveranstaltung_id, FHC_INTEGER).'
+				AND studiensemester_kurzbz IN ('.$this->db_implode4SQL($studiensemester_kurzbz). ")";
+
+		$evaluierung = [];
+		if($result = $this->db_query($qry))
+		{
+			while($row = $this->db_fetch_object($result))
+			{
+				$evaluierung[] = $row;
+			}
+
+			return $evaluierung;
+		}
+		else
+		{
+			$this->errormsg = 'Fehler beim Laden der Daten';
+			return false;
+		}
+	}
 }
 ?>

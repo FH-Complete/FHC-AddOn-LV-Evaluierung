@@ -39,6 +39,7 @@ $this->phrasen['lvevaluierung/dauerInfotext']='La durata definisce il tempo conc
 
 $this->phrasen['lvevaluierung/codesErstellen']='Stampare la lista dei codici per la valutazione del corso';
 $this->phrasen['lvevaluierung/codesErstellenInfotext']='Un codice consente allo studente di compilare il questionario per la valutazione del corso e di rimanere anonimo. <br>Per ottenere la lista di codici per questo corso in formato PDF cliccare sul link. Potrebbe essere necessario attendere alcuni secondi. <br>Successivamente, stampare il documento.';
+$this->phrasen['lvevaluierung/codesErstellenInfotextNurMail']='';
 
 $this->phrasen['lvevaluierung/evaluierungDruchfuehren']='Avviare lo svolgimento del sondaggio';
 $this->phrasen['lvevaluierung/evaluierungDruchfuehrenInfotext']='Distribuire in aula i codici agli studenti per consentire la valutazione del corso.';

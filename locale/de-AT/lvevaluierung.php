@@ -57,6 +57,11 @@ Die Option für den Mailversand ist gesperrt, sobald Sie weiter unten die ausgeg
 <legend>Codes per Mail versenden:</legend>Das ist nur <u>einmalig möglich</u>. Jeder Teilnehmer erhält einen anonymen Zugangscode per Mail zugesendet.<br>
 Beide Optionen sind nach dem erfolgreichen Mailversand sofort gesperrt.<br>
 </fieldset>';
+$this->phrasen['lvevaluierung/codesErstellenInfotextNurMail']='<b>Zugangscodes als eMail an die Teilnehmer versenden.</b><br>Dies kann bei großen Gruppen ein paar Sekunden dauern.<br><br>
+<fieldset>
+<legend>Codes per Mail versenden:</legend>Das ist nur <u>einmalig möglich</u>. Jeder Teilnehmer erhält einen anonymen Zugangscode per Mail zugesendet.<br>
+Diese Option ist nach dem erfolgreichen Mailversand sofort gesperrt.<br>
+</fieldset>';
 
 $this->phrasen['lvevaluierung/evaluierungDruchfuehren']='Evaluierung durchführen';
 $this->phrasen['lvevaluierung/evaluierungDruchfuehrenInfotext']='Führen Sie die LV-Evaluierung im festgelegten Zeitraum durch.';
