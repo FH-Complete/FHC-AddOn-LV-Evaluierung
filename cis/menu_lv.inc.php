@@ -36,7 +36,7 @@ if($is_lector)
 			'icon'=>'../../../addons/lvevaluierung/skin/images/button_lvevaluierung.png',
 			'link'=>'../../../addons/lvevaluierung/cis/administration.php?lehrveranstaltung_id='.urlencode($lvid).'&studiensemester_kurzbz='.urlencode($angezeigtes_stsem),
 			'c4_icon'=>APP_ROOT.'addons/lvevaluierung/skin/images/button_lvevaluierung.png',
-			'c4_link'=>APP_ROOT.'addons/lvevaluierung/cis/administration.php?lehrveranstaltung_id='.urlencode($lvid).'&studiensemester_kurzbz='.urlencode($angezeigtes_stsem),
+			'c4_link'=>APP_ROOT.'cis.php/Cis/Compat/legacy/addons/lvevaluierung/cis/administration.php?lehrveranstaltung_id='.urlencode($lvid).'&studiensemester_kurzbz='.urlencode($angezeigtes_stsem),
 			'c4_target'=> '_blank',
 			'text'=>''
 		);
